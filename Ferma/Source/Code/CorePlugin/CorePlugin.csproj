@@ -60,9 +60,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActorAnimator.cs" />
+    <Compile Include="ActorRenderer.cs" />
+    <Compile Include="ActorAnimation.cs" />
+    <Compile Include="AnimDirMapping.cs" />
+    <Compile Include="MapControl.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="CorePlugin.cs" />
     <Compile Include="Properties\ErrorHandlers.cs" />
-    <Compile Include="YourCustomComponentType.cs" />
+    <Compile Include="CharacterControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

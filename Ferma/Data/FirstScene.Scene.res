@@ -23,12 +23,12 @@
             <pos dataType="Struct" type="Duality.Vector3">
               <X dataType="Float">0</X>
               <Y dataType="Float">0</Y>
-              <Z dataType="Float">-600</Z>
+              <Z dataType="Float">-500</Z>
             </pos>
             <posAbs dataType="Struct" type="Duality.Vector3">
               <X dataType="Float">0</X>
               <Y dataType="Float">0</Y>
-              <Z dataType="Float">-600</Z>
+              <Z dataType="Float">-500</Z>
             </posAbs>
             <scale dataType="Float">1</scale>
             <scaleAbs dataType="Float">1</scaleAbs>
@@ -308,16 +308,8 @@
                   <gameobj dataType="ObjectRef">4291860810</gameobj>
                   <ignoreParent dataType="Bool">false</ignoreParent>
                   <parentTransform dataType="ObjectRef">413003613</parentTransform>
-                  <pos dataType="Struct" type="Duality.Vector3">
-                    <X dataType="Float">0</X>
-                    <Y dataType="Float">0</Y>
-                    <Z dataType="Float">-5</Z>
-                  </pos>
-                  <posAbs dataType="Struct" type="Duality.Vector3">
-                    <X dataType="Float">0</X>
-                    <Y dataType="Float">0</Y>
-                    <Z dataType="Float">-5</Z>
-                  </posAbs>
+                  <pos dataType="Struct" type="Duality.Vector3" />
+                  <posAbs dataType="Struct" type="Duality.Vector3" />
                   <scale dataType="Float">1</scale>
                   <scaleAbs dataType="Float">1</scaleAbs>
                   <vel dataType="Struct" type="Duality.Vector3" />
@@ -398,16 +390,8 @@
                   <gameobj dataType="ObjectRef">2242543620</gameobj>
                   <ignoreParent dataType="Bool">false</ignoreParent>
                   <parentTransform dataType="ObjectRef">413003613</parentTransform>
-                  <pos dataType="Struct" type="Duality.Vector3">
-                    <X dataType="Float">0</X>
-                    <Y dataType="Float">0</Y>
-                    <Z dataType="Float">-1</Z>
-                  </pos>
-                  <posAbs dataType="Struct" type="Duality.Vector3">
-                    <X dataType="Float">0</X>
-                    <Y dataType="Float">0</Y>
-                    <Z dataType="Float">-1</Z>
-                  </posAbs>
+                  <pos dataType="Struct" type="Duality.Vector3" />
+                  <posAbs dataType="Struct" type="Duality.Vector3" />
                   <scale dataType="Float">1</scale>
                   <scaleAbs dataType="Float">1</scaleAbs>
                   <vel dataType="Struct" type="Duality.Vector3" />
@@ -608,7 +592,7 @@
       <active dataType="Bool">true</active>
       <children />
       <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="4201982289">
-        <_items dataType="Array" type="Duality.Component[]" id="568783854" length="4">
+        <_items dataType="Array" type="Duality.Component[]" id="568783854" length="8">
           <item dataType="Struct" type="Duality.Components.Transform" id="4212243223">
             <active dataType="Bool">true</active>
             <angle dataType="Float">0</angle>
@@ -620,76 +604,221 @@
             <ignoreParent dataType="Bool">false</ignoreParent>
             <parentTransform />
             <pos dataType="Struct" type="Duality.Vector3">
-              <X dataType="Float">0</X>
-              <Y dataType="Float">0</Y>
-              <Z dataType="Float">-100</Z>
+              <X dataType="Float">15.6620007</X>
+              <Y dataType="Float">-4.69860029</Y>
+              <Z dataType="Float">0</Z>
             </pos>
             <posAbs dataType="Struct" type="Duality.Vector3">
-              <X dataType="Float">0</X>
-              <Y dataType="Float">0</Y>
-              <Z dataType="Float">-100</Z>
+              <X dataType="Float">15.6620007</X>
+              <Y dataType="Float">-4.69860029</Y>
+              <Z dataType="Float">0</Z>
             </posAbs>
             <scale dataType="Float">1</scale>
             <scaleAbs dataType="Float">1</scaleAbs>
             <vel dataType="Struct" type="Duality.Vector3" />
             <velAbs dataType="Struct" type="Duality.Vector3" />
           </item>
-          <item dataType="Struct" type="Duality.Components.Renderers.AnimSpriteRenderer" id="1559363672">
+          <item dataType="Struct" type="Duality.Components.Physics.RigidBody" id="619737519">
             <active dataType="Bool">true</active>
-            <animDuration dataType="Float">2</animDuration>
-            <animFirstFrame dataType="Int">1</animFirstFrame>
-            <animFrameCount dataType="Int">1</animFrameCount>
-            <animLoopMode dataType="Enum" type="Duality.Components.Renderers.AnimSpriteRenderer+LoopMode" name="Loop" value="1" />
-            <animPaused dataType="Bool">false</animPaused>
-            <animTime dataType="Float">0</animTime>
+            <allowParent dataType="Bool">false</allowParent>
+            <angularDamp dataType="Float">0.3</angularDamp>
+            <angularVel dataType="Float">0</angularVel>
+            <bodyType dataType="Enum" type="Duality.Components.Physics.BodyType" name="Dynamic" value="1" />
+            <colCat dataType="Enum" type="Duality.Components.Physics.CollisionCategory" name="Cat1" value="1" />
+            <colFilter />
+            <colWith dataType="Enum" type="Duality.Components.Physics.CollisionCategory" name="All" value="2147483647" />
+            <continous dataType="Bool">false</continous>
+            <explicitInertia dataType="Float">0</explicitInertia>
+            <explicitMass dataType="Float">0</explicitMass>
+            <fixedAngle dataType="Bool">true</fixedAngle>
+            <gameobj dataType="ObjectRef">1851928291</gameobj>
+            <ignoreGravity dataType="Bool">true</ignoreGravity>
+            <joints />
+            <linearDamp dataType="Float">0.3</linearDamp>
+            <linearVel dataType="Struct" type="Duality.Vector2" />
+            <revolutions dataType="Float">0</revolutions>
+            <shapes dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Components.Physics.ShapeInfo]]" id="4174756767">
+              <_items dataType="Array" type="Duality.Components.Physics.ShapeInfo[]" id="4139186542" length="4">
+                <item dataType="Struct" type="Duality.Components.Physics.CircleShapeInfo" id="3664898128">
+                  <density dataType="Float">1</density>
+                  <friction dataType="Float">0.3</friction>
+                  <parent dataType="ObjectRef">619737519</parent>
+                  <position dataType="Struct" type="Duality.Vector2">
+                    <X dataType="Float">2.94138336</X>
+                    <Y dataType="Float">5.988203</Y>
+                  </position>
+                  <radius dataType="Float">11.3732748</radius>
+                  <restitution dataType="Float">0.3</restitution>
+                  <sensor dataType="Bool">false</sensor>
+                  <userTag dataType="Int">0</userTag>
+                </item>
+              </_items>
+              <_size dataType="Int">1</_size>
+            </shapes>
+          </item>
+          <item dataType="Struct" type="Ferma.ActorRenderer" id="1622992902">
+            <active dataType="Bool">true</active>
             <colorTint dataType="Struct" type="Duality.Drawing.ColorRgba">
               <A dataType="Byte">255</A>
               <B dataType="Byte">255</B>
               <G dataType="Byte">255</G>
               <R dataType="Byte">255</R>
             </colorTint>
-            <customFrameSequence />
             <customMat />
-            <flipMode dataType="Enum" type="Duality.Components.Renderers.SpriteRenderer+FlipMode" name="None" value="0" />
+            <depthScale dataType="Float">0.01</depthScale>
             <gameobj dataType="ObjectRef">1851928291</gameobj>
-            <offset dataType="Int">0</offset>
-            <pixelGrid dataType="Bool">false</pixelGrid>
+            <height dataType="Float">0</height>
+            <isVertical dataType="Bool">true</isVertical>
+            <offset dataType="Float">-0.16</offset>
             <rect dataType="Struct" type="Duality.Rect">
               <H dataType="Float">32</H>
               <W dataType="Float">32</W>
               <X dataType="Float">-16</X>
-              <Y dataType="Float">-16</Y>
+              <Y dataType="Float">-25</Y>
             </rect>
-            <rectMode dataType="Enum" type="Duality.Components.Renderers.SpriteRenderer+UVMode" name="Stretch" value="0" />
             <sharedMat dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Material]]">
               <contentPath dataType="String">Data\6Actor_5.Material.res</contentPath>
             </sharedMat>
+            <spriteIndex dataType="Int">0</spriteIndex>
             <visibilityGroup dataType="Enum" type="Duality.Drawing.VisibilityFlag" name="Group0" value="1" />
           </item>
-          <item dataType="Struct" type="Ferma.MainCharacter" id="2007243578">
+          <item dataType="Struct" type="Ferma.ActorAnimator" id="1222837164">
             <active dataType="Bool">true</active>
-            <direct dataType="Int">0</direct>
-            <direction dataType="Struct" type="Duality.Vector2" />
+            <activeAnim />
+            <activeLoopMode dataType="Enum" type="Ferma.ActorAnimator+LoopMode" name="Loop" value="2" />
+            <animations dataType="Struct" type="System.Collections.Generic.List`1[[Ferma.ActorAnimation]]" id="2164214264">
+              <_items dataType="Array" type="Ferma.ActorAnimation[]" id="2209246572" length="4">
+                <item dataType="Struct" type="Ferma.ActorAnimation" id="992754532">
+                  <duration dataType="Float">0.75</duration>
+                  <frameCount dataType="Int">6</frameCount>
+                  <name dataType="String">walk</name>
+                  <preferredLoopMode dataType="Enum" type="Ferma.ActorAnimator+LoopMode" name="PingPong" value="3" />
+                  <startFrame dataType="Array" type="Ferma.AnimDirMapping[]" id="654201796">
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">0</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">36</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">45</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">42</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">90</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">24</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">135</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">6</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">180</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">0</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">225</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">18</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">270</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">12</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">315</Angle>
+                      <Direction dataType="String">7</Direction>
+                      <SpriteSheetIndex dataType="Int">30</SpriteSheetIndex>
+                    </item>
+                  </startFrame>
+                </item>
+                <item dataType="Struct" type="Ferma.ActorAnimation" id="3457657366">
+                  <duration dataType="Float">2</duration>
+                  <frameCount dataType="Int">1</frameCount>
+                  <name dataType="String">stay</name>
+                  <preferredLoopMode dataType="Enum" type="Ferma.ActorAnimator+LoopMode" name="Loop" value="2" />
+                  <startFrame dataType="Array" type="Ferma.AnimDirMapping[]" id="89687598">
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">0</Angle>
+                      <Direction dataType="String">0</Direction>
+                      <SpriteSheetIndex dataType="Int">36</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">45</Angle>
+                      <Direction dataType="String">1</Direction>
+                      <SpriteSheetIndex dataType="Int">42</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">90</Angle>
+                      <Direction dataType="String">2</Direction>
+                      <SpriteSheetIndex dataType="Int">24</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">135</Angle>
+                      <Direction dataType="String">3</Direction>
+                      <SpriteSheetIndex dataType="Int">6</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">180</Angle>
+                      <Direction dataType="String">4</Direction>
+                      <SpriteSheetIndex dataType="Int">0</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">225</Angle>
+                      <Direction dataType="String">5</Direction>
+                      <SpriteSheetIndex dataType="Int">18</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">270</Angle>
+                      <Direction dataType="String">6</Direction>
+                      <SpriteSheetIndex dataType="Int">12</SpriteSheetIndex>
+                    </item>
+                    <item dataType="Struct" type="Ferma.AnimDirMapping">
+                      <Angle dataType="Float">315</Angle>
+                      <Direction dataType="String">7</Direction>
+                      <SpriteSheetIndex dataType="Int">30</SpriteSheetIndex>
+                    </item>
+                  </startFrame>
+                </item>
+              </_items>
+              <_size dataType="Int">2</_size>
+            </animations>
+            <animDirection dataType="Float">0</animDirection>
+            <animSpeed dataType="Float">1</animSpeed>
+            <animTime dataType="Float">0</animTime>
             <gameobj dataType="ObjectRef">1851928291</gameobj>
-            <isMove dataType="Bool">false</isMove>
-            <speed dataType="Double">1</speed>
+          </item>
+          <item dataType="Struct" type="Ferma.CharacterControl" id="516530654">
+            <acceleration dataType="Float">0.2</acceleration>
+            <active dataType="Bool">true</active>
+            <gameobj dataType="ObjectRef">1851928291</gameobj>
+            <speed dataType="Float">1</speed>
             <target dataType="Struct" type="Duality.Vector2" />
+            <targetMovement dataType="Struct" type="Duality.Vector2" />
           </item>
         </_items>
-        <_size dataType="Int">3</_size>
+        <_size dataType="Int">5</_size>
       </compList>
       <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="3440608416" surrogate="true">
         <header />
         <body>
           <keys dataType="Array" type="System.Object[]" id="544775803">
             <item dataType="ObjectRef">2136908718</item>
-            <item dataType="Type" id="1769996630" value="Duality.Components.Renderers.AnimSpriteRenderer" />
-            <item dataType="Type" id="2133401818" value="Ferma.MainCharacter" />
+            <item dataType="Type" id="1769996630" value="Ferma.ActorRenderer" />
+            <item dataType="Type" id="2133401818" value="Ferma.ActorAnimator" />
+            <item dataType="Type" id="3245609334" value="Ferma.CharacterControl" />
+            <item dataType="ObjectRef">1057900750</item>
           </keys>
           <values dataType="Array" type="System.Object[]" id="2029570728">
             <item dataType="ObjectRef">4212243223</item>
-            <item dataType="ObjectRef">1559363672</item>
-            <item dataType="ObjectRef">2007243578</item>
+            <item dataType="ObjectRef">1622992902</item>
+            <item dataType="ObjectRef">1222837164</item>
+            <item dataType="ObjectRef">516530654</item>
+            <item dataType="ObjectRef">619737519</item>
           </values>
         </body>
       </compMap>
@@ -702,6 +831,42 @@
       </identifier>
       <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
       <name dataType="String">MainCharacter</name>
+      <parent />
+      <prefabLink />
+    </item>
+    <item dataType="Struct" type="Duality.GameObject" id="3638845889">
+      <active dataType="Bool">true</active>
+      <children />
+      <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="3102142531">
+        <_items dataType="Array" type="Duality.Component[]" id="1488825382" length="4">
+          <item dataType="Struct" type="Ferma.Player" id="2715107433">
+            <active dataType="Bool">true</active>
+            <character dataType="ObjectRef">516530654</character>
+            <gameobj dataType="ObjectRef">3638845889</gameobj>
+          </item>
+        </_items>
+        <_size dataType="Int">1</_size>
+      </compList>
+      <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="3858906808" surrogate="true">
+        <header />
+        <body>
+          <keys dataType="Array" type="System.Object[]" id="3240963881">
+            <item dataType="Type" id="3038248974" value="Ferma.Player" />
+          </keys>
+          <values dataType="Array" type="System.Object[]" id="4087918016">
+            <item dataType="ObjectRef">2715107433</item>
+          </values>
+        </body>
+      </compMap>
+      <compTransform />
+      <identifier dataType="Struct" type="System.Guid" surrogate="true">
+        <header>
+          <data dataType="Array" type="System.Byte[]" id="2026810635">HSXQuTQ2lkS0nlcJgKanSg==</data>
+        </header>
+        <body />
+      </identifier>
+      <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+      <name dataType="String">Player</name>
       <parent />
       <prefabLink />
     </item>
