@@ -64,6 +64,12 @@
     <Compile Include="ActorRenderer.cs" />
     <Compile Include="ActorAnimation.cs" />
     <Compile Include="AnimDirMapping.cs" />
+    <Compile Include="CameraControl.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="MouseControl.cs" />
+    <Compile Include="GUIControl.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="MapControl.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="CorePlugin.cs" />

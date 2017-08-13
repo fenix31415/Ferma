@@ -1,10 +1,8 @@
 ﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.Editor; using Duality.Plugins.Tilemaps;  namespace Ferma {     public class CharacterControl : Component, ICmpUpdatable     {         private float speed = 1.0f;         private float acceleration = 0.2f;         private Vector2 targetMovement = Vector2.Zero;
         private Vector2 target = Vector2.Zero;
-        private ArmPlayer arm = ArmPlayer.showel;
         private bool isGoed = false;
 
         public bool IsGoed         {             get { return this.isGoed; }             set { this.isGoed = value; }         }
-        public ArmPlayer Arm         {             get { return this.arm; }             set { this.arm = value; }         }
         public float Speed         {             get { return this.speed; }             set { this.speed = value; }         }
         public Vector2 Target         {             get { return this.target; }             set { this.target = value; }         }         public float Acceleration         {             get { return this.acceleration; }             set { this.acceleration = value; }         }         public Vector2 TargetMovement         {             get { return this.targetMovement; }             set { this.targetMovement = value; }         }          private float getAngle(float a)
         {
