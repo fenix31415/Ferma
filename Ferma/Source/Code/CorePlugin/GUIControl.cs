@@ -5,19 +5,6 @@ namespace Ferma
     public class GUIControl : Component,ICmpInitializable
     {
         private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();
-        private AnimSpriteRenderer picture;
-        private Transform picturePos;
-        
-        public AnimSpriteRenderer Picture
-        {
-            get { return this.picture; }
-            set { this.picture = value; }
-        }
-        public Transform PicturePos
-        {
-            get { return this.picturePos; }
-            set { this.picturePos = value; }
-        }
 
         public int getPictureInd(ArmPlayer arm)
         {
@@ -40,8 +27,8 @@ namespace Ferma
         void ICmpInitializable.OnInit(InitContext context)
         {
             if (context != InitContext.Activate) return;
-            Vector3 TargetPos = MainCamera.GetSpaceCoord(new Vector3(DualityApp.TargetResolution.X - Ops.dist - Ops.GUIWidth / 2, 0 + Ops.dist + Ops.GUIWidth / 2, -10));
-            this.PicturePos.Pos = TargetPos;
+            //Vector3 TargetPos = MainCamera.GetSpaceCoord(new Vector3(Ops.dist, 0 + Ops.dist , -10));
+            //this.PicturePos.Pos = TargetPos;
 
         }
 

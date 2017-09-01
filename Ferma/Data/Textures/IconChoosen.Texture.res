@@ -2,13 +2,13 @@
   <anisoFilter dataType="Bool">false</anisoFilter>
   <assetInfo />
   <basePixmap dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Pixmap]]">
-    <contentPath dataType="String">Data\Textures\IconsArm.Pixmap.res</contentPath>
+    <contentPath dataType="String">Data\Textures\IconChoosen.Pixmap.res</contentPath>
   </basePixmap>
   <filterMag dataType="Enum" type="Duality.Drawing.TextureMagFilter" name="Linear" value="1" />
   <filterMin dataType="Enum" type="Duality.Drawing.TextureMinFilter" name="LinearMipmapLinear" value="5" />
   <pixelformat dataType="Enum" type="Duality.Drawing.TexturePixelFormat" name="Rgba" value="3" />
   <size dataType="Struct" type="Duality.Vector2">
-    <X dataType="Float">320</X>
+    <X dataType="Float">64</X>
     <Y dataType="Float">64</Y>
   </size>
   <texSizeMode dataType="Enum" type="Duality.Drawing.TextureSizeMode" name="Enlarge" value="0" />

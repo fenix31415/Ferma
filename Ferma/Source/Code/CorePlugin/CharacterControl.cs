@@ -1,4 +1,4 @@
-﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.Editor; using Duality.Plugins.Tilemaps;  namespace Ferma {     public class CharacterControl : Component, ICmpUpdatable     {         private float speed = 1.0f;         private float acceleration = 0.2f;         private Vector2 targetMovement = Vector2.Zero;
+﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.Editor; using Duality.Plugins.Tilemaps;  namespace Ferma {     public class CharacterControl : Component, ICmpUpdatable, ICmpInitializable     {         private float speed = 1.0f;         private float acceleration = 0.2f;         private Vector2 targetMovement = Vector2.Zero;
         private Vector2 target = Vector2.Zero;
         private bool isGoed = false;
 
@@ -15,7 +15,18 @@
             if (Math.Abs(a - 270) < 22.5) return 270;
             if (Math.Abs(a - 315) < 22.5) return 315;
             return 0;
-        }          void ICmpUpdatable.OnUpdate()         {             RigidBody body = this.GameObj.GetComponent<RigidBody>();                          // Determine how fast we want to be and apply a force to reach the target velocity
+        }
+
+        void ICmpInitializable.OnInit(InitContext context)
+        {
+            if (context != InitContext.Activate) return;
+            Vector2 tr = GameObj.GetComponent<Transform>().Pos.Xy;
+            this.target = new Vector2(tr.X, tr.Y);
+        }
+
+        void ICmpInitializable.OnShutdown(ShutdownContext context){}
+
+        void ICmpUpdatable.OnUpdate()         {             RigidBody body = this.GameObj.GetComponent<RigidBody>();                          // Determine how fast we want to be and apply a force to reach the target velocity
             Vector2 movement = Vector2.Zero;
             movement = this.Target - this.GameObj.Transform.Pos.Xy;             if (movement.Length > 1.0f)                 movement = movement.Normalized;             this.TargetMovement = movement;              Vector2 clampedTargetMovement = this.targetMovement / MathF.Max(1.0f, this.targetMovement.Length);             Vector2 targetVelocity = clampedTargetMovement * this.speed;
             if ((this.GameObj.Transform.Pos.Xy - this.Target).Length < this.Speed&& (this.GameObj.Transform.Pos.Xy - this.Target).Length >0)

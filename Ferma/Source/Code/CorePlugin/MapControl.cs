@@ -2,15 +2,17 @@
 
 namespace Ferma
 {
-    public class MapControl: Component
+    public class MapControl: Component,ICmpInitializable
     {
+        private static int wid = Ops.MapWidth;
+        private static int hei = Ops.MapHeigth;
+        public List<List<int>> mapTime = new List<List<int>>();
 
         private bool isTaked = false;
         private int idTaked;
 
-        private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();         private Tilemap BaseLayer => this.GameObj.ParentScene.FindComponents<Tilemap>().ToList()[0];         private Tilemap TopLayer => this.GameObj.ParentScene.FindComponents<Tilemap>().ToList()[2];         private Tilemap UpperLayer => this.GameObj.ParentScene.FindComponents<Tilemap>().ToList()[1];
-
-
+        private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();         private Tilemap BaseLayer => this.GameObj.ParentScene.FindGameObjects("BaseLayer").FirstOrDefault().GetComponent<Tilemap>();         private Tilemap TopLayer => this.GameObj.ParentScene.FindGameObjects("TopLayer").FirstOrDefault().GetComponent<Tilemap>();         private Tilemap UpperLayer => this.GameObj.ParentScene.FindGameObjects("UpperLayer").FirstOrDefault().GetComponent<Tilemap>();
+        
         /*private void ChangeTilemap(Vector2 tilePos)
         {
             Tilemap tilemap = TilemapsInScene.ToList()[1];
@@ -31,7 +33,7 @@ namespace Ferma
             tilemap.SetTile((int)tilePos.X,(int) tilePos.Y, clickedTile);
             //Log.Game.Write(clickedTile.ToString());
         }*/
-        
+
         public bool IsTaked
         {
             get { return this.isTaked; }
@@ -42,9 +44,57 @@ namespace Ferma
             get { return this.idTaked; }
             set { this.idTaked = value; }
         }
+
         private int getTileId(int seed)
         {
             return seed;
+        }
+        public string getTimes()
+        {
+            string ans = "";
+            for (int y = 0; y < hei; y++)
+            {
+                for (int x = 0; x < wid; x++)
+                {
+                    ans += mapTime[x][y].ToString();
+                }
+            }
+            return ans;
+        }
+        private int getStade(int id, int time)
+        {
+            int x = Ops.getTimeState(id);
+            if (time >= x + 1) return 0;
+            if (time <= x && time > 0) return 1;
+            return 2;
+        }
+        public void addTime(int tim)
+        {
+            for (int y = 0; y < hei; y++)
+            {
+                for (int x = 0; x < wid; x++)
+                {
+                    if (this.mapTime[x][y] == -1) continue;
+                    Tile currTile = TopLayer.Tiles[x, y];
+                    int newTime = Math.Max(0,this.mapTime[x][y] - tim);
+                    this.mapTime[x][y] = newTime;
+                    int type = currTile.BaseIndex / (int)(Ops.TileSetWidth);
+                    int stade = getStade(type, newTime);
+                    currTile.BaseIndex = (int)(Ops.TileSetWidth) * type + stade;
+                    if (x == 12 && y == 10)
+                    {
+                        Log.Game.Write(type+" "+stade+" "+currTile.BaseIndex);
+                    }
+                    try
+                    {
+                        TopLayer.SetTile(x, y, currTile);
+                    }
+                    catch
+                    {
+                        //Log.Game.WriteError(x+" "+y+" "+currTile.BaseIndex);
+                    }
+                }
+            }
         }
         
         public void Update(int x, int y, ArmPlayer arm, int TypeArm)
@@ -102,8 +152,26 @@ namespace Ferma
                 {
                     TopClickedTile.BaseIndex = getTileId(TypeArm);
                     TopLayer.SetTile(x, y, TopClickedTile);
+                    this.mapTime[x][y] = 2 * Ops.getTimeState(TypeArm);
+                }
+            }
+            Log.Game.Write(this.mapTime[x][y]+" "+x+" "+y);
+        }
+
+        void ICmpInitializable.OnInit(InitContext context)
+        {
+            if (context != InitContext.Activate) return;
+            this.mapTime = new List<List<int>>();
+            for (int i = 0; i < wid; i++)
+            {
+                this.mapTime.Add(new List<int>());
+                for (int j = 0; j < hei; j++)
+                {
+                    mapTime[i].Add(-1);
                 }
             }
         }
+
+        void ICmpInitializable.OnShutdown(ShutdownContext context){}
     }
 }

@@ -20,37 +20,6 @@ namespace Ferma
             
         }
     }
-    public class MenuChangeVolume : MenuComponent
-    {
-        private short changeAmount;
-
-        public short ChangeAmount
-        {
-            get { return this.changeAmount; }
-            set { this.changeAmount = value; }
-        }
-
-        public override void DoAction()
-        {
-            base.DoAction();
-
-            float volume = DualityApp.UserData.SfxMasterVol;
-            volume += (this.changeAmount / 10f);
-
-            // make sure that the volume is between 0 and 1
-            volume = MathF.Min(MathF.Max(volume, 0), 1);
-
-            DualityApp.UserData.SfxMasterVol = volume;
-        }
-    }
-    public class MenuChangeColor : MenuComponent
-    {
-        public override void DoAction()
-        {
-            base.DoAction();
-            this.FadeTo(MathF.Rnd.NextColorRgba(), true);
-        }
-    }
     /// <summary>
     /// This Component implements an Event-based MenuController.
     /// Pros: Logic gets called only when an event is fired, allows better timing due to the presence of 
