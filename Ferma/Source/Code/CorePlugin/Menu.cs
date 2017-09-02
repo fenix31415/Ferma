@@ -15,8 +15,13 @@ namespace Ferma
         public override void DoAction()
         {
             base.DoAction();
-            ContentRef<Scene> NewScene = new ContentRef<Scene>(null, @"Data\Game.Scene.res");
-            Scene.SwitchTo(NewScene);
+            this.GameObj.ParentScene.FindGameObject("MainMenu").Active = false;
+
+            this.GameObj.ParentScene.FindGameObject("GUI",false).Active = true;
+            this.GameObj.ParentScene.FindGameObject("MainCharacter", false).Active = true;
+            this.GameObj.ParentScene.FindGameObject("Map", false).Active = true;
+            this.GameObj.ParentScene.FindGameObject("Player", false).Active = true;
+
             
         }
     }
@@ -29,7 +34,9 @@ namespace Ferma
     [RequiredComponent(typeof(Camera))]
     public class EventMenuController : MenuController, ICmpInitializable
     {
-        [DontSerialize]
+        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu");
+        private int WinWidth => (int)DualityApp.TargetResolution.X;
+        private int WinHeight => (int)DualityApp.TargetResolution.Y;          [DontSerialize]
         private EventHandler<Duality.Input.MouseMoveEventArgs> mouseMove;
         [DontSerialize]
         private EventHandler<Duality.Input.MouseButtonEventArgs> buttonDown;
@@ -43,20 +50,113 @@ namespace Ferma
             mouseMove = new EventHandler<Duality.Input.MouseMoveEventArgs>(Mouse_Move);
             buttonDown = new EventHandler<Duality.Input.MouseButtonEventArgs>(Button_Down);
         }
-
+        private Vector2 getPosButton(int ind, int countWid, int countHei, float dist,float wid,float hei)
+        {
+            float Picwid = wid;
+            float Pichei = hei;
+            float left = -(countWid - 1) * (Picwid + dist) / 2;
+            float top = -(countHei - 1) * (Pichei + dist) / 2;
+            return new Vector2((ind % countWid) * (Picwid + dist) + left, (ind / countWid) * (Pichei + dist) + top);
+        }
+        private float PicToCoord(float len, float z)
+        {
+            Vector3 v1 = new Vector3(0, 0, z);
+            Vector3 v2 = new Vector3(len, 0, z);
+            Vector3 nv1 = MainCamera.GetSpaceCoord(v1);
+            Vector3 nv2 = MainCamera.GetSpaceCoord(v2);
+            return Math.Abs((nv2 - nv1).Length * z / Ops.CamDist);
+        }
         public void OnInit(Component.InitContext context)
         {
             // listening for mouse Move and ButtonDown events
             if (context == InitContext.Activate)
             {
+                GameObject menu,button;
+                Transform buttonpos;
                 // since I know I'm being activated, I can switch to the StartingMenu here
                 this.SwitchToMenu(this.StartingMenu);
 
                 DualityApp.Mouse.Move += mouseMove;
                 DualityApp.Mouse.ButtonDown += buttonDown;
+
+                MainCamera.GameObj.Transform.MoveTo(new Vector3(0,0, -Ops.CamDist));
+                float z = Ops.DistFromGUI - Ops.CamDist;
+                //init Back renderer
+                SpriteRenderer srenderer = MainMenu.ChildByName("BackGround").GetComponent<SpriteRenderer>();
+                Vector2 size = srenderer.SharedMaterial.Res.MainTexture.Res.Size;
+                float scale = MainCamera.GetScaleAtZ(z);
+                float newhei = WinHeight / scale;
+                float newwid = newhei * size.X / size.Y;
+                srenderer.Rect = new Rect(-newwid / 2.0f, -newhei / 2.0f, newwid, newhei);
+                //init BackPos
+                MainMenu.ChildByName("BackGround").Transform.MoveTo(new Vector3(0,0,0));
+                //init buttons
+                float wid = Ops.MainButtonWid;
+                float hei = Ops.MainButtonHei;
+                var rends = MainMenu.GetComponentsInChildren<SpriteRenderer>().Where(x=>x.GameObj.Name != "BackGround").ToList();
+                foreach (var i in rends)
+                {
+                    i.Rect = new Rect(-wid / 2, -hei / 2, wid, hei);
+                }
+
+                //init pos&&text main menu
+                float k = 0.7f;
+                Vector2 shift = new Vector2(0,PicToCoord(70,z));
+                menu = MainMenu.ChildByName("#Menu_Main");
+                button = menu.ChildByName("Options");
+                buttonpos = button.Transform;
+                buttonpos.MoveTo(shift + getPosButton(1,1,3,PicToCoord(Ops.MainButtonDist,Ops.DistFromGUI-Ops.CamDist),wid,hei));
+                button.ChildByName("text").Transform.Scale = k;
+                button.ChildByName("text").Transform.MoveTo(new Vector3(0, 0, 0));
+
+                button = menu.ChildByName("Quit");
+                buttonpos = button.Transform;
+                buttonpos.MoveTo(shift + getPosButton(2, 1, 3, PicToCoord(Ops.MainButtonDist, Ops.DistFromGUI - Ops.CamDist), wid, hei));
+                button.ChildByName("text").Transform.Scale = k;
+                button.ChildByName("text").Transform.MoveTo(new Vector3(0, 0, 0));
+
+                button = menu.ChildByName("Start");
+                buttonpos = button.Transform;
+                buttonpos.MoveTo(shift + getPosButton(0, 1, 3, PicToCoord(Ops.MainButtonDist, Ops.DistFromGUI - Ops.CamDist), wid, hei));
+                button.ChildByName("text").Transform.Scale = k;
+                button.ChildByName("text").Transform.MoveTo(new Vector3(0, 0, 0));
+                
+                menu = MainMenu.ChildByName("#Menu_Opt");
+
+                button = menu.ChildByName("Back");
+                buttonpos = button.Transform;
+                button.ChildByName("text").Transform.Scale = k;
+                button.ChildByName("text").Transform.MoveTo(new Vector3(0, 0, 0));
+                buttonpos.MoveTo(shift + getPosButton(2, 1, 3, PicToCoord(Ops.MainButtonDist, Ops.DistFromGUI - Ops.CamDist), wid, hei));
+                
+                menu = MainMenu.ChildByName("#Menu_Quit");
+                
+                button = menu.ChildByName("No");
+                buttonpos = button.Transform;
+                button.ChildByName("text").Transform.Scale = k;
+                button.ChildByName("text").Transform.MoveTo(new Vector3(0, 0, 0));
+                buttonpos.MoveTo(shift + getPosButton(2, 1, 3, PicToCoord(Ops.MainButtonDist, Ops.DistFromGUI - Ops.CamDist), wid, hei));
+                
+                button = menu.ChildByName("Yes");
+                buttonpos = button.Transform;
+                button.ChildByName("text").Transform.Scale = k;
+                button.ChildByName("text").Transform.MoveTo(new Vector3(0, 0, 0));
+                buttonpos.MoveTo(shift + getPosButton(1, 1, 3, PicToCoord(Ops.MainButtonDist, Ops.DistFromGUI - Ops.CamDist), wid, hei));
+
+                button = menu.ChildByName("Text");
+                button.Transform.Pos = new Vector3(0,-PicToCoord(100,z),z);
+                button.Transform.Scale = 0.5f;
+
+                //menu.ChildByName("Options").ge   
+                MainMenu.Transform.Pos = new Vector3(0, 0, Ops.DistFromGUI - Ops.CamDist);
             }
         }
-
+        private bool isPointInRect(Vector3 point, Vector3 pos, Rect rect)
+        {
+            Vector3 TopLeft = new Vector3(rect.TopLeft + pos.Xy, pos.Z);
+            Vector3 BottomRight = new Vector3(rect.BottomRight + pos.Xy, pos.Z);
+            return (TopLeft.X <= point.X && TopLeft.Y <= point.Y && BottomRight.X >= point.X && BottomRight.Y >= point.Y);
+        }
         public void OnShutdown(Component.ShutdownContext context)
         {
             // remember to clean up the events on Deactivate - needs to be more careful
@@ -66,19 +166,19 @@ namespace Ferma
                 DualityApp.Mouse.ButtonDown -= buttonDown;
             }
         }
-
+        private Vector3 GetWorldCoordOfMouse(float z)         {             Vector3 mouseScreenPos = new Vector3(DualityApp.Mouse.Pos, z);             return MainCamera.GetSpaceCoord(mouseScreenPos);         }
         void Mouse_Move(object sender, Duality.Input.MouseMoveEventArgs e)
         {
             mousePosition.X = e.X;
             mousePosition.Y = e.Y;
-
+            float z = Ops.DistFromGUI - Ops.CamDist;
             // check all MenuComponents under the mouse and sort them by Z,
             // to find the one nearest to the Camera
             MenuComponent hoveredComponent = this.GameObj.ParentScene.FindComponents<MenuComponent>()
-                .Where(mc => mc.GameObj.Active && mc.GetAreaOnScreen().Contains(mousePosition))
-                .OrderBy(mc => mc.GameObj.Transform.Pos.Z)
+                .Where(mc => mc.GameObj.Active && isPointInRect(GetWorldCoordOfMouse(z),mc.GameObj.Transform.Pos,mc.GameObj.GetComponent<SpriteRenderer>().Rect))
+                //.OrderBy(mc => mc.GameObj.Transform.Pos.Z)
                 .FirstOrDefault();
-
+            
             // I found my hovered menu component.. is it different from the current one?
             if (hoveredComponent != currentComponent)
             {
@@ -166,75 +266,69 @@ namespace Ferma
             this.currentMenu = page;
         }
     }
-    /// <summary>
-	/// This Component implements an OnUpdate-based MenuController.
-	/// Pros: Easier to set up, requires only to implement OnUpdate.
-	/// Cons: The controller logic is called on every frame, even when nothing is happening.
-	/// </summary>
-	[RequiredComponent(typeof(Camera))]
-    public class UpdateMenuController : MenuController, ICmpUpdatable
-    {
-        [DontSerialize]
-        private Vector2 mousePosition;
-        [DontSerialize]
-        private MenuComponent currentComponent;
-
-        void ICmpUpdatable.OnUpdate()
-        {
-            // No menus currently active? Switch to StartingMenu - this is checked everytime
-            if (this.currentMenu == null)
-            {
-                this.SwitchToMenu(this.StartingMenu);
-            }
-
-            mousePosition.X = DualityApp.Mouse.X;
-            mousePosition.Y = DualityApp.Mouse.Y;
-
-            // check all MenuComponents under the mouse and sort them by Z,
-            // to find the one nearest to the Camera
-            MenuComponent hoveredComponent = this.GameObj.ParentScene.FindComponents<MenuComponent>()
-                .Where(mc => mc.GameObj.Active && mc.GetAreaOnScreen().Contains(mousePosition))
-                .OrderBy(mc => mc.GameObj.Transform.Pos.Z)
-                .FirstOrDefault();
-
-            // I found my hovered menu component.. is it different from the current one?
-            if (hoveredComponent != currentComponent)
-            {
-                // if the old one is not null, leave it.
-                if (currentComponent != null)
-                {
-                    currentComponent.MouseLeave();
-                }
-
-                // if the new one is not null, enter it.
-                if (hoveredComponent != null)
-                {
-                    hoveredComponent.MouseEnter();
-                }
-            }
-
-
-            // set the current component to the hovered one.
-            currentComponent = hoveredComponent;
-
-            // did I click the left button and am I hovering a component? do something!
-            if (DualityApp.Mouse.ButtonHit(Duality.Input.MouseButton.Left) && currentComponent != null)
-            {
-                currentComponent.DoAction();
-            }
-        }
-    }
+	//[RequiredComponent(typeof(Camera))]
+    //public class UpdateMenuController : MenuController, ICmpUpdatable
+    //{
+    //    [DontSerialize]
+    //    private Vector2 mousePosition;
+    //    [DontSerialize]
+    //    private MenuComponent currentComponent;
+    //
+    //    void ICmpUpdatable.OnUpdate()
+    //    {
+    //        // No menus currently active? Switch to StartingMenu - this is checked everytime
+    //        if (this.currentMenu == null)
+    //        {
+    //            this.SwitchToMenu(this.StartingMenu);
+    //        }
+    //
+    //        mousePosition.X = DualityApp.Mouse.X;
+    //        mousePosition.Y = DualityApp.Mouse.Y;
+    //
+    //        // check all MenuComponents under the mouse and sort them by Z,
+    //        // to find the one nearest to the Camera
+    //        MenuComponent hoveredComponent = this.GameObj.ParentScene.FindComponents<MenuComponent>()
+    //            .Where(mc => mc.GameObj.Active && mc.GetAreaOnScreen().Contains(mousePosition))
+    //            .OrderBy(mc => mc.GameObj.Transform.Pos.Z)
+    //            .FirstOrDefault();
+    //
+    //        // I found my hovered menu component.. is it different from the current one?
+    //        if (hoveredComponent != currentComponent)
+    //        {
+    //            // if the old one is not null, leave it.
+    //            if (currentComponent != null)
+    //            {
+    //                currentComponent.MouseLeave();
+    //            }
+    //
+    //            // if the new one is not null, enter it.
+    //            if (hoveredComponent != null)
+    //            {
+    //                hoveredComponent.MouseEnter();
+    //            }
+    //        }
+    //
+    //
+    //        // set the current component to the hovered one.
+    //        currentComponent = hoveredComponent;
+    //
+    //        // did I click the left button and am I hovering a component? do something!
+    //        if (DualityApp.Mouse.ButtonHit(Duality.Input.MouseButton.Left) && currentComponent != null)
+    //        {
+    //            currentComponent.DoAction();
+    //        }
+    //    }
+    //}
     [RequiredComponent(typeof(SpriteRenderer))]
     public abstract class MenuComponent : Component, ICmpUpdatable
     {
         private static readonly float MAX_FADE_TIME = .5f;
 
         private ColorRgba hoverTint;
-
-        [DontSerialize]
+        
         private ColorRgba originalTint;
-        [DontSerialize]
-        private SpriteRenderer sprite;
+
+        private SpriteRenderer sprite => this.GameObj.GetComponent<SpriteRenderer>();
 
         [DontSerialize]
         private ColorRgba targetTint;
@@ -266,31 +360,7 @@ namespace Ferma
         }
 
         public virtual void DoAction() { }
-
-        /// <summary>
-        /// This returns the area on screen that is currently occupied by the SpriteRenderer.
-        /// For simplicity, this works only if it is set with the ScreenOverlay flag.
-        /// 
-        /// A full 2.5D implementation (no ScreenOverlay) would require more complex calculations.
-        /// </summary>
-        /// <returns></returns>
-        public Rect GetAreaOnScreen()
-        {
-            if (this.sprite == null)
-                this.sprite = this.GameObj.GetComponent<SpriteRenderer>();
-
-            // Determine position and scale of this menu button on the screen
-            Camera mainCamera = this.GameObj.ParentScene.FindComponent<Camera>();
-            Vector3 screenBasePos = mainCamera.GetScreenCoord(this.GameObj.Transform.Pos);
-            float screenScale = mainCamera.GetScaleAtZ(this.GameObj.Transform.Pos.Z);
-
-            Rect result = this.sprite.Rect
-                .Scaled(screenScale, screenScale)
-                .WithOffset(screenBasePos.Xy);
-
-            return result;
-        }
-
+        
         void ICmpUpdatable.OnUpdate()
         {
             // get the milliseconds elapsed since the last frame
@@ -324,15 +394,12 @@ namespace Ferma
 
         public void MouseEnter()
         {
-            if (this.sprite != null)
+            if (this.originalTint == default(ColorRgba))
             {
-                if (this.originalTint == default(ColorRgba))
-                {
-                    this.originalTint = this.sprite.ColorTint;
-                }
-
-                this.FadeTo(this.hoverTint, false);
+                this.originalTint = this.sprite.ColorTint;
             }
+
+            this.FadeTo(this.hoverTint, false);
         }
 
         public void MouseLeave()

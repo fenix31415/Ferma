@@ -4,7 +4,7 @@
 
         public bool IsGoed         {             get { return this.isGoed; }             set { this.isGoed = value; }         }
         public float Speed         {             get { return this.speed; }             set { this.speed = value; }         }
-        public Vector2 Target         {             get { return this.target; }             set { this.target = value; }         }         public float Acceleration         {             get { return this.acceleration; }             set { this.acceleration = value; }         }         public Vector2 TargetMovement         {             get { return this.targetMovement; }             set { this.targetMovement = value; }         }          private float getAngle(float a)
+        public Vector2 Target         {             get { return this.target; }             set { this.target = new Vector2(value.X, value.Y); }         }         public float Acceleration         {             get { return this.acceleration; }             set { this.acceleration = value; }         }         public Vector2 TargetMovement         {             get { return this.targetMovement; }             set { this.targetMovement = value; }         }          private float getAngle(float a)
         {
             if (Math.Abs(a - 0) < 22.5 || Math.Abs(a-360) < 22.5) return 0;
             if (Math.Abs(a - 45) < 22.5) return 45;

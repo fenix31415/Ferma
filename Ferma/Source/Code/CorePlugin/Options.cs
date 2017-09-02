@@ -13,6 +13,9 @@ namespace Ferma
 
         public const int CamDist = 350;
         public const int DistFromGUI = 100;
+        public const float DistFromCursor = 50;
+        public const float TextWid = 25;
+        public static ColorRgba TextColor = new ColorRgba(59,59,88,255);
 
         public const int IdGrass = 325;
         public const int IdBed = 345;
@@ -26,6 +29,9 @@ namespace Ferma
         public const float GUIWid = 13;
         public const float InvDist = 4;
         public const float DistFromBack = 110;
+        public const float MainButtonWid = 100;
+        public const float MainButtonHei = 15;
+        public const float MainButtonDist = 30;
 
         public const string MapPath = "MapSave.txt";
         public const string PlayerPath = "PlayerSave.txt";

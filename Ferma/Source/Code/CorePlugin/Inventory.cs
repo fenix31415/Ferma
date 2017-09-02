@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Duality.IO;
+using System.IO;
 
 namespace Ferma
 {
@@ -43,7 +45,25 @@ namespace Ferma
                     this.items.Clear();
             }
         }
-
+        public string save()
+        {
+            string ans = "";
+            for (int i = 0; i < this.Items.Count; i++)
+            {
+                string tmp = ans + this.Items[i].Count + " ";
+                ans = tmp;
+            }
+            return ans.Trim();
+        }
+        public void load(string s)
+        {
+            List<int> args = s.Split().Select(x => int.Parse(x)).ToList();
+            this.Items = new List<Item>();
+            for (int i = 0; i < args.Count; i++)
+            {
+                this.Items.Add(new Item(i, args[i]));
+            }
+        }
         public Inventory()
         {
             this.items = new List<Item>();

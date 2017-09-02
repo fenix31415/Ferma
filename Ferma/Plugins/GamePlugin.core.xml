@@ -205,27 +205,11 @@
             [GET / SET] The starting MenuPage that should be displayed when the Scene opens.
             </summary>
         </member>
-        <member name="T:Ferma.UpdateMenuController">
-            <summary>
-            This Component implements an OnUpdate-based MenuController.
-            Pros: Easier to set up, requires only to implement OnUpdate.
-            Cons: The controller logic is called on every frame, even when nothing is happening.
-            </summary>
-        </member>
         <member name="P:Ferma.MenuComponent.HoverTint">
             <summary>
             [GET/SET] The color tint that will be used when the mouse is hovering
             on the GameObject
             </summary>
-        </member>
-        <member name="M:Ferma.MenuComponent.GetAreaOnScreen">
-            <summary>
-            This returns the area on screen that is currently occupied by the SpriteRenderer.
-            For simplicity, this works only if it is set with the ScreenOverlay flag.
-            
-            A full 2.5D implementation (no ScreenOverlay) would require more complex calculations.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:Ferma.FermaCorePlugin">
             <summary>

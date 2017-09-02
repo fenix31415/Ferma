@@ -2,30 +2,24 @@
 
 namespace Ferma
 {
-    public class MouseControl : Component, ICmpRenderer
+    public class MouseControl : Component, ICmpUpdatable,ICmpInitializable
     {
-
-        float ICmpRenderer.BoundRadius => float.MaxValue;
-
-        void ICmpRenderer.Draw(IDrawDevice device)
+        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private float CurWid = 3;
+        void ICmpInitializable.OnInit(InitContext context)
         {
-            Canvas canvas = new Canvas(device);
-            
-            if (DualityApp.Mouse.IsAvailable)
-            {
-                canvas.State.ColorTint = ColorRgba.White;
-                canvas.FillCircle(
-                    DualityApp.Mouse.X,
-                    DualityApp.Mouse.Y,
-                    3);
-            }
+            if (context != InitContext.Activate) return;
+            SpriteRenderer sp = this.GameObj.GetComponent<SpriteRenderer>();
+            Vector2 curpos = - new Vector2(12, 5) / 64 *  CurWid;
+            sp.Rect = new Rect(curpos.X, curpos.Y, CurWid,CurWid);
         }
 
-        bool ICmpRenderer.IsVisible(IDrawDevice device)
+        void ICmpInitializable.OnShutdown(ShutdownContext context) { }
+
+        void ICmpUpdatable.OnUpdate()
         {
-            return
-                (device.VisibilityMask & VisibilityFlag.ScreenOverlay) != VisibilityFlag.None &&
-                (device.VisibilityMask & VisibilityFlag.AllGroups) != VisibilityFlag.None;
+            Transform pos = this.GameObj.Transform;
+            float z = Ops.DistFromCursor - Ops.CamDist;
+            pos.MoveTo(MainCamera.GetSpaceCoord(new Vector3(DualityApp.Mouse.Pos,z)));
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Ferma
 
         void ICmpUpdatable.OnUpdate()
         {
-            if (this.targetObj == null) return;
+            if (this.targetObj == null || !this.targetObj.Active) return;
             if (this.targetObj.Transform == null) return;
             Vector3 camAreaTopLeft = MainCamera.GetSpaceCoord(new Vector2(0.0f, 0.0f));
             Vector3 camAreaBottomRight = MainCamera.GetSpaceCoord(DualityApp.TargetResolution);

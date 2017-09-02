@@ -1,0 +1,15 @@
+Player
+	money
+	Inv
+	pos
+Inv
+	line counts
+Map
+	base
+	top
+	upper
+Layer
+	line indexes
+MapTime
+	(How many wait)
+	-1 - nothing
