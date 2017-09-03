@@ -15,7 +15,7 @@ namespace Ferma
         public const int DistFromGUI = 100;
         public const float DistFromCursor = 50;
         public const float TextWid = 25;
-        public static ColorRgba TextColor = new ColorRgba(59,59,88,255);
+        public static ColorRgba TextColor = new ColorRgba(0, 0, 219, 255);
 
         public const int IdGrass = 325;
         public const int IdBed = 345;
@@ -45,10 +45,15 @@ namespace Ferma
         public const Key KeyArrow = Key.Number1;
         public const Key KeySave = Key.ControlLeft;
         public const Key KeyLoad = Key.ShiftLeft;
+        public const Key KeyMainMenu = Key.Escape;
 
         public static int getTimeState(int id)
         {
             return 10;
+        }
+        public static int getProductCount(int id)
+        {
+            return 2;
         }
     }
 }

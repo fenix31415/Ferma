@@ -2,7 +2,7 @@
 
 namespace Ferma
 {
-    public class MapControl: Component,ICmpInitializable
+    public class MapControl : Component, ICmpInitializable
     {
         private static int wid = Ops.MapWidth;
         private static int hei = Ops.MapHeigth;
@@ -12,7 +12,7 @@ namespace Ferma
         private int idTaked;
 
         private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();         private Tilemap BaseLayer => this.GameObj.ParentScene.FindGameObject("BaseLayer").GetComponent<Tilemap>();         private Tilemap TopLayer => this.GameObj.ParentScene.FindGameObject("TopLayer").GetComponent<Tilemap>();         private Tilemap UpperLayer => this.GameObj.ParentScene.FindGameObject("UpperLayer").GetComponent<Tilemap>();
-        
+
         public bool IsTaked
         {
             get { return this.isTaked; }
@@ -26,14 +26,14 @@ namespace Ferma
 
         public string saveMap()
         {
-            return saveLayer(BaseLayer)+ "\n" + saveLayer(TopLayer) + "\n" + saveLayer(UpperLayer);
+            return saveLayer(BaseLayer) + "\n" + saveLayer(TopLayer) + "\n" + saveLayer(UpperLayer);
         }
         public void LoadMap(string path)
         {
             using (Stream s = FileOp.Open(Ops.MapPath, FileAccessMode.Read))
             using (StreamReader sr = new StreamReader(s))
             {
-                loadLayer("BaseLayer",sr.ReadLine());
+                loadLayer("BaseLayer", sr.ReadLine());
                 loadLayer("TopLayer", sr.ReadLine());
                 loadLayer("UpperLayer", sr.ReadLine());
             }
@@ -60,7 +60,7 @@ namespace Ferma
                 for (int x = 0; x < map.Size.X; x++)
                 {
                     Tile tile = map.Tiles[x, y];
-                    tile.BaseIndex = ar[x+y*Ops.MapWidth];
+                    tile.BaseIndex = ar[x + y * Ops.MapWidth];
                     map.SetTile(x, y, tile);
                 }
             }
@@ -72,7 +72,7 @@ namespace Ferma
             {
                 for (int x = 0; x < wid; x++)
                 {
-                    string tmp = ans + mapTime[x][y].ToString()+" ";
+                    string tmp = ans + mapTime[x][y].ToString() + " ";
                     ans = tmp;
                 }
             }
@@ -96,7 +96,7 @@ namespace Ferma
 
             }
         }
-        public void setTime(int x,int y,int time)
+        public void setTime(int x, int y, int time)
         {
             this.mapTime[x][y] = time;
         }
@@ -115,7 +115,7 @@ namespace Ferma
                 {
                     if (this.mapTime[x][y] == -1) continue;
                     Tile currTile = TopLayer.Tiles[x, y];
-                    int newTime = Math.Max(0,this.mapTime[x][y] - tim);
+                    int newTime = Math.Max(0, this.mapTime[x][y] - tim);
                     this.mapTime[x][y] = newTime;
                     int type = currTile.BaseIndex / (int)(Ops.TileSetWidth);
                     int stade = getStade(type, newTime);
@@ -124,8 +124,8 @@ namespace Ferma
                 }
             }
         }
-        
-        public void Update(int x, int y, ArmPlayer arm, int TypeArm)
+
+        public bool Update(int x, int y, ArmPlayer arm, int TypeArm)
         {
             Tile BaseClickedTile = BaseLayer.Tiles[x, y];
             Tile TopClickedTile = TopLayer.Tiles[x, y];
@@ -138,16 +138,16 @@ namespace Ferma
                     BaseLayer.SetTile(x, y, BaseClickedTile);
                 }
                 else
-                if(BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
+                if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
                     BaseClickedTile.BaseIndex = Ops.IdGrass;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
                 }
             }
-            if(arm == ArmPlayer.arm)
+            if (arm == ArmPlayer.arm)
             {
                 //
-                if(TopClickedTile.BaseIndex % 20 == 2)
+                if (TopClickedTile.BaseIndex % 20 == 2)
                 {
                     this.IdTaked = TopClickedTile.BaseIndex;
                     this.IsTaked = true;
@@ -156,34 +156,36 @@ namespace Ferma
                     mapTime[x][y] = -1;
                 }
             }
-            if(arm == ArmPlayer.rake)
+            if (arm == ArmPlayer.rake)
             {
-                if(TopClickedTile.BaseIndex == Ops.IdDied)
+                if (TopClickedTile.BaseIndex == Ops.IdDied)
                 {
                     TopClickedTile.BaseIndex = Ops.IdVoid;
                     TopLayer.SetTile(x, y, TopClickedTile);
 
                     BaseClickedTile.BaseIndex = Ops.IdBadBed;
-                    BaseLayer.SetTile(x,y,BaseClickedTile);
+                    BaseLayer.SetTile(x, y, BaseClickedTile);
                 }
             }
-            if(arm == ArmPlayer.water)
+            if (arm == ArmPlayer.water)
             {
-                if(BaseClickedTile.BaseIndex == Ops.IdBadBed)
+                if (BaseClickedTile.BaseIndex == Ops.IdBadBed)
                 {
                     BaseClickedTile.BaseIndex = Ops.IdBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
                 }
             }
-            if(arm == ArmPlayer.seeds)
+            if (arm == ArmPlayer.seeds)
             {
-                if(BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
+                if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
                     TopClickedTile.BaseIndex = TypeArm * Ops.TileSetWidth;
                     TopLayer.SetTile(x, y, TopClickedTile);
                     this.mapTime[x][y] = 2 * Ops.getTimeState(TypeArm);
+                    return true;
                 }
             }
+            return false;
         }
 
         void ICmpInitializable.OnInit(InitContext context)
@@ -200,6 +202,6 @@ namespace Ferma
             }
         }
 
-        void ICmpInitializable.OnShutdown(ShutdownContext context){}
+        void ICmpInitializable.OnShutdown(ShutdownContext context) { }
     }
 }

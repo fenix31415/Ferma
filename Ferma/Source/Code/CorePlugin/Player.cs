@@ -9,6 +9,10 @@ namespace Ferma
         private int WinWidth => (int)DualityApp.TargetResolution.X;
         private int WinHeight => (int)DualityApp.TargetResolution.Y;         private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI");          private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         private int CurrSeed = 0;
 
+        public bool isIgnoreMouse { get; set; }
+        [DontSerialize]
+        private EventHandler<MouseButtonEventArgs> buttonUp;
+
         public ColorRgba IconsColor { get; set; }
         public GameStates State { get; set; }         public ArmPlayer Arm { get; set; }         public CharacterControl Character { get; set; }         public Inventory Inv         {             get { return this.inv; }             set { this.inv = value; }         }
         public int Money { get; set; }         public MapControl MapControl { get; set; }
@@ -43,7 +47,7 @@ namespace Ferma
             return (TopLeft.X <= point.X && TopLeft.Y <= point.Y && BottomRight.X >= point.X && BottomRight.Y >= point.Y);
         }         private Vector3 GetWorldCoordOfMouse(float z)         {             Vector3 mouseScreenPos = new Vector3(DualityApp.Mouse.Pos, z);             return MainCamera.GetSpaceCoord(mouseScreenPos);         }         public void OnTake(int id)
         {
-            this.Inv.Items[id].Count += 1;
+            this.Inv.Items[id].Count += Ops.getProductCount(id);
         }         public void Save()
         {
             using (Stream s = FileOp.Create(Ops.MapPath))
@@ -124,6 +128,15 @@ namespace Ferma
             this.State = GameStates.game;
             this.GUI.ChildByName("InGame").Active = true;
             this.GUI.ChildByName("MenuInv").Active = false;
+        }
+        private void showMainMenu()
+        {
+            this.GameObj.ParentScene.FindGameObject("MainMenu", false).Active = true;
+            MainCamera.GameObj.Transform.MoveTo(new Vector3(0, 0, -Ops.CamDist));
+            this.GameObj.ParentScene.FindGameObject("GUI", false).Active = false;
+            this.GameObj.ParentScene.FindGameObject("MainCharacter", false).Active = false;
+            this.GameObj.ParentScene.FindGameObject("Map", false).Active = false;
+            this.GameObj.ParentScene.FindGameObject("Player", false).Active = false;
         }
         private void initArm()
         {
@@ -221,6 +234,12 @@ namespace Ferma
             SpriteRenderer chrenderer = choose.GetComponent<SpriteRenderer>();
             float picwid = Ops.GUIWid;
             chrenderer.Rect = new Rect(-picwid/2,-picwid/2,picwid,picwid);
+            //init text
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
+                text.ColorTint = Ops.TextColor;
+            }
         }
         private void initPlayer()
         {
@@ -266,6 +285,11 @@ namespace Ferma
             {
                 Save();
             }
+            if (DualityApp.Keyboard.KeyHit(Ops.KeyMainMenu))
+            {
+                Save();
+                showMainMenu();
+            }
         }
         private void updateMouseGame()
         {
@@ -279,8 +303,9 @@ namespace Ferma
                 TilemapRenderer tilemapRenderer = TilemapRendererInScene;
                 Vector2 localPos = this.Character.Target;
                 Point2 tilePos = tilemapRenderer.GetTileAtLocalPos(localPos, TilePickMode.Reject);
-
-                this.MapControl.Update(tilePos.X, tilePos.Y, this.Arm, this.CurrSeed);
+                if (this.Arm != ArmPlayer.seeds || this.Inv.Items[this.CurrSeed].Count > 0)
+                    if (this.MapControl.Update(tilePos.X, tilePos.Y, this.Arm, this.CurrSeed))
+                        this.Inv.Items[this.CurrSeed].Count -= 1;
                 this.Character.IsGoed = false;
             }             if (this.MapControl.IsTaked)
             {
@@ -325,21 +350,24 @@ namespace Ferma
             {
                 TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
                 text.Text.SourceText = this.Inv.Items[i].Count.ToString();
-                text.ColorTint = Ops.TextColor;
             }
         }
         private void debug()
         {
             Save();
         }
-        
+        void Button_Up(object sender, MouseButtonEventArgs e)
+        {
+            this.isIgnoreMouse = false;
+        }
+
         void ICmpUpdatable.OnUpdate()         {             if (DualityApp.Keyboard.KeyHit(Key.Q))
             {
                 this.MapControl.addTime(3);
             }             if (this.State == GameStates.inv)
             {
                 updateInvMenu();
-                if (DualityApp.Keyboard.KeyHit(Key.M))
+                if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
                     UNshowInvMenu();
                 }
@@ -347,7 +375,7 @@ namespace Ferma
             else             if (this.State == GameStates.game)
             {
                 updateArm();
-                if (DualityApp.Mouse.ButtonHit(MouseButton.Left))
+                if (!this.isIgnoreMouse && DualityApp.Mouse.ButtonHit(MouseButton.Left))
                 {
                     updateMouseGame();
                 }
@@ -368,11 +396,18 @@ namespace Ferma
         void ICmpInitializable.OnInit(InitContext context)
         {
             if (context != InitContext.Activate) return;
+            this.isIgnoreMouse = true;
+            buttonUp = new EventHandler<MouseButtonEventArgs>(Button_Up);
+            DualityApp.Mouse.ButtonUp += buttonUp;
+
             Load();
             initPlayer();
             initInvMenu();
             initArm(); 
         }
-        void ICmpInitializable.OnShutdown(ShutdownContext context) { }
+        void ICmpInitializable.OnShutdown(ShutdownContext context) {
+            if (context != ShutdownContext.Deactivate) return;
+            DualityApp.Mouse.ButtonUp -= buttonUp;
+        }
     }
 }
