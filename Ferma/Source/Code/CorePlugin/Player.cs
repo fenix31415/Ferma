@@ -1,4 +1,5 @@
 ﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.IO; using Duality.Editor; using Duality.Plugins.Tilemaps;
+using System.Diagnostics;
 
 namespace Ferma
 {
@@ -7,7 +8,7 @@ namespace Ferma
     public class Player : Component, ICmpUpdatable, ICmpInitializable     {         private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private Tilemap TilemapInScene => this.GameObj.ParentScene.FindComponent<Tilemap>();         private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
         private CameraController CameraCon => this.GameObj.ParentScene.FindComponent<CameraController>();
         private int WinWidth => (int)DualityApp.TargetResolution.X;
-        private int WinHeight => (int)DualityApp.TargetResolution.Y;         private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI");          private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         private int CurrSeed = 0;
+        private int WinHeight => (int)DualityApp.TargetResolution.Y;         private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI");          private Stopwatch timerSell;         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
 
         public bool isIgnoreMouse { get; set; }
         [DontSerialize]
@@ -85,49 +86,53 @@ namespace Ferma
             }
             this.MapControl.loadTime(Ops.MapTimePath);
         }
-        private void updateArm()
-        {
-            float z = Ops.DistFromGUI - Ops.CamDist;
-            GameObject Arm = this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").ChildByName("Arm");
-            Transform ArmPos = Arm.Transform;
-            List<string> a = new List<string>();
-            foreach (var i in Enum.GetValues(typeof(ArmPlayer)))
-            {
-                a.Add(i.ToString());
-            }
-            int countItems = a.Count;
-            float picwid = Ops.GUIWid * countItems;
-            float pichei = Ops.GUIWid;
-            float dist = PicToCoord(Ops.DistFromScreen, z);
-            //update ArmPos
-            Vector3 TopRight = camAreaTopRight(z);
-            Vector3 shift = new Vector3(-picwid / 2 - dist, pichei / 2 + dist, 0);
-            ArmPos.MoveTo(TopRight + shift);
-            //update seeds
-            for (int i = 0; i < a.Count; i++)
-            {
-                AnimSpriteRenderer ArmPicture = Arm.ChildByName(a[i]).GetComponent<AnimSpriteRenderer>();
-                if (a[i] == "seeds")
-                    ArmPicture.AnimFirstFrame = this.CurrSeed;
-            }
-            //update ChoosePos
-            GameObject ArmRamka = Arm.ChildByName("choosen");
-            int ind = (int)this.Arm;
-            float wid = Ops.GUIWid;
-            Vector3 shiftArmRamka = new Vector3(ind * wid - (countItems - 1) * wid / 2, 0, 0);
-            ArmRamka.Transform.MoveTo(shiftArmRamka);
-        }
         private void ShowInvMenu()
         {
             this.GUI.ChildByName("InGame").Active = false;
             this.GUI.ChildByName("MenuInv").Active = true;
             this.State = GameStates.inv;
+
+            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
+            var Items = MenuInv.Children.Where(x => x.Name == "Item").ToList();
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
+                text.ColorTint = Ops.TextCountColor;
+                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
+                text.ColorTint = Ops.TextCostColor;
+                text.VisibilityGroup = VisibilityFlag.None;
+            }
+        }
+        private void ShowShopMenu()
+        {
+            this.GUI.ChildByName("InGame").Active = false;
+            this.GUI.ChildByName("MenuInv").Active = true;
+            this.State = GameStates.shop;
+            this.timerSell.Start();
+
+            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
+            var Items = MenuInv.Children.Where(x => x.Name == "Item").ToList();
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
+                text.ColorTint = Ops.TextCountColor;
+                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
+                text.ColorTint = Ops.TextCostColor;
+                text.VisibilityGroup = VisibilityFlag.AllGroups;
+            }
         }
         private void UNshowInvMenu()
         {
             this.State = GameStates.game;
             this.GUI.ChildByName("InGame").Active = true;
             this.GUI.ChildByName("MenuInv").Active = false;
+        }
+        private void UNshowShopMenu()
+        {
+            this.State = GameStates.game;
+            this.GUI.ChildByName("InGame").Active = true;
+            this.GUI.ChildByName("MenuInv").Active = false;
+            this.timerSell.Reset();
         }
         private void showMainMenu()
         {
@@ -138,6 +143,15 @@ namespace Ferma
             this.GameObj.ParentScene.FindGameObject("Map", false).Active = false;
             this.GameObj.ParentScene.FindGameObject("Player", false).Active = false;
         }
+        private void trySell(int ind)
+        {
+            if (this.Inv.Items[ind].Count > 0)
+            {
+                this.Money += this.Inv.SellCosts[ind];
+                this.Inv.Items[ind].Count -= 1;
+            }
+        }
+
         private void initArm()
         {
             float picwid = Ops.GUIWid;
@@ -205,7 +219,13 @@ namespace Ferma
                 float textScale = Ops.TextWid / MainCamera.GetScaleAtZ(z) / Picwid;
                 GameObject Text = newSquare.ChildByName("Text");
                 Text.Transform.Scale = textScale;
-                Vector3 shiftText = new Vector3(-0.4f,0.4f,0)*Ops.GUIWid;
+                Vector3 shiftText = new Vector3(-0.3f,0.4f,0)*Ops.GUIWid;
+                Text.Transform.MoveTo(shiftText);
+                //init textcost pos
+                textScale = Ops.TextWid / MainCamera.GetScaleAtZ(z) / Picwid;
+                Text = newSquare.ChildByName("TextCost");
+                Text.Transform.Scale = textScale;
+                shiftText = new Vector3(0.3f, 0.4f, 0) * Ops.GUIWid;
                 Text.Transform.MoveTo(shiftText);
                 //init Square pos
                 Vector3 ShiftSquareIcon = new Vector3((i % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (i / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, Ops.DistFromGUI);
@@ -238,42 +258,131 @@ namespace Ferma
             for (int i = 0; i < Ops.countInv; i++)
             {
                 TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextColor;
+                text.ColorTint = Ops.TextCountColor;
+                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
+                text.ColorTint = Ops.TextCostColor;
             }
         }
         private void initPlayer()
         {
             this.GUI.ChildByName("MenuInv").Active = false;
-            this.CurrSeed = 0;
+            this.CurrSeed = -1;
             this.State = GameStates.game;
             SquarePrefab = new ContentRef<Prefab>(null, "Data/Prefabs/ItemIcon.Prefab.res");
         }
-        private void updateKeysArm()
+        private void initMoney()
         {
-            if (DualityApp.Keyboard.KeyHit(Ops.KeyArm))
+            GameObject saved = this.GUI.ChildByName("InGame").ChildByName("saved");
+            saved.Transform.Scale = 0.6f;
+            saved.GetComponent<TextRenderer>().ColorTint = new ColorRgba(250,255,0,255);
+        }
+
+        private void updateShopMenu()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
+            var Items = GameObj.ParentScene.FindGameObjects("Item").Where(x => x.Active).ToList();
+            //update pos
+            Vector3 newPos = new Vector3(MainCamera.GameObj.Transform.Pos.Xy, 0);
+            MenuInv.Transform.MoveTo(newPos);
+            //update mouse
+            Vector3 mousePos = MainCamera.GetSpaceCoord(new Vector3(DualityApp.Mouse.Pos, z));
+            int i;
+            for (i = 0; i < Ops.countInv; i++)
             {
-                this.Arm = ArmPlayer.arm;
+                GameObject Square = Items[i].ChildByName("Icon");
+                Rect rect = Square.GetComponent<AnimSpriteRenderer>().Rect;
+                Transform pos = Square.Transform;
+                if (isPointInRect(mousePos, pos.Pos, rect))
+                {
+                    Square.GetComponent<AnimSpriteRenderer>().ColorTint = this.IconsColor;
+                    if (DualityApp.Mouse.ButtonPressed(MouseButton.Left) && timerSell.ElapsedMilliseconds > 100)
+                    {
+                        timerSell.Restart();
+                        trySell(i);
+                    }
+                }
+                else
+                    Square.GetComponent<AnimSpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
             }
-            if (DualityApp.Keyboard.KeyHit(Ops.KeyRake))
+            //update posChoose
+            GameObject choose = MenuInv.ChildByName("choose");
+            if (this.CurrSeed != -1)
+                choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.AllGroups;
+            else
+                choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.None;
+            float Picwid = Ops.GUIWid;
+            i = this.CurrSeed;
+            float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            float top = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            Vector3 shiftChoose = new Vector3((i % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (i / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, z);
+            MenuInv.ChildByName("choose").Transform.MoveTo(shiftChoose);
+            //update Text text
+            for (i = 0; i < Ops.countInv; i++)
             {
-                this.Arm = ArmPlayer.rake;
+                //text
+                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
+                text.Text.SourceText = this.Inv.Items[i].Count.ToString();
+                //textcost
+                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
+                text.Text.SourceText = this.Inv.SellCosts[i].ToString();
             }
-            if (DualityApp.Keyboard.KeyHit(Ops.KeySeeds))
+        }
+        private void updateMoney()
+        {
+            //updatepos
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            GameObject saved = this.GUI.ChildByName("InGame").ChildByName("saved");
+            Transform savedPos = saved.Transform;
+            Vector2 bound = saved.GetComponent<TextRenderer>().Text.Size * MainCamera.GetScaleAtZ(z);
+            float picwid = 20.0f;
+            float pichei = 2.0f;
+            Vector3 BottomRight = camAreaBottomRight(z);
+            Vector3 shift = new Vector3(-picwid,-pichei,0);
+            savedPos.MoveTo(BottomRight+shift);
+            Log.Game.Write(saved.GetComponent<TextRenderer>().Text.Size.ToString());
+            //update value
+            saved.GetComponent<TextRenderer>().Text.SourceText = this.Money + "";
+        }
+        private void updateArm()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            GameObject Arm = this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").ChildByName("Arm");
+            Transform ArmPos = Arm.Transform;
+            List<string> a = new List<string>();
+            foreach (var i in Enum.GetValues(typeof(ArmPlayer)))
             {
-                this.Arm = ArmPlayer.seeds;
+                a.Add(i.ToString());
             }
-            if (DualityApp.Keyboard.KeyHit(Ops.KeyShowel))
+            int countItems = a.Count;
+            float picwid = Ops.GUIWid * countItems;
+            float pichei = Ops.GUIWid;
+            float dist = PicToCoord(Ops.DistFromScreen, z);
+            //update ArmPos
+            Vector3 TopRight = camAreaTopRight(z);
+            Vector3 shift = new Vector3(-picwid / 2 - dist, pichei / 2 + dist, 0);
+            ArmPos.MoveTo(TopRight + shift);
+            //update seeds
+            for (int i = 0; i < a.Count; i++)
             {
-                this.Arm = ArmPlayer.showel;
+                AnimSpriteRenderer ArmPicture = Arm.ChildByName(a[i]).GetComponent<AnimSpriteRenderer>();
+                if (a[i] == "seeds")
+                {
+                    if (this.CurrSeed != -1)
+                    {
+                        ArmPicture.AnimFirstFrame = this.CurrSeed;
+                        ArmPicture.VisibilityGroup = VisibilityFlag.AllGroups;
+                    }
+                    else
+                        ArmPicture.VisibilityGroup = VisibilityFlag.None;
+                }
             }
-            if (DualityApp.Keyboard.KeyHit(Ops.KeyWater))
-            {
-                this.Arm = ArmPlayer.water;
-            }
-            if (DualityApp.Keyboard.KeyHit(Ops.KeyArrow))
-            {
-                this.Arm = ArmPlayer.arrow;
-            }
+            //update ChoosePos
+            GameObject ArmRamka = Arm.ChildByName("choosen");
+            int ind = (int)this.Arm;
+            float wid = Ops.GUIWid;
+            Vector3 shiftArmRamka = new Vector3(ind * wid - (countItems - 1) * wid / 2, 0, 0);
+            ArmRamka.Transform.MoveTo(shiftArmRamka);
         }
         private void updateKeysOtherGame()
         {
@@ -293,8 +402,33 @@ namespace Ferma
         }
         private void updateMouseGame()
         {
+            if (isIgnoreMouse) return;
             Vector2 Tar = GetWorldCoordOfMouse(0).Xy;
             this.Character.Target = Tar;
+        }
+        private void updateMouseGameGUI()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            GameObject Arm = this.GUI.ChildByName("InGame").ChildByName("Arm");
+            var Items = Arm.Children.Where(x=>x.Name!="choosen"&&x.Name!="fon").ToList();
+            Vector3 mousePos = MainCamera.GetSpaceCoord(new Vector3(DualityApp.Mouse.Pos, z));
+            for(int i = 0; i < Items.Count; ++i)
+            {
+                GameObject Square = Items[i];
+                Rect rect = Square.GetComponent<SpriteRenderer>().Rect;
+                Transform pos = Square.Transform;
+                if (isPointInRect(mousePos, pos.Pos, rect))
+                {
+                    Square.GetComponent<SpriteRenderer>().ColorTint = this.IconsColor;
+                    if (DualityApp.Mouse.ButtonPressed(MouseButton.Left))
+                    {
+                        this.Arm = Ops.strToArm(Items[i].Name);
+                        isIgnoreMouse = true;
+                    }
+                }
+                else
+                    Square.GetComponent<SpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
+            }
         }
         private void updateChar()
         {
@@ -303,9 +437,9 @@ namespace Ferma
                 TilemapRenderer tilemapRenderer = TilemapRendererInScene;
                 Vector2 localPos = this.Character.Target;
                 Point2 tilePos = tilemapRenderer.GetTileAtLocalPos(localPos, TilePickMode.Reject);
-                if (this.Arm != ArmPlayer.seeds || this.Inv.Items[this.CurrSeed].Count > 0)
-                    if (this.MapControl.Update(tilePos.X, tilePos.Y, this.Arm, this.CurrSeed))
-                        this.Inv.Items[this.CurrSeed].Count -= 1;
+                if (this.Arm != ArmPlayer.seeds || (this.Arm == ArmPlayer.seeds && this.CurrSeed != -1 && this.Money >= this.Inv.Costs[this.CurrSeed]))
+                if (this.MapControl.Update(tilePos.X, tilePos.Y, this.Arm, this.CurrSeed))
+                    this.Money -= this.Inv.Costs[this.CurrSeed];
                 this.Character.IsGoed = false;
             }             if (this.MapControl.IsTaked)
             {
@@ -339,6 +473,11 @@ namespace Ferma
                     Square.GetComponent<AnimSpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
             }
             //update posChoose
+            GameObject choose = MenuInv.ChildByName("choose");
+            if (this.CurrSeed != -1)
+                choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.AllGroups;
+            else
+                choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.None;
             float Picwid = Ops.GUIWid;
             i = this.CurrSeed;
             float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
@@ -349,7 +488,7 @@ namespace Ferma
             for (i = 0; i < Ops.countInv; i++)
             {
                 TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.Text.SourceText = this.Inv.Items[i].Count.ToString();
+                text.Text.SourceText = this.Inv.Costs[i].ToString();
             }
         }
         private void debug()
@@ -375,17 +514,29 @@ namespace Ferma
             else             if (this.State == GameStates.game)
             {
                 updateArm();
+                updateMoney();
                 if (!this.isIgnoreMouse && DualityApp.Mouse.ButtonHit(MouseButton.Left))
                 {
+                    updateMouseGameGUI();
                     updateMouseGame();
                 }
-                if (DualityApp.Keyboard.KeyHit(Key.M))
+                if (DualityApp.Keyboard.KeyHit(Ops.KeyInv))
                 {
                     ShowInvMenu();
                 }
+                if (DualityApp.Keyboard.KeyHit(Ops.KeyShop))
+                {
+                    ShowShopMenu();
+                }
 
-                updateKeysArm();
                 updateKeysOtherGame();
+            }             else if(this.State == GameStates.shop)
+            {
+                updateShopMenu();
+                if (DualityApp.Keyboard.KeyHit(Key.Escape))
+                {
+                    UNshowShopMenu();
+                }
             }             updateChar();
             if (DualityApp.Keyboard.KeyHit(Key.W))
             {
@@ -399,11 +550,13 @@ namespace Ferma
             this.isIgnoreMouse = true;
             buttonUp = new EventHandler<MouseButtonEventArgs>(Button_Up);
             DualityApp.Mouse.ButtonUp += buttonUp;
+            this.timerSell = new Stopwatch();
 
             Load();
             initPlayer();
             initInvMenu();
-            initArm(); 
+            initArm();
+            initMoney();
         }
         void ICmpInitializable.OnShutdown(ShutdownContext context) {
             if (context != ShutdownContext.Deactivate) return;

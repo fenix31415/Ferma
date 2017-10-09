@@ -33,6 +33,8 @@ namespace Ferma
     public class Inventory
     {
         private List<Item> items;
+        private List<int> sellCosts;
+        private List<int> costs;
 
         public List<Item> Items
         {
@@ -43,6 +45,28 @@ namespace Ferma
                     this.items = value;
                 else
                     this.items.Clear();
+            }
+        }
+        public List<int> SellCosts
+        {
+            get { return this.sellCosts; }
+            set
+            {
+                if (value != null)
+                    this.sellCosts = value;
+                else
+                    this.sellCosts.Clear();
+            }
+        }
+        public List<int> Costs
+        {
+            get { return this.costs; }
+            set
+            {
+                if (value != null)
+                    this.costs = value;
+                else
+                    this.costs.Clear();
             }
         }
         public string save()
@@ -59,9 +83,25 @@ namespace Ferma
         {
             List<int> args = s.Split().Select(x => int.Parse(x)).ToList();
             this.Items = new List<Item>();
-            for (int i = 0; i < args.Count; i++)
+            for (int i = 0; i < args.Count/2; i++)
             {
-                this.Items.Add(new Item(i, args[i]));
+                this.Items.Add(new Item(i, args[args.Count/2+i]));
+            }
+        }
+        public void genCosts()
+        {
+            this.costs = new List<int>();
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                costs.Add(1);
+            }
+        }
+        public void genSellCosts()
+        {
+            this.sellCosts = new List<int>();
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                sellCosts.Add(1);
             }
         }
         public Inventory()
@@ -71,6 +111,8 @@ namespace Ferma
             {
                 this.items.Add(new Item(i, 0));
             }
+            genCosts();
+            genSellCosts();
         }
     }
 }

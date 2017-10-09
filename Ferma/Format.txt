@@ -3,7 +3,7 @@ Player
 	Inv
 	pos
 Inv
-	line counts
+	seeds line counts items line counts
 Map
 	base
 	top

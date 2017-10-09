@@ -53,6 +53,10 @@ namespace Ferma
             var k = 2;
             var c = Math.Pow((1.0 / k), CameraTimer.ElapsedMilliseconds / 300.0);
             CameraTimer.Restart();
+            if (new Vector2(x - x1, y - y1).Length < 1)
+            {
+                c = 0;
+            }
             MainCamera.GameObj.Transform.MoveTo(new Vector3((float)(x * (1 - c) + c * x1), (float)(y * (1 - c) + c * y1), -Ops.CamDist));
         }
         void ICmpInitializable.OnInit(Component.InitContext context)

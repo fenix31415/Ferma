@@ -11,11 +11,11 @@ namespace Ferma
         public const int TileSetWidth = 20;
         public const int TileSetHeight = 20;
 
-        public const int CamDist = 350;
-        public const int DistFromGUI = 100;
+        public const float CamDist = 350.0f;
         public const float DistFromCursor = 50;
         public const float TextWid = 25;
-        public static ColorRgba TextColor = new ColorRgba(0, 0, 219, 255);
+        public static ColorRgba TextCountColor = new ColorRgba(0, 0, 219, 255);
+        public static ColorRgba TextCostColor = new ColorRgba(0, 0, 219, 255);
 
         public const int IdGrass = 325;
         public const int IdBed = 345;
@@ -29,6 +29,7 @@ namespace Ferma
         public const float GUIWid = 13;
         public const float InvDist = 4;
         public const float DistFromBack = 110;
+        public const float DistFromGUI = 100;
         public const float MainButtonWid = 100;
         public const float MainButtonHei = 15;
         public const float MainButtonDist = 30;
@@ -36,17 +37,23 @@ namespace Ferma
         public const string MapPath = "MapSave.txt";
         public const string PlayerPath = "PlayerSave.txt";
         public const string MapTimePath = "MapTimeSave.txt";
-
-        public const Key KeySeeds = Key.Number2;
-        public const Key KeyShowel = Key.Number3;
-        public const Key KeyArm = Key.Number6;
-        public const Key KeyRake = Key.Number4;
-        public const Key KeyWater = Key.Number5;
-        public const Key KeyArrow = Key.Number1;
+        
         public const Key KeySave = Key.ControlLeft;
         public const Key KeyLoad = Key.ShiftLeft;
         public const Key KeyMainMenu = Key.Escape;
+        public const Key KeyShop = Key.N;
+        public const Key KeyInv = Key.M;
 
+        public static ArmPlayer strToArm(string s)
+        {
+            if (s == "arrow") return ArmPlayer.arrow;
+            if (s == "arm") return ArmPlayer.arm;
+            if (s == "rake") return ArmPlayer.rake;
+            if (s == "seeds") return ArmPlayer.seeds;
+            if (s == "showel") return ArmPlayer.showel;
+            if (s == "water") return ArmPlayer.water;
+            return ArmPlayer.arrow;
+        } 
         public static int getTimeState(int id)
         {
             return 10;
