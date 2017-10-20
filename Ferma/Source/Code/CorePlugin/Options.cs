@@ -1,5 +1,20 @@
 ﻿using System;
 using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.Editor; using Duality.Plugins.Tilemaps;
+using System.Diagnostics;
+using System.Net.Cache;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Text.RegularExpressions;
+
+using System.Text;
+using Google.Apis.Analytics.v3;
+using Google.Apis.Auth.OAuth2;
+using System.Threading;
+using Google.Apis.Util.Store;
+using Google.Apis.Services;
+using System.Security.Cryptography.X509Certificates;
+using Google.Apis.Analytics.v3.Data;
+using Newtonsoft.Json;
 
 namespace Ferma
 {
@@ -44,6 +59,12 @@ namespace Ferma
         public const Key KeyShop = Key.N;
         public const Key KeyInv = Key.M;
 
+        public static bool isPointInRect(Vector3 point, Vector3 pos, Rect rect)
+        {
+            Vector3 TopLeft = new Vector3(rect.TopLeft + pos.Xy, pos.Z);
+            Vector3 BottomRight = new Vector3(rect.BottomRight + pos.Xy, pos.Z);
+            return (TopLeft.X <= point.X && TopLeft.Y <= point.Y && BottomRight.X >= point.X && BottomRight.Y >= point.Y);
+        }
         public static ArmPlayer strToArm(string s)
         {
             if (s == "arrow") return ArmPlayer.arrow;
@@ -61,6 +82,42 @@ namespace Ferma
         public static int getProductCount(int id)
         {
             return 2;
+        }
+        public static int getCostSeed(int ind)
+        {
+            return 1;
+        }
+        public static int getCostProduct(int ind)
+        {
+            return 2;
+        }
+        public static string Today()
+        {
+            bool net = false;
+            try
+            {
+                Ping ping = new Ping();
+                PingReply reply = ping.Send("ya.ru");
+                net = true;
+            }
+            catch
+            {
+                net = false;
+            }
+            if (net)
+            {
+                // http://api.timezonedb.com/v2/get-time-zone?key=SUT8ZDOPS3X2&format=json&by=zone&zone=Europe/London
+                WebRequest wrGETURL;
+                wrGETURL = WebRequest.Create("http://api.timezonedb.com/v2/get-time-zone?key=SUT8ZDOPS3X2&format=json&by=zone&zone=Europe/London");
+                var objStream = wrGETURL.GetResponse().GetResponseStream();
+                var objReader = new StreamReader(objStream);
+                string json = objReader.ReadLine();
+                //var prprp = JsonConvert.DeserializeAnonymousType(json, prprp);
+                int ind = json.IndexOf("formatted");
+                string s = json.Substring(ind+12,19);
+                return s;
+            }
+            return "";
         }
     }
 }

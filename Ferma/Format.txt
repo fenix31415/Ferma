@@ -1,9 +1,10 @@
 Player
+	time
 	money
 	Inv
 	pos
 Inv
-	seeds line counts items line counts
+	items line counts
 Map
 	base
 	top

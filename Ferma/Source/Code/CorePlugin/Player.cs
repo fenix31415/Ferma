@@ -1,4 +1,4 @@
-﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.IO; using Duality.Editor; using Duality.Plugins.Tilemaps;
+﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality; using Duality.IO; using Duality.Plugins.Tilemaps;
 using System.Diagnostics;
 
 namespace Ferma
@@ -8,7 +8,7 @@ namespace Ferma
     public class Player : Component, ICmpUpdatable, ICmpInitializable     {         private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private Tilemap TilemapInScene => this.GameObj.ParentScene.FindComponent<Tilemap>();         private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
         private CameraController CameraCon => this.GameObj.ParentScene.FindComponent<CameraController>();
         private int WinWidth => (int)DualityApp.TargetResolution.X;
-        private int WinHeight => (int)DualityApp.TargetResolution.Y;         private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI");          private Stopwatch timerSell;         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
+        private int WinHeight => (int)DualityApp.TargetResolution.Y;         private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI");          private Stopwatch timerSell;//,timerField;         //private int passedMill = 0;         public int passedMill { get; set; }         public Stopwatch timerField {get;set; }         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
 
         public bool isIgnoreMouse { get; set; }
         [DontSerialize]
@@ -17,7 +17,7 @@ namespace Ferma
         public ColorRgba IconsColor { get; set; }
         public GameStates State { get; set; }         public ArmPlayer Arm { get; set; }         public CharacterControl Character { get; set; }         public Inventory Inv         {             get { return this.inv; }             set { this.inv = value; }         }
         public int Money { get; set; }         public MapControl MapControl { get; set; }
-
+        
         private Vector3 camAreaTopLeft(float z) {
             return MainCamera.GetSpaceCoord(new Vector3(0.0f, 0.0f, z));
         }
@@ -48,7 +48,7 @@ namespace Ferma
             return (TopLeft.X <= point.X && TopLeft.Y <= point.Y && BottomRight.X >= point.X && BottomRight.Y >= point.Y);
         }         private Vector3 GetWorldCoordOfMouse(float z)         {             Vector3 mouseScreenPos = new Vector3(DualityApp.Mouse.Pos, z);             return MainCamera.GetSpaceCoord(mouseScreenPos);         }         public void OnTake(int id)
         {
-            this.Inv.Items[id].Count += Ops.getProductCount(id);
+            this.Inv.Items[id] += Ops.getProductCount(id);
         }         public void Save()
         {
             using (Stream s = FileOp.Create(Ops.MapPath))
@@ -59,6 +59,7 @@ namespace Ferma
             using (Stream s = FileOp.Create(Ops.PlayerPath))
             using (StreamWriter sw = new StreamWriter(s))
             {
+                sw.WriteLine(Ops.Today());
                 sw.WriteLine(this.Money + "");
                 sw.WriteLine(this.Inv.save());
                 Transform tr = this.GameObj.ParentScene.FindGameObject("MainCharacter").GetComponent<Transform>();
@@ -72,11 +73,16 @@ namespace Ferma
         }
         public void Load()
         {
+            int secPassed;
             this.MapControl.LoadMap(Ops.MapPath);
 
             using (Stream s = FileOp.Open(Ops.PlayerPath, FileAccessMode.Read))
             using (StreamReader sr = new StreamReader(s))
             {
+                DateTime last = DateTime.Parse(sr.ReadLine());
+                DateTime today = DateTime.Parse(Ops.Today());
+                secPassed = (today - last).Seconds;
+                
                 this.Money = int.Parse(sr.ReadLine());
                 this.Inv.load(sr.ReadLine());
                 List<float> agrs = sr.ReadLine().Split().Select(x => float.Parse(x)).ToList();
@@ -85,6 +91,8 @@ namespace Ferma
                 this.Character.Target = Pos.Pos.Xy;
             }
             this.MapControl.loadTime(Ops.MapTimePath);
+
+            this.MapControl.addTime(secPassed);
         }
         private void ShowInvMenu()
         {
@@ -145,10 +153,10 @@ namespace Ferma
         }
         private void trySell(int ind)
         {
-            if (this.Inv.Items[ind].Count > 0)
+            if (this.Inv.Items[ind] > 0)
             {
                 this.Money += this.Inv.SellCosts[ind];
-                this.Inv.Items[ind].Count -= 1;
+                this.Inv.Items[ind] -= 1;
             }
         }
 
@@ -273,10 +281,22 @@ namespace Ferma
         private void initMoney()
         {
             GameObject saved = this.GUI.ChildByName("InGame").ChildByName("saved");
-            saved.Transform.Scale = 0.6f;
+            //saved.Transform.Scale = 0.6f;
             saved.GetComponent<TextRenderer>().ColorTint = new ColorRgba(250,255,0,255);
         }
 
+        private void updateField()
+        {
+            if (!this.timerField.IsRunning)
+                this.timerField.Start();
+            passedMill += (int)this.timerField.ElapsedMilliseconds;
+            this.timerField.Restart();
+            if (!this.timerField.IsRunning||passedMill/1000 > 1)
+            {
+                this.MapControl.addTime(passedMill / 1000);
+                passedMill -= 1000;
+            }
+        }
         private void updateShopMenu()
         {
             float z = Ops.DistFromGUI - Ops.CamDist;
@@ -322,7 +342,7 @@ namespace Ferma
             {
                 //text
                 TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.Text.SourceText = this.Inv.Items[i].Count.ToString();
+                text.Text.SourceText = this.Inv.Items[i].ToString();
                 //textcost
                 text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
                 text.Text.SourceText = this.Inv.SellCosts[i].ToString();
@@ -333,14 +353,19 @@ namespace Ferma
             //updatepos
             float z = Ops.DistFromGUI - Ops.CamDist;
             GameObject saved = this.GUI.ChildByName("InGame").ChildByName("saved");
+            TextRenderer savedText = saved.GetComponent<TextRenderer>();
             Transform savedPos = saved.Transform;
-            Vector2 bound = saved.GetComponent<TextRenderer>().Text.Size * MainCamera.GetScaleAtZ(z);
-            float picwid = 20.0f;
-            float pichei = 2.0f;
+            float picwid = 80.0f;
+            float pichei = 5.0f;
+            var bound = saved.GetComponent<TextRenderer>().Text.Size*savedPos.Scale;
+            picwid = bound.X;pichei = bound.Y;
             Vector3 BottomRight = camAreaBottomRight(z);
-            Vector3 shift = new Vector3(-picwid,-pichei,0);
+            float dist = PicToCoord(Ops.DistFromScreen, z);
+            dist = 0;
+            Vector3 shift = new Vector3(-picwid/2  - dist, -pichei/2  + dist, 0);
+            //Vector3 shift = new Vector3(-picwid,-pichei,0);
             savedPos.MoveTo(BottomRight+shift);
-            Log.Game.Write(saved.GetComponent<TextRenderer>().Text.Size.ToString());
+            //Log.Game.Write(shift+"");
             //update value
             saved.GetComponent<TextRenderer>().Text.SourceText = this.Money + "";
         }
@@ -493,7 +518,7 @@ namespace Ferma
         }
         private void debug()
         {
-            Save();
+            Log.Game.Write(Ops.Today());
         }
         void Button_Up(object sender, MouseButtonEventArgs e)
         {
@@ -505,6 +530,7 @@ namespace Ferma
                 this.MapControl.addTime(3);
             }             if (this.State == GameStates.inv)
             {
+                updateField();
                 updateInvMenu();
                 if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
@@ -513,6 +539,7 @@ namespace Ferma
             }
             else             if (this.State == GameStates.game)
             {
+                updateField();
                 updateArm();
                 updateMoney();
                 if (!this.isIgnoreMouse && DualityApp.Mouse.ButtonHit(MouseButton.Left))
@@ -551,7 +578,7 @@ namespace Ferma
             buttonUp = new EventHandler<MouseButtonEventArgs>(Button_Up);
             DualityApp.Mouse.ButtonUp += buttonUp;
             this.timerSell = new Stopwatch();
-
+            this.timerField = new Stopwatch();
             Load();
             initPlayer();
             initInvMenu();

@@ -1,0 +1,15 @@
+﻿{
+  "supports": {
+    "net46.app": {},
+    "dnxcore50.app": {}
+  },
+  "frameworks": {
+    ".NETFramework,Version=v4.6.1": {}
+  },
+  "dependencies": {
+    "Google.Apis.Analytics.v3": "1.29.2.949"
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

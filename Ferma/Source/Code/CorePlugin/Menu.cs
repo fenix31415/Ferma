@@ -151,12 +151,6 @@ namespace Ferma
                 MainMenu.Transform.Pos = new Vector3(0, 0, Ops.DistFromGUI - Ops.CamDist);
             }
         }
-        private bool isPointInRect(Vector3 point, Vector3 pos, Rect rect)
-        {
-            Vector3 TopLeft = new Vector3(rect.TopLeft + pos.Xy, pos.Z);
-            Vector3 BottomRight = new Vector3(rect.BottomRight + pos.Xy, pos.Z);
-            return (TopLeft.X <= point.X && TopLeft.Y <= point.Y && BottomRight.X >= point.X && BottomRight.Y >= point.Y);
-        }
         public void OnShutdown(Component.ShutdownContext context)
         {
             // remember to clean up the events on Deactivate - needs to be more careful
@@ -175,7 +169,7 @@ namespace Ferma
             // check all MenuComponents under the mouse and sort them by Z,
             // to find the one nearest to the Camera
             MenuComponent hoveredComponent = this.GameObj.ParentScene.FindComponents<MenuComponent>()
-                .Where(mc => mc.GameObj.Active && isPointInRect(GetWorldCoordOfMouse(z), mc.GameObj.Transform.Pos, mc.GameObj.GetComponent<SpriteRenderer>().Rect))
+                .Where(mc => mc.GameObj.Active && Ops.isPointInRect(GetWorldCoordOfMouse(z), mc.GameObj.Transform.Pos, mc.GameObj.GetComponent<SpriteRenderer>().Rect))
                 //.OrderBy(mc => mc.GameObj.Transform.Pos.Z)
                 .FirstOrDefault();
 

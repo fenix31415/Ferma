@@ -8,35 +8,13 @@ using System.IO;
 
 namespace Ferma
 {
-    public class Item
-    {
-        private int id;
-        private int count;
-        public Item(int id, int count)
-        {
-            this.count = count;
-            this.id = id;
-        }
-
-        public int Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
-        public int Count
-        {
-            get { return this.count; }
-            set { this.count = value; }
-        }
-
-    }
     public class Inventory
     {
-        private List<Item> items;
+        private List<int> items;
         private List<int> sellCosts;
         private List<int> costs;
 
-        public List<Item> Items
+        public List<int> Items
         {
             get { return this.items; }
             set
@@ -74,7 +52,7 @@ namespace Ferma
             string ans = "";
             for (int i = 0; i < this.Items.Count; i++)
             {
-                string tmp = ans + this.Items[i].Count + " ";
+                string tmp = ans + this.Items[i] + " ";
                 ans = tmp;
             }
             return ans.Trim();
@@ -82,10 +60,14 @@ namespace Ferma
         public void load(string s)
         {
             List<int> args = s.Split().Select(x => int.Parse(x)).ToList();
-            this.Items = new List<Item>();
-            for (int i = 0; i < args.Count/2; i++)
+            this.Items = new List<int>();
+            this.Costs = new List<int>();
+            this.SellCosts = new List<int>();
+            for (int i = 0; i < args.Count; i++)
             {
-                this.Items.Add(new Item(i, args[args.Count/2+i]));
+                this.Items.Add(args[i]);
+                this.Costs.Add(Ops.getCostSeed(i));
+                this.SellCosts.Add(Ops.getCostProduct(i));
             }
         }
         public void genCosts()
@@ -106,10 +88,10 @@ namespace Ferma
         }
         public Inventory()
         {
-            this.items = new List<Item>();
+            this.items = new List<int>();
             for (int i = 0; i < Ops.countInv; i++)
             {
-                this.items.Add(new Item(i, 0));
+                this.items.Add(0);
             }
             genCosts();
             genSellCosts();

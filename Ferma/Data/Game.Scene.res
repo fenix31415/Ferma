@@ -77,7 +77,7 @@
             <CameraTimer dataType="Struct" type="System.Diagnostics.Stopwatch" id="2712505153">
               <elapsed dataType="Long">0</elapsed>
               <isRunning dataType="Bool">true</isRunning>
-              <startTimeStamp dataType="Long">3340837489461</startTimeStamp>
+              <startTimeStamp dataType="Long">947687775312</startTimeStamp>
             </CameraTimer>
             <gameobj dataType="ObjectRef">4115003847</gameobj>
             <smoothness dataType="Float">0</smoothness>
@@ -2060,185 +2060,29 @@
             <_x003C_isIgnoreMouse_x003E_k__BackingField dataType="Bool">true</_x003C_isIgnoreMouse_x003E_k__BackingField>
             <_x003C_MapControl_x003E_k__BackingField dataType="ObjectRef">763323756</_x003C_MapControl_x003E_k__BackingField>
             <_x003C_Money_x003E_k__BackingField dataType="Int">0</_x003C_Money_x003E_k__BackingField>
+            <_x003C_passedMill_x003E_k__BackingField dataType="Int">0</_x003C_passedMill_x003E_k__BackingField>
             <_x003C_SquarePrefab_x003E_k__BackingField dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Prefab]]">
               <contentPath dataType="String">Data/Prefabs/ItemIcon.Prefab.res</contentPath>
             </_x003C_SquarePrefab_x003E_k__BackingField>
             <_x003C_State_x003E_k__BackingField dataType="Enum" type="Ferma.GameStates" name="game" value="3" />
+            <_x003C_timerField_x003E_k__BackingField />
             <active dataType="Bool">true</active>
             <gameobj dataType="ObjectRef">1170134997</gameobj>
             <inv dataType="Struct" type="Ferma.Inventory" id="1677479933">
-              <costs dataType="Struct" type="System.Collections.Generic.List`1[[Ferma.Item]]" id="3543518502">
-                <_items dataType="Array" type="Ferma.Item[]" id="3202014464" length="32">
-                  <item dataType="Struct" type="Ferma.Item" id="3799247516">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">0</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="34841110">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">1</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1967332616">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">2</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="2865503154">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">3</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3015016756">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">4</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="446577038">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">5</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="959339712">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">6</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1264078090">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">7</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="2023426188">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">8</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3107439334">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">9</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="174090232">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">10</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1489704706">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">11</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="4004164388">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">12</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="4128470622">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">13</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="4039837616">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">14</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1489201242">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">15</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3287770108">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">16</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="2751972534">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">17</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="4237560808">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">18</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3906349522">
-                    <count dataType="Int">1</count>
-                    <id dataType="Int">19</id>
-                  </item>
-                </_items>
-                <_size dataType="Int">20</_size>
+              <costs dataType="Struct" type="System.Collections.Generic.List`1[[System.Int32]]" id="3543518502">
+                <_items dataType="Array" type="System.Int32[]" id="3202014464"></_items>
+                <_size dataType="Int">0</_size>
               </costs>
-              <items dataType="Struct" type="System.Collections.Generic.List`1[[Ferma.Item]]" id="1519166138">
-                <_items dataType="Array" type="Ferma.Item[]" id="3874264724" length="32">
-                  <item dataType="Struct" type="Ferma.Item" id="2451344228">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">0</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="4009323030">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">1</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1823549536">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">2</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3606157154">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">3</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="716448060">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">4</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3964029630">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">5</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1782869016">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">6</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3008586858">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">7</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="2372879572">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">8</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="884586438">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">9</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="4106188496">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">10</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="684069906">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">11</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1213570220">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">12</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3145154158">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">13</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1291574408">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">14</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="314980122">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">15</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="3264004676">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">16</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="481911158">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">17</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="1039949760">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">18</id>
-                  </item>
-                  <item dataType="Struct" type="Ferma.Item" id="2260060226">
-                    <count dataType="Int">0</count>
-                    <id dataType="Int">19</id>
-                  </item>
-                </_items>
-                <_size dataType="Int">20</_size>
+              <items dataType="Struct" type="System.Collections.Generic.List`1[[System.Int32]]" id="1519166138">
+                <_items dataType="ObjectRef">3202014464</_items>
+                <_size dataType="Int">0</_size>
               </items>
-              <seeds />
+              <sellCosts dataType="Struct" type="System.Collections.Generic.List`1[[System.Int32]]" id="148182566">
+                <_items dataType="Array" type="System.Int32[]" id="4211457536">1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</_items>
+                <_size dataType="Int">20</_size>
+              </sellCosts>
             </inv>
+            <timerSell />
           </item>
         </_items>
         <_size dataType="Int">2</_size>
@@ -3443,8 +3287,8 @@
                         <parentTransform />
                         <pos dataType="Struct" type="Duality.Vector3" />
                         <posAbs dataType="Struct" type="Duality.Vector3" />
-                        <scale dataType="Float">1</scale>
-                        <scaleAbs dataType="Float">1</scaleAbs>
+                        <scale dataType="Float">0.6</scale>
+                        <scaleAbs dataType="Float">0.6</scaleAbs>
                         <vel dataType="Struct" type="Duality.Vector3" />
                         <velAbs dataType="Struct" type="Duality.Vector3" />
                       </item>
@@ -7382,21 +7226,26 @@
     <item dataType="ObjectRef">3382133416</item>
     <item dataType="ObjectRef">3291544912</item>
     <item dataType="ObjectRef">1368073107</item>
-    <item dataType="ObjectRef">671842037</item>
-    <item dataType="ObjectRef">1590592969</item>
-    <item dataType="ObjectRef">1788761148</item>
-    <item dataType="ObjectRef">2888799266</item>
-    <item dataType="ObjectRef">3245627803</item>
-    <item dataType="ObjectRef">348406047</item>
-    <item dataType="ObjectRef">218013786</item>
-    <item dataType="ObjectRef">2789766753</item>
-    <item dataType="ObjectRef">2426994715</item>
-    <item dataType="ObjectRef">3429482688</item>
-    <item dataType="ObjectRef">151243261</item>
-    <item dataType="ObjectRef">2375284181</item>
-    <item dataType="ObjectRef">2282849986</item>
-    <item dataType="ObjectRef">2359675778</item>
     <item dataType="ObjectRef">2363563895</item>
+    <item dataType="ObjectRef">2359675778</item>
+    <item dataType="ObjectRef">2282849986</item>
+    <item dataType="ObjectRef">2375284181</item>
+    <item dataType="ObjectRef">151243261</item>
+    <item dataType="ObjectRef">3429482688</item>
+    <item dataType="ObjectRef">2426994715</item>
+    <item dataType="ObjectRef">2789766753</item>
+    <item dataType="ObjectRef">218013786</item>
+    <item dataType="ObjectRef">348406047</item>
+    <item dataType="ObjectRef">3245627803</item>
+    <item dataType="ObjectRef">2888799266</item>
+    <item dataType="ObjectRef">1788761148</item>
+    <item dataType="ObjectRef">1590592969</item>
+    <item dataType="ObjectRef">671842037</item>
+    <item dataType="ObjectRef">3467875668</item>
+    <item dataType="ObjectRef">398834818</item>
+    <item dataType="ObjectRef">2311168538</item>
+    <item dataType="ObjectRef">2480284818</item>
+    <item dataType="ObjectRef">1820217723</item>
     <item dataType="ObjectRef">2141257445</item>
     <item dataType="ObjectRef">188224386</item>
     <item dataType="ObjectRef">2826004722</item>
@@ -7404,11 +7253,6 @@
     <item dataType="ObjectRef">3427042802</item>
     <item dataType="ObjectRef">895337286</item>
     <item dataType="ObjectRef">3698501582</item>
-    <item dataType="ObjectRef">3467875668</item>
-    <item dataType="ObjectRef">398834818</item>
-    <item dataType="ObjectRef">2311168538</item>
-    <item dataType="ObjectRef">2480284818</item>
-    <item dataType="ObjectRef">1820217723</item>
     <item dataType="ObjectRef">1153964939</item>
     <item dataType="ObjectRef">1160114549</item>
     <item dataType="ObjectRef">980508768</item>
@@ -7419,55 +7263,49 @@
     <item dataType="ObjectRef">1148348033</item>
     <item dataType="ObjectRef">1844642636</item>
     <item dataType="ObjectRef">2631495437</item>
-    <item dataType="ObjectRef">3840084060</item>
-    <item dataType="ObjectRef">1459394187</item>
-    <item dataType="ObjectRef">2767779989</item>
-    <item dataType="ObjectRef">419425350</item>
-    <item dataType="ObjectRef">4183742071</item>
-    <item dataType="ObjectRef">3922005324</item>
-    <item dataType="ObjectRef">51083592</item>
-    <item dataType="ObjectRef">1457588996</item>
-    <item dataType="ObjectRef">1602447612</item>
-    <item dataType="ObjectRef">2617531452</item>
-    <item dataType="ObjectRef">1717632388</item>
-    <item dataType="ObjectRef">4056528361</item>
-    <item dataType="ObjectRef">3797889493</item>
-    <item dataType="ObjectRef">913630400</item>
-    <item dataType="ObjectRef">3817744133</item>
-    <item dataType="ObjectRef">547027418</item>
-    <item dataType="ObjectRef">2240127430</item>
-    <item dataType="ObjectRef">588098263</item>
-    <item dataType="ObjectRef">243128841</item>
-    <item dataType="ObjectRef">2857430834</item>
-    <item dataType="ObjectRef">1026476342</item>
-    <item dataType="ObjectRef">1157516120</item>
-    <item dataType="ObjectRef">2432343344</item>
-    <item dataType="ObjectRef">3262512068</item>
-    <item dataType="ObjectRef">4037236369</item>
-    <item dataType="ObjectRef">4242215103</item>
-    <item dataType="ObjectRef">2155177531</item>
-    <item dataType="ObjectRef">933795675</item>
-    <item dataType="ObjectRef">1315471730</item>
-    <item dataType="ObjectRef">3062489491</item>
-    <item dataType="ObjectRef">4005851844</item>
-    <item dataType="ObjectRef">661691768</item>
+    <item dataType="ObjectRef">2032936518</item>
+    <item dataType="ObjectRef">656640765</item>
+    <item dataType="ObjectRef">3250843967</item>
+    <item dataType="ObjectRef">2736862923</item>
+    <item dataType="ObjectRef">2047907847</item>
+    <item dataType="ObjectRef">1376397015</item>
+    <item dataType="ObjectRef">3329293674</item>
+    <item dataType="ObjectRef">2149272807</item>
+    <item dataType="ObjectRef">3603977187</item>
     <item dataType="ObjectRef">1611575823</item>
     <item dataType="ObjectRef">315657708</item>
-    <item dataType="ObjectRef">3603977187</item>
-    <item dataType="ObjectRef">2149272807</item>
-    <item dataType="ObjectRef">2047907847</item>
-    <item dataType="ObjectRef">3329293674</item>
-    <item dataType="ObjectRef">1376397015</item>
-    <item dataType="ObjectRef">3250843967</item>
-    <item dataType="ObjectRef">656640765</item>
-    <item dataType="ObjectRef">2032936518</item>
-    <item dataType="ObjectRef">2736862923</item>
-    <item dataType="ObjectRef">1849073119</item>
-    <item dataType="ObjectRef">267361768</item>
-    <item dataType="ObjectRef">2851140569</item>
-    <item dataType="ObjectRef">2090084661</item>
-    <item dataType="ObjectRef">2242155726</item>
-    <item dataType="ObjectRef">1309083382</item>
+    <item dataType="ObjectRef">4005851844</item>
+    <item dataType="ObjectRef">661691768</item>
+    <item dataType="ObjectRef">933795675</item>
+    <item dataType="ObjectRef">3062489491</item>
+    <item dataType="ObjectRef">1315471730</item>
+    <item dataType="ObjectRef">2155177531</item>
+    <item dataType="ObjectRef">4242215103</item>
+    <item dataType="ObjectRef">3262512068</item>
+    <item dataType="ObjectRef">4037236369</item>
+    <item dataType="ObjectRef">1157516120</item>
+    <item dataType="ObjectRef">2432343344</item>
+    <item dataType="ObjectRef">243128841</item>
+    <item dataType="ObjectRef">1026476342</item>
+    <item dataType="ObjectRef">2857430834</item>
+    <item dataType="ObjectRef">588098263</item>
+    <item dataType="ObjectRef">2240127430</item>
+    <item dataType="ObjectRef">3817744133</item>
+    <item dataType="ObjectRef">547027418</item>
+    <item dataType="ObjectRef">3797889493</item>
+    <item dataType="ObjectRef">913630400</item>
+    <item dataType="ObjectRef">2617531452</item>
+    <item dataType="ObjectRef">4056528361</item>
+    <item dataType="ObjectRef">1717632388</item>
+    <item dataType="ObjectRef">1602447612</item>
+    <item dataType="ObjectRef">1457588996</item>
+    <item dataType="ObjectRef">3922005324</item>
+    <item dataType="ObjectRef">51083592</item>
+    <item dataType="ObjectRef">419425350</item>
+    <item dataType="ObjectRef">4183742071</item>
+    <item dataType="ObjectRef">3840084060</item>
+    <item dataType="ObjectRef">2767779989</item>
+    <item dataType="ObjectRef">1459394187</item>
     <item dataType="ObjectRef">3711668208</item>
     <item dataType="ObjectRef">1095912610</item>
     <item dataType="ObjectRef">1370029974</item>
@@ -7483,6 +7321,12 @@
     <item dataType="ObjectRef">2213571209</item>
     <item dataType="ObjectRef">4262426919</item>
     <item dataType="ObjectRef">263999596</item>
+    <item dataType="ObjectRef">1849073119</item>
+    <item dataType="ObjectRef">267361768</item>
+    <item dataType="ObjectRef">2851140569</item>
+    <item dataType="ObjectRef">2090084661</item>
+    <item dataType="ObjectRef">2242155726</item>
+    <item dataType="ObjectRef">1309083382</item>
   </serializeObj>
   <visibilityStrategy dataType="Struct" type="Duality.Components.DefaultRendererVisibilityStrategy" id="2035693768" />
 </root>
