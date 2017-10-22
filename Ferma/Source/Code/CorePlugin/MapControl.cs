@@ -136,17 +136,18 @@ namespace Ferma
                 {
                     BaseClickedTile.BaseIndex = Ops.IdBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
+                    return true;
                 }
                 else
                 if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
                     BaseClickedTile.BaseIndex = Ops.IdGrass;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
+                    return true;
                 }
             }
             if (arm == ArmPlayer.arm)
             {
-                //
                 if (TopClickedTile.BaseIndex % 20 == 2)
                 {
                     this.IdTaked = TopClickedTile.BaseIndex;
@@ -154,6 +155,7 @@ namespace Ferma
                     TopClickedTile.BaseIndex = Ops.IdDied;
                     TopLayer.SetTile(x, y, TopClickedTile);
                     mapTime[x][y] = -1;
+                    return true;
                 }
             }
             if (arm == ArmPlayer.rake)
@@ -165,6 +167,7 @@ namespace Ferma
 
                     BaseClickedTile.BaseIndex = Ops.IdBadBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
+                    return true;
                 }
             }
             if (arm == ArmPlayer.water)
@@ -173,6 +176,7 @@ namespace Ferma
                 {
                     BaseClickedTile.BaseIndex = Ops.IdBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
+                    return true;
                 }
             }
             if (arm == ArmPlayer.seeds)

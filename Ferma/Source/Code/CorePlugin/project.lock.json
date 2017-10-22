@@ -656,14 +656,14 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Users\\31415926\\Desktop\\t\\Ferma\\Ferma\\Source\\Code\\CorePlugin\\CorePlugin.csproj",
+      "projectUniqueName": "C:\\Users\\31415926\\Desktop\\t\\Ferma\\Ferma\\Ferma\\Source\\Code\\CorePlugin\\CorePlugin.csproj",
       "projectName": "CorePlugin",
-      "projectPath": "C:\\Users\\31415926\\Desktop\\t\\Ferma\\Ferma\\Source\\Code\\CorePlugin\\CorePlugin.csproj",
-      "projectJsonPath": "C:\\Users\\31415926\\Desktop\\t\\Ferma\\Ferma\\Source\\Code\\CorePlugin\\project.json",
+      "projectPath": "C:\\Users\\31415926\\Desktop\\t\\Ferma\\Ferma\\Ferma\\Source\\Code\\CorePlugin\\CorePlugin.csproj",
+      "projectJsonPath": "C:\\Users\\31415926\\Desktop\\t\\Ferma\\Ferma\\Ferma\\Source\\Code\\CorePlugin\\project.json",
       "projectStyle": "ProjectJson"
     },
     "dependencies": {
-      "Google.Apis.Analytics.v3": "[1.29.2.949, )"
+      "Google.Apis.Analytics.v3": "1.29.2.949"
     },
     "frameworks": {
       "net461": {}

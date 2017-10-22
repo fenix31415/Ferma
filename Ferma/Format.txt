@@ -1,5 +1,6 @@
 Player
 	time
+	exp
 	money
 	Inv
 	pos

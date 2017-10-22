@@ -5,19 +5,21 @@ namespace Ferma
 {
     public enum GameStates { menu, inv, shop, game }
     public enum ArmPlayer { arrow, seeds, showel, rake, water, arm }
-    public class Player : Component, ICmpUpdatable, ICmpInitializable     {         private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private Tilemap TilemapInScene => this.GameObj.ParentScene.FindComponent<Tilemap>();         private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
-        private CameraController CameraCon => this.GameObj.ParentScene.FindComponent<CameraController>();
+    public class PlayerControl : Component, ICmpUpdatable, ICmpInitializable     {         private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private Tilemap TilemapInScene => this.GameObj.ParentScene.FindComponent<Tilemap>();         private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
         private int WinWidth => (int)DualityApp.TargetResolution.X;
-        private int WinHeight => (int)DualityApp.TargetResolution.Y;         private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI");          private Stopwatch timerSell;//,timerField;         //private int passedMill = 0;         public int passedMill { get; set; }         public Stopwatch timerField {get;set; }         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
+        private int WinHeight => (int)DualityApp.TargetResolution.Y;
+
+        private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI",false);         private GameObject MainCharacter => this.GameObj.ParentScene.FindGameObject("MainCharacter", false);         private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu", false);         private GameObject Map => this.GameObj.ParentScene.FindGameObject("Map", false);         private GameObject Player => this.GameObj.ParentScene.FindGameObject("PlayerControl", false);          private Stopwatch timerSell;         private int passedMill = 0;         public Stopwatch timerField {get;set; }         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
+        public ulong exp { get; set; }
+        public int lvl { get; set; }
 
         public bool isIgnoreMouse { get; set; }
         [DontSerialize]
         private EventHandler<MouseButtonEventArgs> buttonUp;
-
-        public ColorRgba IconsColor { get; set; }
-        public GameStates State { get; set; }         public ArmPlayer Arm { get; set; }         public CharacterControl Character { get; set; }         public Inventory Inv         {             get { return this.inv; }             set { this.inv = value; }         }
-        public int Money { get; set; }         public MapControl MapControl { get; set; }
         
+        public GameStates State { get; set; }         public ArmPlayer Arm { get; set; }         public CharacterControl Character { get; set; }         public ProgressBarRenderer ExpBar { get; set; }         public Inventory Inv         {             get { return this.inv; }             set { this.inv = value; }         }
+        public int Money { get; set; }          public MapControl MapControl { get; set; }
+
         private Vector3 camAreaTopLeft(float z) {
             return MainCamera.GetSpaceCoord(new Vector3(0.0f, 0.0f, z));
         }
@@ -60,9 +62,10 @@ namespace Ferma
             using (StreamWriter sw = new StreamWriter(s))
             {
                 sw.WriteLine(Ops.Today());
+                sw.WriteLine(this.exp);
                 sw.WriteLine(this.Money + "");
                 sw.WriteLine(this.Inv.save());
-                Transform tr = this.GameObj.ParentScene.FindGameObject("MainCharacter").GetComponent<Transform>();
+                Transform tr = MainCharacter.GetComponent<Transform>();
                 sw.WriteLine(tr.Pos.X + " " + tr.Pos.Y +" "+ tr.Pos.Z);
             }
             using (Stream s = FileOp.Create(Ops.MapTimePath))
@@ -82,74 +85,58 @@ namespace Ferma
                 DateTime last = DateTime.Parse(sr.ReadLine());
                 DateTime today = DateTime.Parse(Ops.Today());
                 secPassed = (today - last).Seconds;
-                
+                this.exp = ulong.Parse(sr.ReadLine());
+                this.lvl = Ops.getLvl(this.exp);
                 this.Money = int.Parse(sr.ReadLine());
                 this.Inv.load(sr.ReadLine());
                 List<float> agrs = sr.ReadLine().Split().Select(x => float.Parse(x)).ToList();
-                Transform Pos = this.GameObj.ParentScene.FindGameObject("MainCharacter").Transform;
+                Transform Pos = MainCharacter.Transform;
                 Pos.MoveTo(new Vector3(agrs[0], agrs[1], agrs[2]));
                 this.Character.Target = Pos.Pos.Xy;
+                //this.ExpBar.updateExp(exp,Ops.getMinExp(this.lvl+1)-1);
+                ulong curr = this.exp;
+                ulong oldall = Ops.getMinExp(lvl) - 1;
+                ulong all = Ops.getMinExp(lvl + 1) - 1;
+                ExpBar.updateExp(curr - oldall, all - oldall);
             }
             this.MapControl.loadTime(Ops.MapTimePath);
 
             this.MapControl.addTime(secPassed);
         }
-        private void ShowInvMenu()
+        private void ShowSeedsMenu()
         {
             this.GUI.ChildByName("InGame").Active = false;
-            this.GUI.ChildByName("MenuInv").Active = true;
+            this.GUI.ChildByName("MenuSeeds").Active = true;
             this.State = GameStates.inv;
-
-            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
-            var Items = MenuInv.Children.Where(x => x.Name == "Item").ToList();
-            for (int i = 0; i < Ops.countInv; i++)
-            {
-                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextCountColor;
-                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextCostColor;
-                text.VisibilityGroup = VisibilityFlag.None;
-            }
         }
         private void ShowShopMenu()
         {
             this.GUI.ChildByName("InGame").Active = false;
-            this.GUI.ChildByName("MenuInv").Active = true;
+            this.GUI.ChildByName("MenuShop").Active = true;
             this.State = GameStates.shop;
             this.timerSell.Start();
-
-            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
-            var Items = MenuInv.Children.Where(x => x.Name == "Item").ToList();
-            for (int i = 0; i < Ops.countInv; i++)
-            {
-                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextCountColor;
-                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextCostColor;
-                text.VisibilityGroup = VisibilityFlag.AllGroups;
-            }
         }
-        private void UNshowInvMenu()
+        private void UNshowSeedsMenu()
         {
             this.State = GameStates.game;
             this.GUI.ChildByName("InGame").Active = true;
-            this.GUI.ChildByName("MenuInv").Active = false;
+            this.GUI.ChildByName("MenuSeeds").Active = false;
         }
         private void UNshowShopMenu()
         {
             this.State = GameStates.game;
             this.GUI.ChildByName("InGame").Active = true;
-            this.GUI.ChildByName("MenuInv").Active = false;
+            this.GUI.ChildByName("MenuShop").Active = false;
             this.timerSell.Reset();
         }
         private void showMainMenu()
         {
-            this.GameObj.ParentScene.FindGameObject("MainMenu", false).Active = true;
+            MainMenu.Active = true;
             MainCamera.GameObj.Transform.MoveTo(new Vector3(0, 0, -Ops.CamDist));
-            this.GameObj.ParentScene.FindGameObject("GUI", false).Active = false;
-            this.GameObj.ParentScene.FindGameObject("MainCharacter", false).Active = false;
-            this.GameObj.ParentScene.FindGameObject("Map", false).Active = false;
-            this.GameObj.ParentScene.FindGameObject("Player", false).Active = false;
+            GUI.Active = false;
+            MainCharacter.Active = false;
+            Map.Active = false;
+            Player.Active = false;
         }
         private void trySell(int ind)
         {
@@ -159,10 +146,35 @@ namespace Ferma
                 this.Inv.Items[ind] -= 1;
             }
         }
+        private void addExp(ulong exp)
+        {
+            this.exp += exp;
+            if (this.lvl < Ops.getLvl(this.exp))
+            {
+                ++lvl;
+                ulong curr = this.exp;
+                ulong oldall = Ops.getMinExp(lvl) - 1;
+                ulong all = Ops.getMinExp(lvl + 1) - 1;
+                ExpBar.updateExp(curr - oldall, all - oldall);
+                ExpBar.setcurrlvl(lvl);
+                onNewLvl();
+            }
+            else
+            {
+                ulong curr = this.exp;
+                ulong oldall = Ops.getMinExp(lvl) - 1;
+                ulong all = Ops.getMinExp(lvl + 1) - 1;
+                ExpBar.setcurrExp(curr - oldall);
+            }
+        }
+        private void onNewLvl()
+        {
+            
+        }
 
         private void initArm()
         {
-            float picwid = Ops.GUIWid;
+            float picwid = Ops.GUIArmPlayerWid;
             Transform ArmPos;
             var arr = Enum.GetValues(typeof(ArmPlayer));
             List<string> ar = new List<string>();
@@ -170,8 +182,8 @@ namespace Ferma
             {
                 ar.Add(i.ToString());
             }
-            float wid = Ops.GUIWid;
-            GameObject Arm = this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").ChildByName("Arm");
+            float wid = Ops.GUIArmPlayerWid;
+            GameObject Arm = GUI.ChildByName("InGame").ChildByName("Arm");
             //init squares
             for (int i = 0; i < ar.Count; i++)
             {
@@ -187,8 +199,8 @@ namespace Ferma
             }
             //init fon
             SpriteRenderer ArmFon = Arm.ChildByName("fon").GetComponent<SpriteRenderer>();
-            float widfon = Ops.GUIWid * ar.Count;
-            float heifon = Ops.GUIWid;
+            float widfon = Ops.GUIArmPlayerWid * ar.Count;
+            float heifon = Ops.GUIArmPlayerWid;
             ArmFon.Rect = new Rect(-widfon / 2, -heifon / 2, widfon, heifon);
             ArmPos = Arm.ChildByName("fon").Transform;
             ArmPos.MoveTo(Vector3.Zero);
@@ -199,81 +211,117 @@ namespace Ferma
             Vector3 shiftArmRamka = new Vector3(ind * wid - (ar.Count - 1) * wid / 2, 0, 0);
             ArmRamka.Transform.MoveTo(shiftArmRamka);
         }
-        private void initInvMenu()
+        private void initShopMenu()
         {
-            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
-            //init renderers
-            var Items = MenuInv.Children.Where(x=>x.Name == "Item").ToList();
+            GameObject MenuInv = this.GUI.ChildByName("MenuShop");
+            var Items = MenuInv.Children.Where(x => x.Name == "ShopSquare").ToList();
+            //init local pos
             for (int i = 0; i < Ops.countInv; i++)
             {
+                float k1 = 1.0f / 3;
+                float k2 = 1.0f / 2;
+                float k3 = 1.0f / 4;
                 GameObject newSquare = Items[i];
                 float wid = Ops.GUIWid;
-                AnimSpriteRenderer SquareRenderer = newSquare.ChildByName("Icon").GetComponent<AnimSpriteRenderer>();
-                SquareRenderer.Rect = new Rect(-wid/2,-wid/2,wid,wid);
-                SquareRenderer.AnimFirstFrame = i;
-                newSquare.Transform.Pos = Vector3.Zero;
-                newSquare.ChildByName("Icon").Transform.Pos = Vector3.Zero;
-                newSquare.ChildByName("Text").Transform.Pos = Vector3.Zero;
+                //fon
+                SpriteRenderer fonSqr = newSquare.ChildByName("fon").GetComponent<SpriteRenderer>();
+                fonSqr.Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
+                newSquare.ChildByName("fon").Transform.MoveTo(Vector3.Zero);
+                //Icon
+                AnimSpriteRenderer icon = newSquare.ChildByName("Icon").GetComponent<AnimSpriteRenderer>();
+                icon.Rect = new Rect(-wid*k2/2,-wid*k2/2,wid*k2,wid*k2);
+                //icon.Rect = new Rect(-wid / 2, -wid / 2 + wid / 3, wid / 2, wid / 2);
+                newSquare.ChildByName("Icon").Transform.MoveTo(new Vector3(-wid*k2/2,-wid/2+wid*k1+wid*k2/2,0));
+                icon.AnimFirstFrame = i;
+                //Name
+                GameObject name = newSquare.ChildByName("Name");
+                TextRenderer nameText = name.GetComponent<TextRenderer>();
+                nameText.Text.SourceText = Ops.getNamePlant(i);
+                name.Transform.MoveTo(new Vector3(0,-wid/2+wid*k1/2,0));
+                nameText.ColorTint = Ops.TextNameColor;
+                Vector2 rectName = new Vector2(wid, wid *k1)*9/10;
+                name.Transform.Scale = Ops.getTextScale(nameText,rectName);
+                //Count
+                GameObject count = newSquare.ChildByName("Count");
+                TextRenderer countText = count.GetComponent<TextRenderer>();
+                countText.Text.SourceText = "X "+this.Inv.Items[i];
+                count.Transform.MoveTo(new Vector3(wid*k2/2, -wid / 2 + wid *k1 + wid *k2 / 2, 0));
+                countText.ColorTint = Ops.TextCountColor;
+                Vector2 rectCount = new Vector2(wid *k2 / 2, wid *k2 / 2) * 9 / 10;
+                count.Transform.Scale = Ops.getTextScale(countText,rectCount);
+                //Cost
+                GameObject cost = newSquare.ChildByName("Cost");
+                TextRenderer costText = cost.GetComponent<TextRenderer>();
+                costText.Text.SourceText = "$ " + this.Inv.SellCosts[i];
+                cost.Transform.MoveTo(new Vector3(0,wid*k2-wid*k3/2,0));
+                costText.ColorTint = Ops.TextCostColor;
+                Vector2 rectCost = new Vector2(wid, wid *k3) * 9 / 10;
+                cost.Transform.Scale = Ops.getTextScale(costText,rectCost);
             }
-            //init Square pos
             float z = Ops.DistFromGUI - Ops.CamDist;
-            for (int i = 0; i < Ops.countInv; i++)
-            {
-                float Picwid = Ops.GUIWid;
-                float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
-                float top = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
-                GameObject newSquare = Items[i];
-                //init text pos
-                float textScale = Ops.TextWid / MainCamera.GetScaleAtZ(z) / Picwid;
-                GameObject Text = newSquare.ChildByName("Text");
-                Text.Transform.Scale = textScale;
-                Vector3 shiftText = new Vector3(-0.3f,0.4f,0)*Ops.GUIWid;
-                Text.Transform.MoveTo(shiftText);
-                //init textcost pos
-                textScale = Ops.TextWid / MainCamera.GetScaleAtZ(z) / Picwid;
-                Text = newSquare.ChildByName("TextCost");
-                Text.Transform.Scale = textScale;
-                shiftText = new Vector3(0.3f, 0.4f, 0) * Ops.GUIWid;
-                Text.Transform.MoveTo(shiftText);
-                //init Square pos
-                Vector3 ShiftSquareIcon = new Vector3((i % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (i / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, Ops.DistFromGUI);
-                Vector3 pos = MainCamera.GameObj.Transform.Pos + ShiftSquareIcon;
-                newSquare.Transform.MoveTo(pos);
-            }
-
             //init Back renderer
-            SpriteRenderer srenderer = MenuInv.ChildByName("MenuBackground").GetComponent<SpriteRenderer>();
-            Vector2 size = srenderer.SharedMaterial.Res.MainTexture.Res.Size;
+            SpriteRenderer menuBackFon = MenuInv.ChildByName("MenuBackground").GetComponent<SpriteRenderer>();
+            Vector2 size = menuBackFon.SharedMaterial.Res.MainTexture.Res.Size;
             float scale = MainCamera.GetScaleAtZ(z);
             float newhei = WinHeight / scale;
             float newwid = newhei * size.X / size.Y;
-            srenderer.Rect = new Rect(-newwid / 2.0f, -newhei / 2.0f, newwid, newhei);
-            //init fon
-            GameObject fon = MenuInv.ChildByName("fon");
-            srenderer = fon.GetComponent<SpriteRenderer>();
-            float invwid = Ops.InvWid * Ops.GUIWid + (Ops.InvWid-1)*PicToCoord(Ops.DistFromScreen,z);
-            float invhei = (Ops.countInv / Ops.InvWid) * Ops.GUIWid + ((Ops.countInv / Ops.InvWid) - 1) * PicToCoord(Ops.DistFromScreen, z);
-            srenderer.Rect = new Rect(-invwid/2,-invhei/2,invwid,invhei);
-            Vector3 ShiftfonIcon = new Vector3(0, 0, Ops.DistFromGUI);
-            Vector3 fonpos = MainCamera.GameObj.Transform.Pos + ShiftfonIcon;
-            fon.Transform.MoveTo(fonpos);
-            //init choose
-            GameObject choose = MenuInv.ChildByName("choose");
-            SpriteRenderer chrenderer = choose.GetComponent<SpriteRenderer>();
-            float picwid = Ops.GUIWid;
-            chrenderer.Rect = new Rect(-picwid/2,-picwid/2,picwid,picwid);
-            //init text
+            menuBackFon.Rect = new Rect(-newwid / 2.0f, -newhei / 2.0f, newwid, newhei);
+        }
+        private void initSeedsMenu()
+        {
+            GameObject MenuInv = this.GUI.ChildByName("MenuSeeds");
+            var Items = MenuInv.Children.Where(x => x.Name == "SeedsSquare").ToList();
+            //init local pos
             for (int i = 0; i < Ops.countInv; i++)
             {
-                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextCountColor;
-                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
-                text.ColorTint = Ops.TextCostColor;
+                float k1 = 1.0f / 4;
+                float k2 = 1.0f / 2;
+                float k3 = 1.0f / 4;
+                GameObject newSquare = Items[i];
+                float wid = Ops.GUIWid;
+                Log.Game.Write("Q");
+                //fon
+                SpriteRenderer fonSqr = newSquare.ChildByName("fon").GetComponent<SpriteRenderer>();
+                fonSqr.Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
+                newSquare.ChildByName("fon").Transform.MoveTo(Vector3.Zero);
+                //Icon
+                AnimSpriteRenderer icon = newSquare.ChildByName("Icon").GetComponent<AnimSpriteRenderer>();
+                icon.Rect = new Rect(-wid * k2 / 2, -wid * k2 / 2, wid * k2, wid * k2);
+                newSquare.ChildByName("Icon").Transform.MoveTo(new Vector3(0, 0, 0));
+                icon.AnimFirstFrame = i;
+                //Name
+                GameObject name = newSquare.ChildByName("Name");
+                TextRenderer nameText = name.GetComponent<TextRenderer>();
+                nameText.Text.SourceText = Ops.getNamePlant(i);
+                name.Transform.MoveTo(new Vector3(0, -wid / 2 + wid * k1 / 2, 0));
+                nameText.ColorTint = Ops.TextNameColor;
+                Vector2 rectName = new Vector2(wid, wid * k1) * 9 / 10;
+                name.Transform.Scale = Ops.getTextScale(nameText, rectName);
+                //Cost
+                GameObject cost = newSquare.ChildByName("Cost");
+                TextRenderer costText = cost.GetComponent<TextRenderer>();
+                costText.Text.SourceText = "$ " + this.Inv.SellCosts[i];
+                cost.Transform.MoveTo(new Vector3(0, wid * k2 - wid * k3 / 2, 0));
+                costText.ColorTint = Ops.TextCostColor;
+                Vector2 rectCost = new Vector2(wid, wid * k3) * 9 / 10;
+                cost.Transform.Scale = Ops.getTextScale(costText, rectCost);
             }
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            //init Back renderer
+            SpriteRenderer menuBackFon = MenuInv.ChildByName("MenuBackground").GetComponent<SpriteRenderer>();
+            Vector2 size = menuBackFon.SharedMaterial.Res.MainTexture.Res.Size;
+            float scale = MainCamera.GetScaleAtZ(z);
+            float newhei = WinHeight / scale;
+            float newwid = newhei * size.X / size.Y;
+            menuBackFon.Rect = new Rect(-newwid / 2.0f, -newhei / 2.0f, newwid, newhei);
+            //init choose
+            float w = Ops.GUIWid;
+            MenuInv.ChildByName("choose").GetComponent<SpriteRenderer>().Rect = new Rect(-w/2,-w/2,w,w);
         }
         private void initPlayer()
         {
-            this.GUI.ChildByName("MenuInv").Active = false;
+            this.GUI.ChildByName("MenuShop").Active = false;
+            this.GUI.ChildByName("MenuSeeds").Active = false;
             this.CurrSeed = -1;
             this.State = GameStates.game;
             SquarePrefab = new ContentRef<Prefab>(null, "Data/Prefabs/ItemIcon.Prefab.res");
@@ -285,6 +333,12 @@ namespace Ferma
             saved.GetComponent<TextRenderer>().ColorTint = new ColorRgba(250,255,0,255);
         }
 
+        private void updateExp()
+        {
+            //update pos
+            Vector3 pos = new Vector3(WinWidth/2,Ops.DistFromScreen,0);
+            this.GUI.ChildByName("InGame").ChildByName("Pers").ChildByName("Exp").Transform.MoveTo(pos);
+        }
         private void updateField()
         {
             if (!this.timerField.IsRunning)
@@ -299,23 +353,32 @@ namespace Ferma
         }
         private void updateShopMenu()
         {
+            //update local pos
             float z = Ops.DistFromGUI - Ops.CamDist;
-            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
-            var Items = GameObj.ParentScene.FindGameObjects("Item").Where(x => x.Active).ToList();
-            //update pos
-            Vector3 newPos = new Vector3(MainCamera.GameObj.Transform.Pos.Xy, 0);
-            MenuInv.Transform.MoveTo(newPos);
+            float Picwid = Ops.GUIWid;
+            GameObject MenuInv = this.GUI.ChildByName("MenuShop");
+            var Items = GameObj.ParentScene.FindGameObjects("ShopSquare").Where(x => x.Active).ToList();
+
+            float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            float top = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            for (int ii = 0; ii < Ops.countInv; ii++)
+            {
+                GameObject newSquare = Items[ii];
+                Vector3 ShiftSquareIcon = new Vector3((ii % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (ii / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, Ops.DistFromGUI);
+                Vector3 pos = MainCamera.GameObj.Transform.Pos + ShiftSquareIcon;
+                newSquare.Transform.MoveTo(pos);
+            }
             //update mouse
             Vector3 mousePos = MainCamera.GetSpaceCoord(new Vector3(DualityApp.Mouse.Pos, z));
             int i;
             for (i = 0; i < Ops.countInv; i++)
             {
-                GameObject Square = Items[i].ChildByName("Icon");
-                Rect rect = Square.GetComponent<AnimSpriteRenderer>().Rect;
+                GameObject Square = Items[i].ChildByName("fon");
+                Rect rect = Square.GetComponent<SpriteRenderer>().Rect;
                 Transform pos = Square.Transform;
                 if (isPointInRect(mousePos, pos.Pos, rect))
                 {
-                    Square.GetComponent<AnimSpriteRenderer>().ColorTint = this.IconsColor;
+                    Square.GetComponent<SpriteRenderer>().ColorTint = Ops.IconsColor;
                     if (DualityApp.Mouse.ButtonPressed(MouseButton.Left) && timerSell.ElapsedMilliseconds > 100)
                     {
                         timerSell.Restart();
@@ -323,36 +386,31 @@ namespace Ferma
                     }
                 }
                 else
-                    Square.GetComponent<AnimSpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
+                    Square.GetComponent<SpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
             }
-            //update posChoose
-            GameObject choose = MenuInv.ChildByName("choose");
-            if (this.CurrSeed != -1)
-                choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.AllGroups;
-            else
-                choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.None;
-            float Picwid = Ops.GUIWid;
-            i = this.CurrSeed;
-            float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
-            float top = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
-            Vector3 shiftChoose = new Vector3((i % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (i / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, z);
-            MenuInv.ChildByName("choose").Transform.MoveTo(shiftChoose);
             //update Text text
             for (i = 0; i < Ops.countInv; i++)
             {
-                //text
-                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.Text.SourceText = this.Inv.Items[i].ToString();
-                //textcost
-                text = Items[i].ChildByName("TextCost").GetComponent<TextRenderer>();
-                text.Text.SourceText = this.Inv.SellCosts[i].ToString();
+                GameObject newSquare = Items[i];
+                //Count
+                GameObject count = newSquare.ChildByName("Count");
+                TextRenderer countText = count.GetComponent<TextRenderer>();
+                countText.Text.SourceText = "X " + this.Inv.Items[i];
+                //Cost
+                GameObject cost = newSquare.ChildByName("Cost");
+                TextRenderer costText = cost.GetComponent<TextRenderer>();
+                costText.Text.SourceText = "$ " + this.Inv.SellCosts[i];
             }
+            //update BackGround pos
+            MenuInv.ChildByName("MenuBackground").Transform.MoveTo(MainCamera.GameObj.Transform.Pos + new Vector3(0,0,Ops.DistFromBack));
         }
         private void updateMoney()
         {
+            GameObject saved = this.GUI.ChildByName("InGame").ChildByName("saved");
+            //update value
+            saved.GetComponent<TextRenderer>().Text.SourceText = this.Money + "";
             //updatepos
             float z = Ops.DistFromGUI - Ops.CamDist;
-            GameObject saved = this.GUI.ChildByName("InGame").ChildByName("saved");
             TextRenderer savedText = saved.GetComponent<TextRenderer>();
             Transform savedPos = saved.Transform;
             float picwid = 80.0f;
@@ -365,14 +423,17 @@ namespace Ferma
             Vector3 shift = new Vector3(-picwid/2  - dist, -pichei/2  + dist, 0);
             //Vector3 shift = new Vector3(-picwid,-pichei,0);
             savedPos.MoveTo(BottomRight+shift);
-            //Log.Game.Write(shift+"");
-            //update value
-            saved.GetComponent<TextRenderer>().Text.SourceText = this.Money + "";
+        }
+        private void updateInGameGUI()
+        {
+            updateArm();
+            updateMoney();
+            updateExp();
         }
         private void updateArm()
         {
             float z = Ops.DistFromGUI - Ops.CamDist;
-            GameObject Arm = this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").ChildByName("Arm");
+            GameObject Arm = GUI.ChildByName("InGame").ChildByName("Arm");
             Transform ArmPos = Arm.Transform;
             List<string> a = new List<string>();
             foreach (var i in Enum.GetValues(typeof(ArmPlayer)))
@@ -380,8 +441,8 @@ namespace Ferma
                 a.Add(i.ToString());
             }
             int countItems = a.Count;
-            float picwid = Ops.GUIWid * countItems;
-            float pichei = Ops.GUIWid;
+            float picwid = Ops.GUIArmPlayerWid * countItems;
+            float pichei = Ops.GUIArmPlayerWid;
             float dist = PicToCoord(Ops.DistFromScreen, z);
             //update ArmPos
             Vector3 TopRight = camAreaTopRight(z);
@@ -405,7 +466,7 @@ namespace Ferma
             //update ChoosePos
             GameObject ArmRamka = Arm.ChildByName("choosen");
             int ind = (int)this.Arm;
-            float wid = Ops.GUIWid;
+            float wid = Ops.GUIArmPlayerWid;
             Vector3 shiftArmRamka = new Vector3(ind * wid - (countItems - 1) * wid / 2, 0, 0);
             ArmRamka.Transform.MoveTo(shiftArmRamka);
         }
@@ -444,7 +505,7 @@ namespace Ferma
                 Transform pos = Square.Transform;
                 if (isPointInRect(mousePos, pos.Pos, rect))
                 {
-                    Square.GetComponent<SpriteRenderer>().ColorTint = this.IconsColor;
+                    Square.GetComponent<SpriteRenderer>().ColorTint = Ops.IconsColor;
                     if (DualityApp.Mouse.ButtonPressed(MouseButton.Left))
                     {
                         this.Arm = Ops.strToArm(Items[i].Name);
@@ -462,9 +523,29 @@ namespace Ferma
                 TilemapRenderer tilemapRenderer = TilemapRendererInScene;
                 Vector2 localPos = this.Character.Target;
                 Point2 tilePos = tilemapRenderer.GetTileAtLocalPos(localPos, TilePickMode.Reject);
+                bool worked = false;
                 if (this.Arm != ArmPlayer.seeds || (this.Arm == ArmPlayer.seeds && this.CurrSeed != -1 && this.Money >= this.Inv.Costs[this.CurrSeed]))
-                if (this.MapControl.Update(tilePos.X, tilePos.Y, this.Arm, this.CurrSeed))
-                    this.Money -= this.Inv.Costs[this.CurrSeed];
+                {
+                    worked = this.MapControl.Update(tilePos.X, tilePos.Y, this.Arm, this.CurrSeed);
+                    if (worked && this.Arm == ArmPlayer.seeds)
+                        this.Money -= this.Inv.Costs[this.CurrSeed];
+                }
+                if (worked)
+                {
+                    if(this.Arm == ArmPlayer.arm)
+                    {
+                        addExp(Ops.getExpPut(this.lvl,this.MapControl.IdTaked/Ops.TileSetWidth));
+                    }else
+                    if (this.Arm == ArmPlayer.seeds)
+                    {
+                        addExp(Ops.getExpSeed(lvl,this.CurrSeed));
+                    }
+                    else
+                    if (this.Arm != ArmPlayer.arrow)
+                    {
+                        addExp(Ops.getExpWork(lvl));
+                    }
+                } 
                 this.Character.IsGoed = false;
             }             if (this.MapControl.IsTaked)
             {
@@ -472,30 +553,41 @@ namespace Ferma
                 this.MapControl.IsTaked = false;
             }
         }
-        private void updateInvMenu()
+        private void updateSeedsMenu()
         {
+            //update local pos
             float z = Ops.DistFromGUI - Ops.CamDist;
-            GameObject MenuInv = this.GUI.ChildByName("MenuInv");
-            var Items = GameObj.ParentScene.FindGameObjects("Item").Where(x => x.Active).ToList();
-            //update pos
-            Vector3 newPos = new Vector3(MainCamera.GameObj.Transform.Pos.Xy, 0);
-            MenuInv.Transform.MoveTo(newPos);
+            float Picwid = Ops.GUIWid;
+            GameObject MenuInv = this.GUI.ChildByName("MenuSeeds");
+            var Items = GameObj.ParentScene.FindGameObjects("SeedsSquare").Where(x => x.Active).ToList();
+            float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            float top = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            for (int ii = 0; ii < Ops.countInv; ii++)
+            {
+                GameObject newSquare = Items[ii];
+                Vector3 ShiftSquareIcon = new Vector3((ii % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (ii / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, Ops.DistFromGUI);
+                Vector3 pos = MainCamera.GameObj.Transform.Pos + ShiftSquareIcon;
+                newSquare.Transform.MoveTo(pos);
+            }
             //update mouse
             Vector3 mousePos = MainCamera.GetSpaceCoord(new Vector3(DualityApp.Mouse.Pos, z));
             int i;
             for (i = 0; i < Ops.countInv; i++)
             {
-                GameObject Square = Items[i].ChildByName("Icon");
-                Rect rect = Square.GetComponent<AnimSpriteRenderer>().Rect;
+                GameObject Square = Items[i].ChildByName("fon");
+                Rect rect = Square.GetComponent<SpriteRenderer>().Rect;
                 Transform pos = Square.Transform;
                 if (isPointInRect(mousePos, pos.Pos, rect))
                 {
-                    Square.GetComponent<AnimSpriteRenderer>().ColorTint = this.IconsColor;
+                    Square.GetComponent<SpriteRenderer>().ColorTint = Ops.IconsColor;
                     if (DualityApp.Mouse.ButtonPressed(MouseButton.Left))
+                    {
                         this.CurrSeed = i;
+                        isIgnoreMouse = true;
+                    }
                 }
                 else
-                    Square.GetComponent<AnimSpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
+                    Square.GetComponent<SpriteRenderer>().ColorTint = new ColorRgba(255, 255, 255, 255);
             }
             //update posChoose
             GameObject choose = MenuInv.ChildByName("choose");
@@ -503,19 +595,24 @@ namespace Ferma
                 choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.AllGroups;
             else
                 choose.GetComponent<SpriteRenderer>().VisibilityGroup = VisibilityFlag.None;
-            float Picwid = Ops.GUIWid;
-            i = this.CurrSeed;
-            float left = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
-            float top = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
-            Vector3 shiftChoose = new Vector3((i % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + left, (i / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + top, z);
-            MenuInv.ChildByName("choose").Transform.MoveTo(shiftChoose);
+            int ci = this.CurrSeed;
+            float cleft = -(Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            float ctop = -(Ops.countInv / Ops.InvWid - 1) * (Picwid + PicToCoord(Ops.InvDist, z)) / 2;
+            Vector3 shiftChoose = new Vector3((ci % Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + cleft, (ci / Ops.InvWid) * (Picwid + PicToCoord(Ops.InvDist, z)) + ctop, Ops.DistFromGUI);
+            choose.Transform.MoveTo(MainCamera.GameObj.Transform.Pos + shiftChoose);
             //update Text text
             for (i = 0; i < Ops.countInv; i++)
             {
-                TextRenderer text = Items[i].ChildByName("Text").GetComponent<TextRenderer>();
-                text.Text.SourceText = this.Inv.Costs[i].ToString();
+                GameObject newSquare = Items[i];
+                //Cost
+                GameObject cost = newSquare.ChildByName("Cost");
+                TextRenderer costText = cost.GetComponent<TextRenderer>();
+                costText.Text.SourceText = "$ " + this.Inv.SellCosts[i];
             }
+            //update back pos
+            MenuInv.ChildByName("MenuBackground").Transform.MoveTo(MainCamera.GameObj.Transform.Pos + new Vector3(0,0,Ops.DistFromBack));
         }
+
         private void debug()
         {
             Log.Game.Write(Ops.Today());
@@ -531,17 +628,16 @@ namespace Ferma
             }             if (this.State == GameStates.inv)
             {
                 updateField();
-                updateInvMenu();
+                updateSeedsMenu();
                 if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
-                    UNshowInvMenu();
+                    UNshowSeedsMenu();
                 }
             }
             else             if (this.State == GameStates.game)
             {
                 updateField();
-                updateArm();
-                updateMoney();
+                updateInGameGUI();
                 if (!this.isIgnoreMouse && DualityApp.Mouse.ButtonHit(MouseButton.Left))
                 {
                     updateMouseGameGUI();
@@ -549,7 +645,7 @@ namespace Ferma
                 }
                 if (DualityApp.Keyboard.KeyHit(Ops.KeyInv))
                 {
-                    ShowInvMenu();
+                    ShowSeedsMenu();
                 }
                 if (DualityApp.Keyboard.KeyHit(Ops.KeyShop))
                 {
@@ -560,6 +656,7 @@ namespace Ferma
             }             else if(this.State == GameStates.shop)
             {
                 updateShopMenu();
+                updateField();
                 if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
                     UNshowShopMenu();
@@ -581,7 +678,8 @@ namespace Ferma
             this.timerField = new Stopwatch();
             Load();
             initPlayer();
-            initInvMenu();
+            initShopMenu();
+            initSeedsMenu();
             initArm();
             initMoney();
         }
