@@ -9,7 +9,7 @@ namespace Ferma
         private int WinWidth => (int)DualityApp.TargetResolution.X;
         private int WinHeight => (int)DualityApp.TargetResolution.Y;
 
-        private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI",false);         private GameObject MainCharacter => this.GameObj.ParentScene.FindGameObject("MainCharacter", false);         private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu", false);         private GameObject Map => this.GameObj.ParentScene.FindGameObject("Map", false);         private GameObject Player => this.GameObj.ParentScene.FindGameObject("PlayerControl", false);          private Stopwatch timerSell;         private int passedMill = 0;         public Stopwatch timerField {get;set; }         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
+        private GameObject GUI => this.GameObj.ParentScene.FindGameObject("GUI",false);         private GameObject MainCharacter => this.GameObj.ParentScene.FindGameObject("MainCharacter", false);         private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu", false);         private GameObject Map => this.GameObj.ParentScene.FindGameObject("Map", false);         private GameObject Player => this.GameObj.ParentScene.FindGameObject("Player", false);          private Stopwatch timerSell;         private int passedMill = 0;         public Stopwatch timerField {get;set; }         private Inventory inv = new Inventory();         public ContentRef<Prefab> SquarePrefab { get; set; }         public int CurrSeed { get; set; }
         public ulong exp { get; set; }
         public int lvl { get; set; }
 
@@ -279,7 +279,6 @@ namespace Ferma
                 float k3 = 1.0f / 4;
                 GameObject newSquare = Items[i];
                 float wid = Ops.GUIWid;
-                Log.Game.Write("Q");
                 //fon
                 SpriteRenderer fonSqr = newSquare.ChildByName("fon").GetComponent<SpriteRenderer>();
                 fonSqr.Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
