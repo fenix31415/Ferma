@@ -20,6 +20,7 @@ namespace Ferma
             this.GameObj.ParentScene.FindGameObject("MainCharacter", false).Active = true;
             this.GameObj.ParentScene.FindGameObject("Map", false).Active = true;
             this.GameObj.ParentScene.FindGameObject("Player", false).Active = true;
+            this.GameObj.ParentScene.FindComponent<PlayerControl>().initArm();
             //this.GameObj.ParentScene.FindGameObject("Player").GetComponent<Player>().isIgnoreMouse = true;
 
 
@@ -34,9 +35,12 @@ namespace Ferma
     [RequiredComponent(typeof(Camera))]
     public class EventMenuController : MenuController, ICmpInitializable
     {
-        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();         private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu");
+        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();
+        private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu");
         private int WinWidth => (int)DualityApp.TargetResolution.X;
-        private int WinHeight => (int)DualityApp.TargetResolution.Y;          [DontSerialize]
+        private int WinHeight => (int)DualityApp.TargetResolution.Y;
+
+        [DontSerialize]
         private EventHandler<Duality.Input.MouseMoveEventArgs> mouseMove;
         [DontSerialize]
         private EventHandler<Duality.Input.MouseButtonEventArgs> buttonDown;
@@ -160,7 +164,11 @@ namespace Ferma
                 DualityApp.Mouse.ButtonDown -= buttonDown;
             }
         }
-        private Vector3 GetWorldCoordOfMouse(float z)         {             Vector3 mouseScreenPos = new Vector3(DualityApp.Mouse.Pos, z);             return MainCamera.GetSpaceCoord(mouseScreenPos);         }
+        private Vector3 GetWorldCoordOfMouse(float z)
+        {
+            Vector3 mouseScreenPos = new Vector3(DualityApp.Mouse.Pos, z);
+            return MainCamera.GetSpaceCoord(mouseScreenPos);
+        }
         void Mouse_Move(object sender, Duality.Input.MouseMoveEventArgs e)
         {
             mousePosition.X = e.X;

@@ -1,5 +1,17 @@
 ﻿using System;
-using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.Editor; using Duality.Plugins.Tilemaps;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using Duality.Resources;
+using Duality.Plugins.Tilemaps.Properties;
+using Duality.Components.Renderers;
+using Duality.Drawing;
+using Duality.Components;
+using Duality.Input;
+using Duality.Components.Physics;
+using Duality;
+using Duality.Editor;
+using Duality.Plugins.Tilemaps;
 using System.Diagnostics;
 using System.Net.Cache;
 using System.Net;
@@ -20,6 +32,9 @@ namespace Ferma
 {
     public class Ops
     {
+        public static bool isInet = false;
+        public static float RPlayer = 5;
+
         public const int countInv = 20;
         public const int MapWidth = 32;
         public const int MapHeigth = 20;
@@ -36,6 +51,7 @@ namespace Ferma
         public static ColorRgba TextNameColor = new ColorRgba(0, 100, 0, 255);
         public static ColorRgba IconsColor = new ColorRgba(212,255,56);
         public static ColorRgba LvlTextColor = new ColorRgba(212, 255, 56);
+        public static ColorRgba AvaliableTextColor = new ColorRgba(220, 220, 220);
 
         public const int IdGrass = 325;
         public const int IdBed = 345;
@@ -46,8 +62,9 @@ namespace Ferma
         public const float DistFromScreen = 5;
         public const int InvWid = 5;
         public const int InvHei = 4;
+        public const int ArmCountItems = 6;
         public const float GUIWid = 25;
-        public const float GUIArmPlayerWid = 13*2/3;
+        public const float GUIArmPlayerWid = 10;
         public const float InvDist = 9;
         public const float DistFromBack = 110;
         public const float DistFromGUI = 100;
@@ -62,9 +79,18 @@ namespace Ferma
         public const Key KeySave = Key.ControlLeft;
         public const Key KeyLoad = Key.ShiftLeft;
         public const Key KeyMainMenu = Key.Escape;
-        public const Key KeyShop = Key.N;
-        public const Key KeyInv = Key.M;
+        public const Key KeyMarket = Key.N;
+        public const Key KeySeedsShop = Key.M;
 
+        public static int getLvlAvailable(int id)
+        {
+            if (id == 0 || id == 1) return 0;
+            return 10;
+        }
+        public static bool isAvailable(int id, int lvl)
+        {
+            return lvl >= getLvlAvailable(id);
+        }
         public static float getTextScale(TextRenderer t,Vector2 v)
         {
             float w = v.X;
@@ -282,6 +308,8 @@ namespace Ferma
         }
         public static string Today()
         {
+            if(!isInet)
+                return "08.11.1999";
             bool net = false;
             try
             {
@@ -295,18 +323,26 @@ namespace Ferma
             }
             if (net)
             {
-                // http://api.timezonedb.com/v2/get-time-zone?key=SUT8ZDOPS3X2&format=json&by=zone&zone=Europe/London
-                WebRequest wrGETURL;
-                wrGETURL = WebRequest.Create("http://api.timezonedb.com/v2/get-time-zone?key=SUT8ZDOPS3X2&format=json&by=zone&zone=Europe/London");
-                var objStream = wrGETURL.GetResponse().GetResponseStream();
-                var objReader = new StreamReader(objStream);
-                string json = objReader.ReadLine();
-                //var prprp = JsonConvert.DeserializeAnonymousType(json, prprp);
-                int ind = json.IndexOf("formatted");
-                string s = json.Substring(ind+12,19);
-                return s;
+                try
+                {
+                    // http://api.timezonedb.com/v2/get-time-zone?key=SUT8ZDOPS3X2&format=json&by=zone&zone=Europe/London
+                    WebRequest wrGETURL;
+                    wrGETURL = WebRequest.Create("http://api.timezonedb.com/v2/get-time-zone?key=SUT8ZDOPS3X2&format=json&by=zone&zone=Europe/London");
+                    var objStream = wrGETURL.GetResponse().GetResponseStream();
+                    var objReader = new StreamReader(objStream);
+                    string json = objReader.ReadLine();
+                    //var prprp = JsonConvert.DeserializeAnonymousType(json, prprp);
+                    int ind = json.IndexOf("formatted");
+                    string s = json.Substring(ind + 12, 19);
+                    return s;
+                }
+                catch
+                {
+                    return "08.11.1999";
+                }
+                
             }
-            return "";
+            return "08.11.1999";
         }
     }
 }
