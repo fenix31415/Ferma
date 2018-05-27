@@ -16,14 +16,11 @@ namespace Ferma
         {
             base.DoAction();
             this.GameObj.ParentScene.FindGameObject("MainMenu").Active = false;
-            this.GameObj.ParentScene.FindGameObject("GUI", false).Active = true;
-            this.GameObj.ParentScene.FindGameObject("MainCharacter", false).Active = true;
+            this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").Active = true;
+            this.GameObj.ParentScene.FindGameObject("Game").ChildByName("MainCharacter").Active = true;
             this.GameObj.ParentScene.FindGameObject("Map", false).Active = true;
-            this.GameObj.ParentScene.FindGameObject("Player", false).Active = true;
-            this.GameObj.ParentScene.FindComponent<PlayerControl>().initArm();
-            //this.GameObj.ParentScene.FindGameObject("Player").GetComponent<Player>().isIgnoreMouse = true;
-
-
+            this.GameObj.ParentScene.FindGameObject("Game").ChildByName("Player").Active = true;
+            this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").GetComponent<InGameGUI>().Init();
         }
     }
     /// <summary>
@@ -35,9 +32,8 @@ namespace Ferma
     [RequiredComponent(typeof(Camera))]
     public class EventMenuController : MenuController, ICmpInitializable
     {
-        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();
+        private Camera MainCamera => this.GameObj.GetComponent<Camera>();
         private GameObject MainMenu => this.GameObj.ParentScene.FindGameObject("MainMenu");
-        private int WinWidth => (int)DualityApp.TargetResolution.X;
         private int WinHeight => (int)DualityApp.TargetResolution.Y;
 
         [DontSerialize]
@@ -268,59 +264,6 @@ namespace Ferma
             this.currentMenu = page;
         }
     }
-    //[RequiredComponent(typeof(Camera))]
-    //public class UpdateMenuController : MenuController, ICmpUpdatable
-    //{
-    //    [DontSerialize]
-    //    private Vector2 mousePosition;
-    //    [DontSerialize]
-    //    private MenuComponent currentComponent;
-    //
-    //    void ICmpUpdatable.OnUpdate()
-    //    {
-    //        // No menus currently active? Switch to StartingMenu - this is checked everytime
-    //        if (this.currentMenu == null)
-    //        {
-    //            this.SwitchToMenu(this.StartingMenu);
-    //        }
-    //
-    //        mousePosition.X = DualityApp.Mouse.X;
-    //        mousePosition.Y = DualityApp.Mouse.Y;
-    //
-    //        // check all MenuComponents under the mouse and sort them by Z,
-    //        // to find the one nearest to the Camera
-    //        MenuComponent hoveredComponent = this.GameObj.ParentScene.FindComponents<MenuComponent>()
-    //            .Where(mc => mc.GameObj.Active && mc.GetAreaOnScreen().Contains(mousePosition))
-    //            .OrderBy(mc => mc.GameObj.Transform.Pos.Z)
-    //            .FirstOrDefault();
-    //
-    //        // I found my hovered menu component.. is it different from the current one?
-    //        if (hoveredComponent != currentComponent)
-    //        {
-    //            // if the old one is not null, leave it.
-    //            if (currentComponent != null)
-    //            {
-    //                currentComponent.MouseLeave();
-    //            }
-    //
-    //            // if the new one is not null, enter it.
-    //            if (hoveredComponent != null)
-    //            {
-    //                hoveredComponent.MouseEnter();
-    //            }
-    //        }
-    //
-    //
-    //        // set the current component to the hovered one.
-    //        currentComponent = hoveredComponent;
-    //
-    //        // did I click the left button and am I hovering a component? do something!
-    //        if (DualityApp.Mouse.ButtonHit(Duality.Input.MouseButton.Left) && currentComponent != null)
-    //        {
-    //            currentComponent.DoAction();
-    //        }
-    //    }
-    //}
     [RequiredComponent(typeof(SpriteRenderer))]
     public abstract class MenuComponent : Component, ICmpUpdatable
     {

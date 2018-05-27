@@ -72,14 +72,14 @@
     <Compile Include="AnimDirMapping.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="CameraControl.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="InGameGUI.cs" />
     <Compile Include="Menu.cs" />
-    <Compile Include="MouseControl.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="MapControl.cs" />
     <Compile Include="PlayerControl.cs" />
     <Compile Include="CorePlugin.cs" />
-    <Compile Include="ProgressBarRenderer.cs" />
     <Compile Include="Properties\ErrorHandlers.cs" />
     <Compile Include="CharacterControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

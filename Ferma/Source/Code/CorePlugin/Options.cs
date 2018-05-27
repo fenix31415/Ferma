@@ -35,7 +35,7 @@ namespace Ferma
         public static bool isInet = false;
         public static float RPlayer = 5;
 
-        public const int countInv = 20;
+        public const int countInv = 26;
         public const int MapWidth = 32;
         public const int MapHeigth = 20;
         public const int TileSetWidth = 20;
@@ -59,11 +59,11 @@ namespace Ferma
         public const int IdVoid = 105;
         public const int IdDied = 349;
 
-        public const float DistFromScreen = 5;
+        public const float DistFromScreen = 0.2f;
         public const int InvWid = 5;
-        public const int InvHei = 4;
+        public const int InvHei = 3;
         public const int ArmCountItems = 6;
-        public const float GUIWid = 25;
+        public const float GUIWid = 90;
         public const float GUIArmPlayerWid = 10;
         public const float InvDist = 9;
         public const float DistFromBack = 110;
@@ -71,6 +71,7 @@ namespace Ferma
         public const float MainButtonWid = 100;
         public const float MainButtonHei = 15;
         public const float MainButtonDist = 30;
+        public const float ShopMenuButtonsWid = 40;
 
         public const string MapPath = "MapSave.txt";
         public const string PlayerPath = "PlayerSave.txt";
@@ -78,9 +79,13 @@ namespace Ferma
         
         public const Key KeySave = Key.ControlLeft;
         public const Key KeyLoad = Key.ShiftLeft;
-        public const Key KeyMainMenu = Key.Escape;
+        public const Key KeyMainMenu = Key.BackSpace;
         public const Key KeyMarket = Key.N;
         public const Key KeySeedsShop = Key.M;
+
+        private static int[] CostSeed;
+        private static int[] CostProduct;
+        private static string[] PlantsNames;
 
         public static int getLvlAvailable(int id)
         {
@@ -300,11 +305,45 @@ namespace Ferma
         }
         public static int getCostSeed(int ind)
         {
-            return 1;
+            if(CostSeed!=null)
+                return CostSeed[ind];
+            CostSeed = new int[countInv];
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string q = "";
+            int i = 0;
+            StreamReader sr = new StreamReader(path + "BaseSeedCost.txt");
+            while (q != null)
+            {
+                q = sr.ReadLine();
+                if (q != null)
+                {
+                    CostSeed[i] = int.Parse(q);
+                    ++i;
+                }
+            }
+            sr.Close();
+            return CostSeed[ind];
         }
         public static int getCostProduct(int ind)
         {
-            return 2;
+            if (CostProduct != null)
+                return CostProduct[ind];
+            CostProduct = new int[countInv];
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string q = "";
+            int i = 0;
+            StreamReader sr = new StreamReader(path + "BaseProductCost.txt");
+            while (q != null)
+            {
+                q = sr.ReadLine();
+                if (q != null)
+                {
+                    CostProduct[i] = int.Parse(q);
+                    ++i;
+                }
+            }
+            sr.Close();
+            return CostProduct[ind];
         }
         public static string Today()
         {

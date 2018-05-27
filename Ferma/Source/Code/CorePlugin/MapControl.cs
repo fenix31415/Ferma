@@ -1,4 +1,18 @@
-﻿using System; using System.Collections.Generic; using System.Linq; using System.IO; using Duality.Resources; using Duality.Plugins.Tilemaps.Properties; using Duality.Components.Renderers; using Duality.Drawing; using Duality.Components; using Duality.Input; using Duality.Components.Physics; using Duality; using Duality.IO; using Duality.Editor; using Duality.Plugins.Tilemaps;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using Duality.Resources;
+using Duality.Plugins.Tilemaps.Properties;
+using Duality.Components.Renderers;
+using Duality.Drawing;
+using Duality.Components;
+using Duality.Input;
+using Duality.Components.Physics;
+using Duality;
+using Duality.IO;
+using Duality.Editor;
+using Duality.Plugins.Tilemaps;
 
 namespace Ferma
 {
@@ -11,7 +25,10 @@ namespace Ferma
         private bool isTaked = false;
         private int idTaked;
 
-        private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();         private Tilemap BaseLayer => this.GameObj.ParentScene.FindGameObject("BaseLayer").GetComponent<Tilemap>();         private Tilemap TopLayer => this.GameObj.ParentScene.FindGameObject("TopLayer").GetComponent<Tilemap>();         private Tilemap UpperLayer => this.GameObj.ParentScene.FindGameObject("UpperLayer").GetComponent<Tilemap>();
+        private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
+        private Tilemap BaseLayer => this.GameObj.ParentScene.FindGameObject("BaseLayer").GetComponent<Tilemap>();
+        private Tilemap TopLayer => this.GameObj.ParentScene.FindGameObject("TopLayer").GetComponent<Tilemap>();
+        private Tilemap UpperLayer => this.GameObj.ParentScene.FindGameObject("UpperLayer").GetComponent<Tilemap>();
 
         public bool IsTaked
         {

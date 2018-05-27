@@ -11,23 +11,11 @@ using System.Threading.Tasks;
 
 namespace Ferma
 {
-    public class ArmButton:Button
-    {
-        public override void DoAction()
-        {
-            base.DoAction();
-            this.GameObj.ParentScene.FindGameObject("Player").GetComponent<PlayerControl>().isIgnoreMouse = true;
-            ArmPlayer newArm = (ArmPlayer)index;
-            this.GameObj.ParentScene.FindGameObject("Player").GetComponent<PlayerControl>().QUE.Enqueue(new Command("ChooseArm", Vector2.Zero, newArm));
-        }
-    }
-
+    [RequiredComponent(typeof(Camera))]
     public class EventButtonController :Component, ICmpInitializable
     {
-        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();
-        //private int WinWidth => (int)DualityApp.TargetResolution.X;
-        //private int WinHeight => (int)DualityApp.TargetResolution.Y;
-
+        private Camera MainCamera => this.GameObj.GetComponent<Camera>();
+        
         [DontSerialize]
         private EventHandler<Duality.Input.MouseMoveEventArgs> mouseMove;
         [DontSerialize]
@@ -100,7 +88,6 @@ namespace Ferma
     [RequiredComponent(typeof(SpriteRenderer))]
     public class Button : Component
     {
-        private Camera MainCamera => this.GameObj.ParentScene.FindComponent<Camera>();
         public Rect Bounds { get; set; }
         private SpriteRenderer Sprite => this.GameObj.GetComponent<SpriteRenderer>();
         public ColorRgba HoverTint { get; set; } = new ColorRgba(0, 255, 255, 255);

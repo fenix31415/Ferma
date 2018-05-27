@@ -13,23 +13,43 @@ using Duality.Plugins.Tilemaps.Properties;
 
 namespace Ferma
 {
+    [RequiredComponent(typeof(Camera))]
     public class CameraController : Component, ICmpUpdatable, ICmpInitializable
     {
-        private float smoothness = 1.0f;
         private GameObject targetObj = null;
         private Stopwatch CameraTimer;
 
         public Camera MainCamera { get; set; }
-        public float Smoothness
+        public float Smoothness { get; set; }
+        public GameObject TargetObject { get; set; }
+
+        public float PicToCoord(float len, float z)
         {
-            get { return this.smoothness; }
-            set { this.smoothness = value; }
+            float scale = MainCamera.GetScaleAtZ(z);
+            return len * (DualityApp.TargetResolution.Y / scale / 500.0f);
         }
-        public GameObject TargetObject
+        public Vector3 AreaTopLeft(float z)
         {
-            get { return this.targetObj; }
-            set { this.targetObj = value; }
+            return MainCamera.GetSpaceCoord(new Vector3(0.0f, 0.0f, z));
         }
+        public Vector3 AreaBottomRight(float z)
+        {
+            return MainCamera.GetSpaceCoord(new Vector3(DualityApp.TargetResolution, z));
+        }
+        public Vector3 AreaTopRight(float z)
+        {
+            return MainCamera.GetSpaceCoord(new Vector3(DualityApp.TargetResolution.X, 0.0f, z));
+        }
+        public Vector3 AreaBottomLeft(float z)
+        {
+            return MainCamera.GetSpaceCoord(new Vector3(0.0f, DualityApp.TargetResolution.Y, z));
+        }
+        public Vector3 GetWorldCoordOfMouse(float z)
+        {
+            Vector3 mouseScreenPos = new Vector3(DualityApp.Mouse.Pos, z);
+            return MainCamera.GetSpaceCoord(mouseScreenPos);
+        }
+
 
         void ICmpUpdatable.OnUpdate()
         {
