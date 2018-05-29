@@ -55,6 +55,10 @@ namespace Ferma
         {
             if (this.targetObj == null || !this.targetObj.Active) return;
             if (this.targetObj.Transform == null) return;
+            if (this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().State != GameStates.game)
+            {
+                return;
+            }
             Vector3 camAreaTopLeft = MainCamera.GetSpaceCoord(new Vector2(0.0f, 0.0f));
             Vector3 camAreaBottomRight = MainCamera.GetSpaceCoord(DualityApp.TargetResolution);
             int WinWidth = (int)DualityApp.TargetResolution.X;

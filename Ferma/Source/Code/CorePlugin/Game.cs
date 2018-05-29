@@ -17,26 +17,30 @@ namespace Ferma
 {
     public class Game:Component, ICmpUpdatable, ICmpInitializable
     {
-        public MapControl Map { get; set; }
         public PlayerControl Player { get; set; }
         public ShopMenuControl ShopMenu { get; set; }
         public InGameGUI GameGUI { get; set; }
         public CameraController MainCameraControl { get; set; }
         public bool isIgnoreMouse { get; set; }
+        public GameStates State { get; private set; }
 
         [DontSerialize]
         private EventHandler<MouseButtonEventArgs> buttonUp;
-        private Stopwatch timerSell;
-        private int passedMill = 0;
         private Stopwatch timerField;
-        private GameStates State;
+        private int passedMill = 0;
 
+        public void ChoosedSeed(int ind)
+        {
+            if (!this.ShopMenu.TryChoose(ind)) return;
+            this.Player.ChangeSeed(ind);
+            this.GameGUI.Arm.ChooseSeed(ind);
+        }
         public void Save()
         {
             using (Stream s = FileOp.Create(Ops.MapPath))
             using (StreamWriter sw = new StreamWriter(s))
             {
-                sw.WriteLine(Map.saveMap());
+                sw.WriteLine(this.Player.MapControl.saveMap());
             }
             using (Stream s = FileOp.Create(Ops.PlayerPath))
             using (StreamWriter sw = new StreamWriter(s))
@@ -49,13 +53,13 @@ namespace Ferma
             using (Stream s = FileOp.Create(Ops.MapTimePath))
             using (StreamWriter sw = new StreamWriter(s))
             {
-                sw.WriteLine(this.Map.saveTime());
+                sw.WriteLine(this.Player.MapControl.saveTime());
             }
         }
         public void Load()
         {
             int secPassed;
-            this.Map.LoadMap(Ops.MapPath);
+            this.Player.MapControl.LoadMap(Ops.MapPath);
 
             using (Stream s = FileOp.Open(Ops.PlayerPath, FileAccessMode.Read))
             using (StreamReader sr = new StreamReader(s))
@@ -77,9 +81,9 @@ namespace Ferma
                 ulong all = Ops.getMinExp(Player.lvl + 1) - 1;
                 GameGUI.Exp.updateExp(curr - oldall, all - oldall);
             }
-            this.Map.loadTime(Ops.MapTimePath);
+            this.Player.MapControl.loadTime(Ops.MapTimePath);
 
-            this.Map.addTime(secPassed);
+            this.Player.MapControl.addTime(secPassed);
         }
         public void ChangeArm(int index)
         {
@@ -100,7 +104,7 @@ namespace Ferma
             this.timerField.Restart();
             if (!this.timerField.IsRunning || passedMill / 1000 > 1)
             {
-                this.Map.addTime(passedMill / 1000);
+                this.Player.MapControl.addTime(passedMill / 1000);
                 passedMill -= 1000;
             }
         }
@@ -110,12 +114,17 @@ namespace Ferma
             GameGUI.Arm.GameObj.Active = false;
             ShopMenu.GameObj.Active = true;
             GameGUI.Exp.GameObj.Active = false;
-            ShopMenu.ShowSeedsMenu();
+            ShopMenu.ShowShopMenu();
+            ShopMenu.initSeedsText();
         }
         private void ShowShopMenu()
         {
-            //this.State = GameStates.market;
-            //this.timerSell.Start();
+            this.State = GameStates.market;
+            GameGUI.Arm.GameObj.Active = false;
+            ShopMenu.GameObj.Active = true;
+            GameGUI.Exp.GameObj.Active = false;
+            ShopMenu.ShowShopMenu();
+            ShopMenu.initShopText();
         }
         private void UNshowSeedsMenu()
         {
@@ -126,9 +135,10 @@ namespace Ferma
         }
         private void UNshowShopMenu()
         {
-            //this.State = GameStates.game;
-
-            //this.timerSell.Reset();
+            GameGUI.Arm.GameObj.Active = true;
+            this.State = GameStates.game;
+            GameGUI.Exp.GameObj.Active = true;
+            ShopMenu.GameObj.Active = false;
         }
         private void showMainMenu()
         {
@@ -136,7 +146,7 @@ namespace Ferma
             MainCameraControl.GameObj.Transform.MoveTo(new Vector3(0, 0, -Ops.CamDist));
             this.GameObj.ParentScene.FindGameObject("GUI", false).Active = false;
             Player.Character.Active = false;
-            Map.GameObj.Active = false;
+            Player.MapControl.GameObj.Active = false;
             Player.GameObj.Active = false;
         }
         private void updateKeysOtherGame()
@@ -194,7 +204,7 @@ namespace Ferma
                     this.Player.ClearQue();
                     ShowShopMenu();
                 }
-                this.GameGUI.GameObj.Transform.MoveTo(new Vector3(MainCameraControl.GameObj.Transform.Pos.Xy,Ops.DistFromGUI-Ops.CamDist));
+                this.GameGUI.UpDate();
                 Player.updateQUE();
                 updateKeysOtherGame();
             }
@@ -221,16 +231,17 @@ namespace Ferma
             this.isIgnoreMouse = true;
             buttonUp = new EventHandler<MouseButtonEventArgs>(Button_Up);
             DualityApp.Mouse.ButtonUp += buttonUp;
-            this.timerSell = new Stopwatch();
             this.timerField = new Stopwatch();
             //Load();
             if(Player != null)
                 Player.init();
             this.State = GameStates.game;
             if(ShopMenu != null)
-                ShopMenu.initSeedsMenu(Player.lvl);
-            if(GameGUI != null)
+                ShopMenu.initShopMenu(Player.lvl);
+            if (GameGUI != null)
+            {
                 GameGUI.Init();
+            }
         }
         void ICmpInitializable.OnShutdown(ShutdownContext context)
         {

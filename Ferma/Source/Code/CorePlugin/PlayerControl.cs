@@ -38,8 +38,8 @@ namespace Ferma
         public int lvl { get; set; }
         public MapControl MapControl { get; set; }
         public CharacterControl Character { get; set; }
+        public Inventory Inv { get; private set; }
 
-        private Inventory Inv;
         public int Money { get; set; }
         private Queue<Command> QUE;
         private ArmPlayer currentArm;
@@ -145,15 +145,18 @@ namespace Ferma
         {
             this.CurrSeed = ind;
         }
-
-        private void trySell(int ind)
+        public void trySell(int ind)
         {
             if (this.Inv.Items[ind] > 0)
             {
-                this.Money += Ops.getCostProduct(ind);
-                this.Inv.Items[ind] -= 1;
+                int cou = 1;
+                if (DualityApp.Keyboard.KeyPressed(Ops.KeyFastSell))
+                    cou = Math.Min(this.Inv.Items[ind], Ops.FastSellCount);
+                this.Money += cou * Ops.getCostProduct(ind);
+                this.Inv.Items[ind] -= cou;
             }
         }
+
         private void addExp(ulong exp)
         {
             this.exp += exp;

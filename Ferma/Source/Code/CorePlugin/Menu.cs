@@ -15,12 +15,15 @@ namespace Ferma
         public override void DoAction()
         {
             base.DoAction();
+            this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().isIgnoreMouse = true;
             this.GameObj.ParentScene.FindGameObject("MainMenu").Active = false;
-            this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").Active = true;
+            this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").ChildByName("Exp").Active = true;
             this.GameObj.ParentScene.FindGameObject("Game").ChildByName("MainCharacter").Active = true;
             this.GameObj.ParentScene.FindGameObject("Map", false).Active = true;
             this.GameObj.ParentScene.FindGameObject("Game").ChildByName("Player").Active = true;
-            this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").GetComponent<InGameGUI>().Init();
+            this.GameObj.ParentScene.FindGameObject("GUI").ChildByName("InGame").GetComponent<InGameGUI>().ShortInit();
+            this.GameObj.ParentScene.FindGameObject("MainCamera").GetComponent<CameraController>().Active = true;
+
         }
     }
     /// <summary>

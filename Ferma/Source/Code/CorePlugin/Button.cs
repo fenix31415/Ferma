@@ -90,7 +90,7 @@ namespace Ferma
     {
         public Rect Bounds { get; set; }
         private SpriteRenderer Sprite => this.GameObj.GetComponent<SpriteRenderer>();
-        public ColorRgba HoverTint { get; set; } = new ColorRgba(0, 255, 255, 255);
+        public ColorRgba HoverTint { get; set; } = new ColorRgba(0, 0, 0, 255);
         public ColorRgba OriginalTint { get; set; } = new ColorRgba(255, 255, 255, 255);
         public int index { get; set; }
         public string Name { get; set; }

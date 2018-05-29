@@ -4,6 +4,30 @@
         <name>GamePlugin.core</name>
     </assembly>
     <members>
+        <member name="T:Ferma.EventMenuController">
+            <summary>
+            This Component implements an Event-based MenuController.
+            Pros: Logic gets called only when an event is fired, allows better timing due to the presence of 
+            OnInit and OnShutdown.
+            Cons: Requires to clean up the event listeners once finished.
+            </summary>
+        </member>
+        <member name="P:Ferma.MenuController.StartingMenu">
+            <summary>
+            [GET / SET] The starting MenuPage that should be displayed when the Scene opens.
+            </summary>
+        </member>
+        <member name="P:Ferma.MenuComponent.HoverTint">
+            <summary>
+            [GET/SET] The color tint that will be used when the mouse is hovering
+            on the GameObject
+            </summary>
+        </member>
+        <member name="T:Ferma.FermaCorePlugin">
+            <summary>
+            Defines a Duality core plugin.
+            </summary>
+        </member>
         <member name="T:Ferma.ActorAnimator">
             <summary>
             Animates an <see cref="T:Ferma.ActorRenderer"/> on the same <see cref="T:Duality.GameObject"/>.
@@ -87,6 +111,58 @@
             <param name="resetAnim"></param>
             <param name="loopMode"></param>
         </member>
+        <member name="T:Ferma.ActorAnimation">
+            <summary>
+            Describes an animation that can be used by an <see cref="T:Ferma.ActorAnimator"/> to animate an <see cref="T:Ferma.ActorRenderer"/>.
+            </summary>
+        </member>
+        <member name="P:Ferma.ActorAnimation.Name">
+            <summary>
+            [GET / SET] The name of this animation.
+            </summary>
+        </member>
+        <member name="P:Ferma.ActorAnimation.DirectionMap">
+            <summary>
+            [GET / SET] For each animation direction, this array provides
+            the sprite sheet index at which the animation starts.
+            </summary>
+        </member>
+        <member name="P:Ferma.ActorAnimation.FrameCount">
+            <summary>
+            [GET / SET] The number of frames in this animation.
+            </summary>
+        </member>
+        <member name="P:Ferma.ActorAnimation.Duration">
+            <summary>
+            [GET / SET] The duration of this animation, in seconds.
+            </summary>
+        </member>
+        <member name="P:Ferma.ActorAnimation.PreferredLoopMode">
+            <summary>
+            [GET / SET] The loop mode that is preferred by this animation.
+            </summary>
+        </member>
+        <member name="T:Ferma.AnimDirMapping">
+            <summary>
+            Maps a names animation direction to a sprite sheet index that represents
+            the first frame of the animation in that direction.
+            </summary>
+        </member>
+        <member name="F:Ferma.AnimDirMapping.Direction">
+            <summary>
+            The name of the direction that is mapped.
+            </summary>
+        </member>
+        <member name="F:Ferma.AnimDirMapping.Angle">
+            <summary>
+            The reference angle of the direction, in degrees.
+            </summary>
+        </member>
+        <member name="F:Ferma.AnimDirMapping.SpriteSheetIndex">
+            <summary>
+            The sprite sheet index that will be used as the first frame.
+            </summary>
+        </member>
         <member name="P:Ferma.ActorRenderer.Rect">
             <summary>
             [GET / SET] The rectangular area the sprite occupies. Relative to the <see cref="T:Duality.GameObject"/>.
@@ -148,73 +224,6 @@
             </summary>
             <param name="worldPos"></param>
             <returns></returns>
-        </member>
-        <member name="T:Ferma.ActorAnimation">
-            <summary>
-            Describes an animation that can be used by an <see cref="T:Ferma.ActorAnimator"/> to animate an <see cref="T:Ferma.ActorRenderer"/>.
-            </summary>
-        </member>
-        <member name="P:Ferma.ActorAnimation.Name">
-            <summary>
-            [GET / SET] The name of this animation.
-            </summary>
-        </member>
-        <member name="P:Ferma.ActorAnimation.DirectionMap">
-            <summary>
-            [GET / SET] For each animation direction, this array provides
-            the sprite sheet index at which the animation starts.
-            </summary>
-        </member>
-        <member name="P:Ferma.ActorAnimation.FrameCount">
-            <summary>
-            [GET / SET] The number of frames in this animation.
-            </summary>
-        </member>
-        <member name="P:Ferma.ActorAnimation.Duration">
-            <summary>
-            [GET / SET] The duration of this animation, in seconds.
-            </summary>
-        </member>
-        <member name="P:Ferma.ActorAnimation.PreferredLoopMode">
-            <summary>
-            [GET / SET] The loop mode that is preferred by this animation.
-            </summary>
-        </member>
-        <member name="T:Ferma.AnimDirMapping">
-            <summary>     /// Maps a names animation direction to a sprite sheet index that represents     /// the first frame of the animation in that direction.     /// </summary> 
-        </member>
-        <member name="F:Ferma.AnimDirMapping.Direction">
-            <summary>         /// The name of the direction that is mapped.         /// </summary> 
-        </member>
-        <member name="F:Ferma.AnimDirMapping.Angle">
-            <summary>         /// The reference angle of the direction, in degrees.         /// </summary> 
-        </member>
-        <member name="F:Ferma.AnimDirMapping.SpriteSheetIndex">
-            <summary>         /// The sprite sheet index that will be used as the first frame.         /// </summary> 
-        </member>
-        <member name="T:Ferma.EventMenuController">
-            <summary>
-            This Component implements an Event-based MenuController.
-            Pros: Logic gets called only when an event is fired, allows better timing due to the presence of 
-            OnInit and OnShutdown.
-            Cons: Requires to clean up the event listeners once finished.
-            </summary>
-        </member>
-        <member name="P:Ferma.MenuController.StartingMenu">
-            <summary>
-            [GET / SET] The starting MenuPage that should be displayed when the Scene opens.
-            </summary>
-        </member>
-        <member name="P:Ferma.MenuComponent.HoverTint">
-            <summary>
-            [GET/SET] The color tint that will be used when the mouse is hovering
-            on the GameObject
-            </summary>
-        </member>
-        <member name="T:Ferma.FermaCorePlugin">
-            <summary>
-            Defines a Duality core plugin.
-            </summary>
         </member>
     </members>
 </doc>

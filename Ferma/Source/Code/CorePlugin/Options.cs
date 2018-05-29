@@ -36,6 +36,8 @@ namespace Ferma
         public static float RPlayer = 5;
 
         public const int countInv = 26;
+        public const int FastSellCount = 5;
+
         public const int MapWidth = 32;
         public const int MapHeigth = 20;
         public const int TileSetWidth = 20;
@@ -77,11 +79,12 @@ namespace Ferma
         public const string PlayerPath = "PlayerSave.txt";
         public const string MapTimePath = "MapTimeSave.txt";
         
-        public const Key KeySave = Key.ControlLeft;
-        public const Key KeyLoad = Key.ShiftLeft;
+        public const Key KeySave = Key.ControlRight;
+        public const Key KeyLoad = Key.ShiftRight;
         public const Key KeyMainMenu = Key.BackSpace;
         public const Key KeyMarket = Key.N;
         public const Key KeySeedsShop = Key.M;
+        public const Key KeyFastSell = Key.ShiftLeft;
 
         private static int[] CostSeed;
         private static int[] CostProduct;
@@ -119,27 +122,24 @@ namespace Ferma
         }
         public static string getNamePlant(int id)
         {
-            if (id == 0) return "Eggplant";
-            if (id == 1) return "Mustard";
-            if (id == 2) return "Carrot";
-            if (id == 3) return "Turnips";
-            if (id == 4) return "Cauliflower";
-            if (id == 5) return "Strawberry";
-            if (id == 6) return "Potetoes";
-            if (id == 7) return "Cabbage";
-            if (id == 8) return "Pumpkin";
-            if (id == 9) return "China cauliflower";
-            if (id == 10) return "Corn";
-            if (id == 11) return "Onion";
-            if (id == 12) return "Pepper";
-            if (id == 13) return "Rutabaga";
-            if (id == 14) return "Wheat";
-            if (id == 15) return "Tomato";
-            if (id == 16) return "Varietal turnips";
-            if (id == 17) return "Varietal strawberry";
-            if (id == 18) return "Varietal cabbage";
-            if (id == 19) return "Watermelon";
-            return "MANDRAGORA";
+            if (PlantsNames != null)
+                return PlantsNames[id];
+            PlantsNames = new string[countInv];
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string q = "";
+            int i = 0;
+            StreamReader sr = new StreamReader(path + "SeedNames.txt");
+            while (q != null)
+            {
+                q = sr.ReadLine();
+                if (q != null)
+                {
+                    PlantsNames[i] = q;
+                    ++i;
+                }
+            }
+            sr.Close();
+            return PlantsNames[id];
         }
         public static int getLvl(ulong exp)
         {

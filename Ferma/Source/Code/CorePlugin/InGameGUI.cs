@@ -1,9 +1,13 @@
-﻿using System.Linq;
-using Duality.Resources;
+﻿using System;
+using System.Linq;
 using Duality.Components.Renderers;
-using Duality.Drawing;
-using Duality.Components;
 using Duality;
+using Duality.Components;
+using Duality.Drawing;
+using Duality.Resources;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 
 namespace Ferma
@@ -20,7 +24,19 @@ namespace Ferma
     {
         private GameObject Arm => this.GameObj;
         private CameraController MainCamera => this.GameObj.ParentScene.FindGameObject("MainCamera").GetComponent<CameraController>();
-
+        
+        public void ShortInit()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            int countItems = Ops.ArmCountItems;
+            Transform ArmPos = Arm.Transform;
+            float dist = Ops.DistFromScreen;
+            float picwid = Ops.GUIArmPlayerWid * countItems;
+            float pichei = Ops.GUIArmPlayerWid;
+            Vector3 TopRight = MainCamera.AreaTopRight(z);
+            Vector2 shift = new Vector2(-picwid / 2 - dist, pichei / 2 + dist);
+            ArmPos.MoveTo(TopRight.Xy + shift);
+        }
         public void Init()
         {
             float wid = Ops.GUIArmPlayerWid;
@@ -39,26 +55,23 @@ namespace Ferma
                 i.GetComponent<ArmButton>().Bounds = new Rect(-wid / 2, -wid / 2, wid, wid);
                 i.Transform.MoveTo(new Vector3(ii * wid - (Ops.ArmCountItems - 1) * wid / 2, 0, 0));
                 i.GetComponent<SpriteRenderer>().Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
+                i.GetComponent<ArmButton>().HoverTint = new ColorRgba(255,180,0);
             }
             //init choose
             Arm.ChildByName("choosen").Transform.MoveTo(new Vector3(0 * wid - (Ops.ArmCountItems - 1) * wid / 2, 0, 0));
             Arm.ChildByName("choosen").GetComponent<SpriteRenderer>().Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
-            //init all Arm pos
-            float z = Ops.DistFromGUI - Ops.CamDist;
-            int countItems = Ops.ArmCountItems;
-            Transform ArmPos = Arm.Transform;
-            float dist = Ops.DistFromScreen;
-            float picwid = Ops.GUIArmPlayerWid * countItems;
-            float pichei = Ops.GUIArmPlayerWid;
-            Vector3 TopRight = MainCamera.AreaTopRight(z);
-            Vector2 shift = new Vector2(-picwid / 2 - dist, pichei / 2 + dist);
-            ArmPos.MoveTo(TopRight.Xy + shift);
+            //init pos
+            Arm.Transform.MoveTo(new Vector3(0, 0, 500));
         }
         public void Choose(int ind)
         {
             float wid = Ops.GUIArmPlayerWid;
             int ii = ind;
             this.Arm.ChildByName("choosen").Transform.MoveTo(new Vector3(ii * wid - (Ops.ArmCountItems - 1) * wid / 2, 0, 0));
+        }
+        public void ChooseSeed(int ind)
+        {
+            this.GameObj.ChildByName("seeds").GetComponent<AnimSpriteRenderer>().AnimFirstFrame = ind;
         }
     }
     public class InGameGUI:Component
@@ -69,30 +82,36 @@ namespace Ferma
         public ProgressBarRenderer Exp { get; set; }
         public TextRenderer Money { get; set; }
         
-        public void Init()
+        public void ShortInitMoney()
         {
-            Arm.Init();
-            //Money
-            this.Money.Text.SourceText = "$ " + this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money;
-            GameObject saved = Money.GameObj;
-            Money.ColorTint = new ColorRgba(250, 255, 0, 255);
             float z = Ops.DistFromGUI - Ops.CamDist;
-            Transform savedPos = saved.Transform;
             float picwid;
             float pichei;
-            var bound = saved.GetComponent<TextRenderer>().Text.Size * savedPos.Scale;
-            Log.Game.Write(bound+"");
+            var bound = Money.GameObj.GetComponent<TextRenderer>().Text.Size * this.Money.GameObj.Transform.Scale;
             picwid = bound.X;
             pichei = bound.Y;
             Vector3 BottomRight = MainCamera.AreaBottomRight(z);
             float dist = MainCamera.PicToCoord(Ops.DistFromScreen, z);
             dist = 0;
-            var size = Money.Text.Size;
-            picwid = size.X;
-            pichei = size.Y;
-            Vector2 shift = new Vector2(-picwid / 2 - dist, -pichei / 2 + dist);
-            savedPos.MoveTo(BottomRight.Xy + shift);
-
+            Vector2 shift = new Vector2(-picwid/2 - dist, -pichei/2 - dist);// -picwid / 2 - dist, -pichei / 2 + dist);
+            this.Money.GameObj.Transform.MoveTo(BottomRight.Xy + shift);
+        }
+        public void UpdateMoney()
+        {
+            Money.Text.SourceText = "$ " + this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money+"";
+        }
+        public void ShortInit()
+        {
+            Arm.ShortInit();
+            ShortInitMoney();
+        }
+        public void Init()
+        {
+            Arm.Init();
+            //Money
+            this.Money.Text.SourceText = "$ " + this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money;
+            Money.ColorTint = new ColorRgba(250, 255, 0, 255);
+            this.Money.GameObj.Transform.MoveTo(new Vector3(0,0,500));
             //exp
             PlayerControl Pl = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player;
             ulong curr = Pl.exp;
@@ -100,6 +119,11 @@ namespace Ferma
             ulong all = Ops.getMinExp(Pl.lvl + 1) - 1;
             Exp.updateExp(curr - oldall, all - oldall);
             Exp.GameObj.Transform.MoveTo(new Vector3(DualityApp.TargetResolution.X / 2,10,0));
+        }
+        public void UpDate()
+        {
+            this.GameObj.Transform.MoveTo(new Vector3(MainCamera.GameObj.Transform.Pos.Xy, Ops.DistFromGUI - Ops.CamDist));
+            UpdateMoney();
         }
     }
     public class MouseRenderer : Component, ICmpRenderer

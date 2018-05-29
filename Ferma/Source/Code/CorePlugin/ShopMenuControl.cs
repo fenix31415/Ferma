@@ -18,12 +18,23 @@ namespace Ferma
 
     public class ShopSquare:Button
     {
+        
         public override void DoAction()
         {
             base.DoAction();
-            if (this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().ShopMenu.TryChoose(this.index))
-                this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.ChangeSeed(this.index);
+            Game game = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>();
+            if (game.State == GameStates.seedsshop)
+            {
+                game.ChoosedSeed(this.index);
+            }
+            if(game.State == GameStates.market)
+            {
+                game.Player.trySell(this.index);
+                game.ShopMenu.UpDateShopText(index, game.Player.Inv.Items[index]);
+            }
+            game.ShopMenu.UpdateChoose();
         }
+
     }
     public class ShopMenuPager:Button
     {
@@ -61,7 +72,7 @@ namespace Ferma
             this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().ShopMenu.GameObj.ChildByName("choose").Transform.MoveTo(shift);
             return true;
         }
-        public void initSeedsMenu(int lvl)
+        public void initShopMenu(int lvl)
         {
             float z = Ops.DistFromGUI - Ops.CamDist;
             //init buttons
@@ -69,12 +80,14 @@ namespace Ferma
             SpriteRenderer sr = rightButton.GameObj.GetComponent<SpriteRenderer>();
             sr.Rect = new Rect(-bwid/2,-bwid/2,bwid,bwid);
             sr.GameObj.GetComponent<Button>().Bounds = sr.Rect;
+            sr.GameObj.GetComponent<Button>().HoverTint = new ColorRgba(240,170,75);
             Vector2 bshift = new Vector2(MainCameraControl.PicToCoord(270,z),-MainCameraControl.PicToCoord(75,z));
             rightButton.GameObj.Transform.MoveTo(bshift);
 
             sr = leftButton.GameObj.GetComponent<SpriteRenderer>();
             sr.Rect = new Rect(-bwid / 2, -bwid / 2, bwid, bwid);
             sr.GameObj.GetComponent<Button>().Bounds = sr.Rect;
+            sr.GameObj.GetComponent<Button>().HoverTint = new ColorRgba(240, 170, 75);
             bshift = bshift + new Vector2(0, MainCameraControl.PicToCoord(123, z));
             leftButton.GameObj.Transform.MoveTo(bshift);
             //init pages
@@ -112,21 +125,64 @@ namespace Ferma
                     asr.AnimFirstFrame = 1;
                 asr.AnimPaused = true;
                 s.GetComponent<ShopSquare>().Bounds = asr.Rect;
+                s.GetComponent<ShopSquare>().HoverTint = new ColorRgba(150,50,0);
                 //init text
                 TextRenderer text = s.ChildByName("text").GetComponent<TextRenderer>();
-                text.Text.SourceText = "$ " + Ops.getCostSeed(i);
                 text.GameObj.Transform.Scale = 0.25f;
-                shift = new Vector2(0, MainCameraControl.PicToCoord(wid / 2 - 14, z));
-                text.GameObj.Transform.MoveTo(shift);
+                s.ChildByName("count").Transform.Scale = 0.25f;
             }
             //init choose
             newhei = MainCameraControl.PicToCoord(40, z);
             newwid = newhei;
             sr = this.GameObj.ChildByName("choose").GetComponent<SpriteRenderer>();
             sr.Rect = new Rect(-newwid / 2.0f, -newhei / 2.0f, newwid, newhei);
-
         }
-        public void ShowSeedsMenu()
+        public void initSeedsText()
+        {
+            //init squares
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            float wid = Ops.GUIWid;
+            float newhei = MainCameraControl.PicToCoord(wid, z);
+            float newwid = newhei;
+            ShopSquares = this.GameObj.Children.Where(x => x.Name == "ShopSquare").ToList();
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                GameObject s = ShopSquares[i];
+                s.ChildByName("count").Active = false;
+                TextRenderer text = s.ChildByName("text").GetComponent<TextRenderer>();
+                text.Text.SourceText = "$ " + Ops.getCostSeed(i);
+                Vector2 shift = new Vector2(0, MainCameraControl.PicToCoord(wid / 2 - 14, z));
+                text.GameObj.Transform.MoveTo(shift);
+            }
+        }
+        public void UpDateShopText(int ind, int cou)
+        {
+            this.ShopSquares[ind].ChildByName("count").GetComponent<TextRenderer>().Text.SourceText = cou + "";
+        }
+        public void initShopText()
+        {
+            //init squares
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            float wid = Ops.GUIWid;
+            float newhei = MainCameraControl.PicToCoord(wid, z);
+            float newwid = newhei;
+            ShopSquares = this.GameObj.Children.Where(x => x.Name == "ShopSquare").ToList();
+            for (int i = 0; i < Ops.countInv; i++)
+            {
+                GameObject s = ShopSquares[i];
+                s.ChildByName("count").Active = true;
+                TextRenderer text = s.ChildByName("text").GetComponent<TextRenderer>();
+                text.Text.SourceText = "$ " + Ops.getCostSeed(i);
+                Vector2 shift = new Vector2(-MainCameraControl.PicToCoord(Ops.GUIWid/4,z), MainCameraControl.PicToCoord(wid / 2 - 14, z));
+                text.GameObj.Transform.MoveTo(shift);
+
+                text = s.ChildByName("count").GetComponent<TextRenderer>();
+                text.Text.SourceText = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Inv.Items[i]+"";
+                shift = new Vector2(MainCameraControl.PicToCoord(Ops.GUIWid/4, z), MainCameraControl.PicToCoord(wid / 2 - 14, z));
+                text.GameObj.Transform.MoveTo(shift);
+            }
+        }
+        public void ShowShopMenu()
         {
             ShopSquares = ShopMenu.Children.Where(x => x.Name == "ShopSquare").ToList();
             for (int i = 0; i < ShopSquares.Count(); i++)
@@ -137,11 +193,26 @@ namespace Ferma
                 else
                     s.Active = false;
             }
+            UpdateChoose();
         }
         public void UpdateSeedsMenu()
         {
             float z = Ops.DistFromGUI - Ops.CamDist;
             ShopMenu.Transform.MoveTo(new Vector3(MainCamera.GameObj.Transform.Pos.Xy, z));
+        }
+        public void UpdateChoose()
+        {
+            int ind = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.CurrSeed;
+            GameObject choose = this.GameObj.ChildByName("choose");
+            if (ind == -1 || this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().State != GameStates.seedsshop)
+            {
+                choose.Active = false;
+                return;
+            }
+            if (ind >= currPage * inOnePage && ind < (currPage + 1) * inOnePage)
+                choose.Active = true;
+            else
+                choose.Active = false;
         }
         public void nextSeedPage()
         {
@@ -157,6 +228,7 @@ namespace Ferma
             }
             AnimSpriteRenderer fon = ShopMenu.GetComponent<AnimSpriteRenderer>();
             ++fon.AnimFirstFrame;
+            UpdateChoose();
         }
         public void previousSeedPage()
         {
@@ -172,6 +244,7 @@ namespace Ferma
             }
             AnimSpriteRenderer fon = ShopMenu.GetComponent<AnimSpriteRenderer>();
             --fon.AnimFirstFrame;
+            UpdateChoose();
         }
     }
 }
