@@ -137,14 +137,13 @@ namespace Ferma
             sr = this.GameObj.ChildByName("choose").GetComponent<SpriteRenderer>();
             sr.Rect = new Rect(-newwid / 2.0f, -newhei / 2.0f, newwid, newhei);
         }
-        public void initSeedsText()
+        public void UpDateSeedsText()
         {
             //init squares
             float z = Ops.DistFromGUI - Ops.CamDist;
             float wid = Ops.GUIWid;
             float newhei = MainCameraControl.PicToCoord(wid, z);
             float newwid = newhei;
-            ShopSquares = this.GameObj.Children.Where(x => x.Name == "ShopSquare").ToList();
             for (int i = 0; i < Ops.countInv; i++)
             {
                 GameObject s = ShopSquares[i];
@@ -159,14 +158,13 @@ namespace Ferma
         {
             this.ShopSquares[ind].ChildByName("count").GetComponent<TextRenderer>().Text.SourceText = cou + "";
         }
-        public void initShopText()
+        public void UpDateShopText()
         {
             //init squares
             float z = Ops.DistFromGUI - Ops.CamDist;
             float wid = Ops.GUIWid;
             float newhei = MainCameraControl.PicToCoord(wid, z);
             float newwid = newhei;
-            ShopSquares = this.GameObj.Children.Where(x => x.Name == "ShopSquare").ToList();
             for (int i = 0; i < Ops.countInv; i++)
             {
                 GameObject s = ShopSquares[i];
@@ -182,9 +180,11 @@ namespace Ferma
                 text.GameObj.Transform.MoveTo(shift);
             }
         }
-        public void ShowShopMenu()
+        public void ShowShopMenu(int lvl)
         {
-            ShopSquares = ShopMenu.Children.Where(x => x.Name == "ShopSquare").ToList();
+            currPage = 0;
+            AnimSpriteRenderer fon = ShopMenu.GetComponent<AnimSpriteRenderer>();
+            fon.AnimFirstFrame = 0;
             for (int i = 0; i < ShopSquares.Count(); i++)
             {
                 GameObject s = ShopSquares[i];
@@ -192,10 +192,15 @@ namespace Ferma
                     s.Active = true;
                 else
                     s.Active = false;
+                AnimSpriteRenderer asr = s.GetComponent<AnimSpriteRenderer>();
+                if (Ops.getLvlAvailable(i) <= lvl)
+                    asr.AnimFirstFrame = 0;
+                else
+                    asr.AnimFirstFrame = 1;
             }
             UpdateChoose();
         }
-        public void UpdateSeedsMenu()
+        public void UpdateShopMenuPos()
         {
             float z = Ops.DistFromGUI - Ops.CamDist;
             ShopMenu.Transform.MoveTo(new Vector3(MainCamera.GameObj.Transform.Pos.Xy, z));

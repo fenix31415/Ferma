@@ -6,7 +6,7 @@
   </autoTileConfig>
   <baseMaterial dataType="Struct" type="Duality.Drawing.BatchInfo" id="2035693768">
     <dirtyFlag dataType="Enum" type="Duality.Drawing.BatchInfo+DirtyFlag" name="All" value="3" />
-    <hashCode dataType="Int">-1569239319</hashCode>
+    <hashCode dataType="Int">2037530597</hashCode>
     <mainColor dataType="Struct" type="Duality.Drawing.ColorRgba">
       <A dataType="Byte">255</A>
       <B dataType="Byte">255</B>
@@ -16,7 +16,14 @@
     <technique dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.DrawTechnique]]">
       <contentPath dataType="String">Default:DrawTechnique:Mask</contentPath>
     </technique>
-    <textures />
+    <textures dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.String],[Duality.ContentRef`1[[Duality.Resources.Texture]]]]" id="2696347487" surrogate="true">
+      <header />
+      <body>
+        <mainTex dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Texture]]">
+          <contentPath dataType="String">Default:Texture:White</contentPath>
+        </mainTex>
+      </body>
+    </textures>
     <uniforms />
   </baseMaterial>
   <renderConfig dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Plugins.Tilemaps.TilesetRenderInput]]" id="876525375">
@@ -25,7 +32,7 @@
         <id dataType="String">mainTex</id>
         <name dataType="String">Main Texture</name>
         <sourceData dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Pixmap]]">
-          <contentPath dataType="String">Data\Textures\SecondPack v3.Pixmap.res</contentPath>
+          <contentPath dataType="String">Data\Tilesets\SecondPack v3.Pixmap.res</contentPath>
         </sourceData>
         <sourceTileSize dataType="Struct" type="Duality.Point2">
           <X dataType="Int">32</X>

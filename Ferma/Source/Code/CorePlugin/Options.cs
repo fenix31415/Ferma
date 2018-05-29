@@ -35,13 +35,19 @@ namespace Ferma
         public static bool isInet = false;
         public static float RPlayer = 5;
 
-        public const int countInv = 26;
+        public const int countInv = 28;
         public const int FastSellCount = 5;
 
         public const int MapWidth = 32;
         public const int MapHeigth = 20;
         public const int TileSetWidth = 20;
         public const int TileSetHeight = 20;
+
+        public static Point2 WeatherAreaTL = new Point2(0, 0);
+        public static Point2 WeatherAreaBR = new Point2(10, 10);
+        public const int WeatherMaxDur = 20;
+        public const int WeatherMaxDurNo = 40;
+        public const int WeatherMinDur = 10;
 
         public const float CamDist = 350.0f;
         public const float DistFromCursor = 50;
@@ -58,10 +64,11 @@ namespace Ferma
         public const int IdGrass = 325;
         public const int IdBed = 345;
         public const int IdBadBed = 324;
-        public const int IdVoid = 105;
+        public const int IdVoid = 346;
         public const int IdDied = 349;
+        public const int IdTreePlase = 326;
 
-        public const float DistFromScreen = 0.2f;
+        public const float DistFromScreen = 0.5f;
         public const int InvWid = 5;
         public const int InvHei = 3;
         public const int ArmCountItems = 6;
@@ -90,6 +97,27 @@ namespace Ferma
         private static int[] CostProduct;
         private static string[] PlantsNames;
 
+        public static bool isTreeTile(int tile)
+        {
+            return tile % TileSetWidth <= 5 && tile / TileSetWidth <= 15 && tile % TileSetWidth >= 3;
+        }
+        public static int TileToId(int tile)
+        {
+            if (tile % TileSetWidth <= 2)
+                return tile / TileSetWidth;
+            if (isTreeTile(tile))
+                return TileSetWidth + tile / TileSetWidth / 2;
+            Log.Game.WriteError("Q "+tile);
+            return -1;
+        }
+        public static int IdToTile(int id)
+        {
+            if (id < TileSetWidth) return id * TileSetWidth;
+            if (id <= 25)
+                return TileSetWidth * ((id - 20) * 2 + 1) + 3;
+            Log.Game.WriteError("W "+id);
+            return -1;
+        }
         public static int getLvlAvailable(int id)
         {
             if (id == 0 || id == 1) return 0;

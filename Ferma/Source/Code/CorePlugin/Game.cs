@@ -15,6 +15,22 @@ using Duality.Components.Physics;
 
 namespace Ferma
 {
+    public enum GameStates { menu, market, seedsshop, game }
+    public enum WeatherTypes { none, rain, dry }
+    public class Weather
+    {
+        public Stopwatch timer;
+        public long duration { get; set; }
+        public WeatherTypes Type;
+        public long nextTry { get; set; }
+        public Weather(WeatherTypes t = WeatherTypes.none, long d = 0)
+        {
+            this.duration = d;
+            this.Type = t;
+            this.nextTry = 0;
+            timer = new Stopwatch();
+        }
+    }
     public class Game:Component, ICmpUpdatable, ICmpInitializable
     {
         public PlayerControl Player { get; set; }
@@ -28,6 +44,7 @@ namespace Ferma
         private EventHandler<MouseButtonEventArgs> buttonUp;
         private Stopwatch timerField;
         private int passedMill = 0;
+        public Weather weather { get; set; } = new Weather(0);
 
         public void ChoosedSeed(int ind)
         {
@@ -91,7 +108,77 @@ namespace Ferma
             ArmPlayer newArm = (ArmPlayer)index;
             this.Player.AddCommand(new Command("ChooseArm", Vector2.Zero, newArm));
         }
+        public void StartGame()
+        {
+            isIgnoreMouse = true;
+            this.GameObj.ParentScene.FindGameObject("MainMenu").Active = false;
+            GameGUI.GameObj.ChildByName("Exp").Active = true;
+            Player.GameObj.Active = true;
+            GameGUI.ShortInit();
+            MainCameraControl.Active = true;
+            weather.timer.Start();
+        }
 
+        private void TryChangeWeather()
+        {
+            Random rand = new Random();
+            int a = rand.Next(0,2), b = rand.Next(0,2);
+            if (a == 0)
+            {
+                if (b == 0)
+                    ChangeWeather(WeatherTypes.dry, rand.Next(Ops.WeatherMinDur, Ops.WeatherMaxDur));
+                else
+                    ChangeWeather(WeatherTypes.rain, rand.Next(Ops.WeatherMinDur, Ops.WeatherMaxDur));
+            }
+            else
+                ChangeWeather(WeatherTypes.none,rand.Next(Ops.WeatherMinDur, Ops.WeatherMaxDur));
+        }
+        private void ChangeWeather(WeatherTypes type, int duration)
+        {
+            this.weather.Type = type;
+            this.weather.duration = duration;
+            this.weather.nextTry = 0;
+            this.weather.timer.Restart();
+        }
+        private void UpDateWeather()
+        {
+            Random rand = new Random();
+            long pass = weather.timer.ElapsedMilliseconds / 1000;
+            if(pass > weather.duration)
+            {
+                TryChangeWeather();
+                return;
+            }
+            if (pass < weather.nextTry) return;
+            int r = rand.Next(0, 1);
+            if(r == 0)
+                ActionWeather();
+            weather.nextTry += rand.Next(1,5);
+        }
+        private void ActionWeather()
+        {
+            Random rand = new Random();
+            int x = rand.Next(Ops.WeatherAreaTL.X, Ops.WeatherAreaBR.X);
+            int y = rand.Next(Ops.WeatherAreaTL.Y, Ops.WeatherAreaBR.Y);
+            if (weather.Type == WeatherTypes.rain)
+            {
+                Tile victim = Player.MapControl.BaseLayer.Tiles[x, y];
+                if(victim.BaseIndex == Ops.IdBadBed)
+                {
+                    victim.BaseIndex = Ops.IdBed;
+                    Player.MapControl.BaseLayer.SetTile(x,y,victim);
+                }
+            }
+            if (weather.Type == WeatherTypes.dry)
+            {
+                Tile victim = Player.MapControl.BaseLayer.Tiles[x, y];
+                if (victim.BaseIndex == Ops.IdBed)
+                {
+                    victim.BaseIndex = Ops.IdBadBed;
+                    Player.MapControl.BaseLayer.SetTile(x, y, victim);
+                }
+            }
+        }
         void Button_Up(object sender, MouseButtonEventArgs e)
         {
             this.isIgnoreMouse = false;
@@ -114,8 +201,8 @@ namespace Ferma
             GameGUI.Arm.GameObj.Active = false;
             ShopMenu.GameObj.Active = true;
             GameGUI.Exp.GameObj.Active = false;
-            ShopMenu.ShowShopMenu();
-            ShopMenu.initSeedsText();
+            ShopMenu.ShowShopMenu(Player.lvl);
+            ShopMenu.UpDateSeedsText();
         }
         private void ShowShopMenu()
         {
@@ -123,8 +210,8 @@ namespace Ferma
             GameGUI.Arm.GameObj.Active = false;
             ShopMenu.GameObj.Active = true;
             GameGUI.Exp.GameObj.Active = false;
-            ShopMenu.ShowShopMenu();
-            ShopMenu.initShopText();
+            ShopMenu.ShowShopMenu(Player.lvl);
+            ShopMenu.UpDateShopText();
         }
         private void UNshowSeedsMenu()
         {
@@ -176,19 +263,11 @@ namespace Ferma
             {
                 this.Player.ClearQue();
             }
-            if (this.State == GameStates.seedsshop)
-            {
-                updateField();
-                ShopMenu.UpdateSeedsMenu();
-                if (DualityApp.Keyboard.KeyHit(Key.Escape))
-                {
-                    UNshowSeedsMenu();
-                }
-            }
-            else
             if (this.State == GameStates.game)
             {
                 updateField();
+                UpDateWeather();
+                Player.updateChar();
                 if (!this.isIgnoreMouse && DualityApp.Mouse.ButtonHit(MouseButton.Left))
                 {
                     Vector2 Tar = MainCameraControl.GetWorldCoordOfMouse(0).Xy;
@@ -210,14 +289,28 @@ namespace Ferma
             }
             else if (this.State == GameStates.market)
             {
-                //updateShopMenu();
+                UpDateWeather();
                 updateField();
+                ShopMenu.UpdateShopMenuPos();
+                Player.updateChar();
+                this.GameGUI.UpdateMoney();
                 if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
                     UNshowShopMenu();
                 }
+            }else
+            if (this.State == GameStates.seedsshop)
+            {
+                updateField();
+                UpDateWeather();
+                ShopMenu.UpdateShopMenuPos();
+                Player.updateChar();
+                this.GameGUI.UpdateMoney();
+                if (DualityApp.Keyboard.KeyHit(Key.Escape))
+                {
+                    UNshowSeedsMenu();
+                }
             }
-            Player.updateChar();
             if (DualityApp.Keyboard.KeyHit(Key.W))
             {
                 debug();
@@ -242,6 +335,7 @@ namespace Ferma
             {
                 GameGUI.Init();
             }
+            this.weather = new Weather();
         }
         void ICmpInitializable.OnShutdown(ShutdownContext context)
         {

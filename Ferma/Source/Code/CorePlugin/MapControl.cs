@@ -21,25 +21,17 @@ namespace Ferma
         private static int wid = Ops.MapWidth;
         private static int hei = Ops.MapHeigth;
         private List<List<int>> mapTime = new List<List<int>>();
+        
 
-        private bool isTaked = false;
-        private int idTaked;
+        public TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
+        public Tilemap BaseLayer { get; set; }
+        public Tilemap TopLayer { get; set; }
+        public Tilemap UpperLayer { get; set; }
+        public Tilemap DownLayer { get; set; }
+        public Tilemap UpLayer { get; set; }
 
-        private TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
-        private Tilemap BaseLayer => this.GameObj.ParentScene.FindGameObject("BaseLayer").GetComponent<Tilemap>();
-        private Tilemap TopLayer => this.GameObj.ParentScene.FindGameObject("TopLayer").GetComponent<Tilemap>();
-        private Tilemap UpperLayer => this.GameObj.ParentScene.FindGameObject("UpperLayer").GetComponent<Tilemap>();
-
-        public bool IsTaked
-        {
-            get { return this.isTaked; }
-            set { this.isTaked = value; }
-        }
-        public int IdTaked
-        {
-            get { return this.idTaked; }
-            set { this.idTaked = value; }
-        }
+        public bool IsTaked { get; set; } = false;
+        public int IdTaked { get; set; }
 
         public string saveMap()
         {
@@ -53,33 +45,6 @@ namespace Ferma
                 loadLayer("BaseLayer", sr.ReadLine());
                 loadLayer("TopLayer", sr.ReadLine());
                 loadLayer("UpperLayer", sr.ReadLine());
-            }
-        }
-        private string saveLayer(Tilemap map)
-        {
-            string ans = "";
-            for (int y = 0; y < map.Size.Y; y++)
-            {
-                for (int x = 0; x < map.Size.X; x++)
-                {
-                    string tmp = ans + map.Tiles[x, y].BaseIndex.ToString() + " ";
-                    ans = tmp;
-                }
-            }
-            return ans.Trim();
-        }
-        private void loadLayer(string nameLayer, string s)
-        {
-            Tilemap map = this.GameObj.ParentScene.FindGameObject(nameLayer).GetComponent<Tilemap>();
-            var ar = s.Split().Select(x => int.Parse(x)).ToList();
-            for (int y = 0; y < map.Size.Y; y++)
-            {
-                for (int x = 0; x < map.Size.X; x++)
-                {
-                    Tile tile = map.Tiles[x, y];
-                    tile.BaseIndex = ar[x + y * Ops.MapWidth];
-                    map.SetTile(x, y, tile);
-                }
             }
         }
         public string saveTime()
@@ -117,13 +82,6 @@ namespace Ferma
         {
             this.mapTime[x][y] = time;
         }
-        private int getStade(int id, int time)
-        {
-            int x = Ops.getTimeState(id);
-            if (time >= x + 1) return 0;
-            if (time <= x && time > 0) return 1;
-            return 2;
-        }
         public void addTime(int tim)
         {
             for (int y = 0; y < hei; y++)
@@ -132,14 +90,91 @@ namespace Ferma
                 {
                     if (this.mapTime[x][y] == -1) continue;
                     Tile currTile = TopLayer.Tiles[x, y];
+                    if (BaseLayer.Tiles[x, y].BaseIndex == Ops.IdBadBed) continue;
                     int newTime = Math.Max(0, this.mapTime[x][y] - tim);
                     this.mapTime[x][y] = newTime;
-                    int type = currTile.BaseIndex / (int)(Ops.TileSetWidth);
-                    int stade = getStade(type, newTime);
-                    currTile.BaseIndex = (int)(Ops.TileSetWidth) * type + stade;
-                    TopLayer.SetTile(x, y, currTile);
+                    if (currTile.BaseIndex == Ops.IdTreePlase)
+                    {
+                        Tile Down = DownLayer.Tiles[x, y];
+                        int type = Ops.TileToId(Down.BaseIndex);
+                        int stade = getStade(type, newTime);
+                        Down.BaseIndex = Ops.IdToTile(type) + stade;
+                        DownLayer.SetTile(x, y, Down);
+                        if (y > 0)
+                        {
+                            Down = UpLayer.Tiles[x, y - 1];
+                            Down.BaseIndex = Ops.IdToTile(type) + stade - Ops.TileSetWidth;
+                            UpLayer.SetTile(x, y-1, Down);
+                        }
+                    }
+                    else if(currTile.BaseIndex % Ops.TileSetWidth <= 2)
+                    {
+                        int type = Ops.TileToId(currTile.BaseIndex);
+                        int stade = getStade(type, newTime);
+                        currTile.BaseIndex = Ops.IdToTile(type) + stade;
+                        TopLayer.SetTile(x, y, currTile);
+                    }
+                    
                 }
             }
+        }
+
+        private string saveLayer(Tilemap map)
+        {
+            string ans = "";
+            for (int y = 0; y < map.Size.Y; y++)
+            {
+                for (int x = 0; x < map.Size.X; x++)
+                {
+                    string tmp = ans + map.Tiles[x, y].BaseIndex.ToString() + " ";
+                    ans = tmp;
+                }
+            }
+            return ans.Trim();
+        }
+        private void loadLayer(string nameLayer, string s)
+        {
+            Tilemap map = this.GameObj.ParentScene.FindGameObject(nameLayer).GetComponent<Tilemap>();
+            var ar = s.Split().Select(x => int.Parse(x)).ToList();
+            for (int y = 0; y < map.Size.Y; y++)
+            {
+                for (int x = 0; x < map.Size.X; x++)
+                {
+                    Tile tile = map.Tiles[x, y];
+                    tile.BaseIndex = ar[x + y * Ops.MapWidth];
+                    map.SetTile(x, y, tile);
+                }
+            }
+        }
+        private int getStade(int id, int time)
+        {
+            int x = Ops.getTimeState(id);
+            if (time >= x + 1) return 0;
+            if (time <= x && time > 0) return 1;
+            return 2;
+        }
+        private void LandSeed(int x,int y,int TypeArm)
+        {
+            Tile BaseClickedTile = BaseLayer.Tiles[x, y];
+            Tile TopClickedTile = TopLayer.Tiles[x, y];
+            Tile UpperClickedTile = UpperLayer.Tiles[x, y];
+            TopClickedTile.BaseIndex = TypeArm * Ops.TileSetWidth;
+            TopLayer.SetTile(x, y, TopClickedTile);
+            this.mapTime[x][y] = 2 * Ops.getTimeState(TypeArm);
+            BaseClickedTile.BaseIndex = Ops.IdBadBed;
+            BaseLayer.SetTile(x, y, BaseClickedTile);
+        }
+        private void LandTree(int x,int y,int id)
+        {
+            Tile DownClickedTile = DownLayer.Tiles[x, y];
+            DownClickedTile.BaseIndex = Ops.IdToTile(id);
+            DownLayer.SetTile(x, y, DownClickedTile);
+            this.mapTime[x][y] = 2 * Ops.getTimeState(id);
+            if (y == 0) return;
+            --y;
+            DownClickedTile = UpLayer.Tiles[x, y];
+            DownClickedTile.BaseIndex = Ops.IdToTile(id)-20;
+            UpLayer.SetTile(x, y, DownClickedTile);
         }
 
         public bool Update(int x, int y, ArmPlayer arm, int TypeArm)
@@ -165,7 +200,7 @@ namespace Ferma
             }
             if (arm == ArmPlayer.arm)
             {
-                if (TopClickedTile.BaseIndex % 20 == 2)
+                if (TopClickedTile.BaseIndex % Ops.TileSetWidth == 2)
                 {
                     this.IdTaked = TopClickedTile.BaseIndex;
                     this.IsTaked = true;
@@ -173,6 +208,42 @@ namespace Ferma
                     TopLayer.SetTile(x, y, TopClickedTile);
                     mapTime[x][y] = -1;
                     return true;
+                }
+                else{
+                    Tile DownClickedTile = DownLayer.Tiles[x, y];
+                    Tile UpClickedTile = UpLayer.Tiles[x, y];
+                    int id1 = DownClickedTile.BaseIndex;
+                    int id2 = UpClickedTile.BaseIndex;
+                    int tile = -1;
+                    if (Ops.isTreeTile(id2) && id2 % Ops.TileSetWidth == 5)
+                    {
+                        tile = id2;
+                        this.IdTaked = tile;
+                        this.IsTaked = true;
+                        UpClickedTile.BaseIndex = tile - 2;
+                        UpLayer.SetTile(x, y, UpClickedTile);
+                        //this.mapTime[x][y] = 2 * Ops.getTimeState(Ops.TileToId(tile));
+                        Tile another = DownLayer.Tiles[x, y+1];
+                        another.BaseIndex = tile - 2 + Ops.TileSetWidth;
+                        DownLayer.SetTile(x, y+1, another);
+                        this.mapTime[x][y+1] = 2 * Ops.getTimeState(Ops.TileToId(tile));
+                        return true;
+                    } else if (Ops.isTreeTile(id1) && id1 % Ops.TileSetWidth == 5)
+                    {
+                        tile = id1;
+                        this.IdTaked = tile;
+                        this.IsTaked = true;
+                        DownClickedTile.BaseIndex = tile - 2;
+                        DownLayer.SetTile(x, y, DownClickedTile);
+                        this.mapTime[x][y] = 2 * Ops.getTimeState(Ops.TileToId(tile));
+                        Tile another = UpLayer.Tiles[x, y - 1];
+                        another.BaseIndex = tile - 2 - Ops.TileSetWidth;
+                        UpLayer.SetTile(x, y - 1, another);
+                        //this.mapTime[x][y - 1] = 2 * Ops.getTimeState(Ops.TileToId(tile));
+                        return true;
+                    }
+                    
+
                 }
             }
             if (arm == ArmPlayer.rake)
@@ -200,9 +271,13 @@ namespace Ferma
             {
                 if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
-                    TopClickedTile.BaseIndex = TypeArm * Ops.TileSetWidth;
-                    TopLayer.SetTile(x, y, TopClickedTile);
-                    this.mapTime[x][y] = 2 * Ops.getTimeState(TypeArm);
+                    if(TypeArm <= 20)
+                        LandSeed(x,y,TypeArm);
+                    return TypeArm <= 20;
+                }
+                if (TopClickedTile.BaseIndex == Ops.IdTreePlase)
+                {
+                    LandTree(x, y, TypeArm);
                     return true;
                 }
             }

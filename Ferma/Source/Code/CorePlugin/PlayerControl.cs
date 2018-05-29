@@ -27,7 +27,6 @@ namespace Ferma
             this.arm = a;
         }
     }
-    public enum GameStates { menu, market, seedsshop, game }
     public enum ArmPlayer { arrow, seeds, showel, rake, water, arm }
     public class PlayerControl : Component
     {
@@ -41,7 +40,7 @@ namespace Ferma
         public Inventory Inv { get; private set; }
 
         public int Money { get; set; }
-        private Queue<Command> QUE;
+        public Queue<Command> QUE { get; set; }
         private ArmPlayer currentArm;
         private bool doIt;
 
@@ -99,6 +98,7 @@ namespace Ferma
                     if (worked && this.currentArm == ArmPlayer.seeds)
                         this.Money -= Ops.getCostSeed(this.CurrSeed);
                 }
+
                 if (worked)
                 {
                     if (this.currentArm == ArmPlayer.arm)
@@ -121,7 +121,7 @@ namespace Ferma
             }
             if (this.MapControl.IsTaked)
             {
-                OnTake(this.MapControl.IdTaked / Ops.TileSetWidth);
+                OnTake(Ops.TileToId(MapControl.IdTaked));
                 this.MapControl.IsTaked = false;
             }
         }

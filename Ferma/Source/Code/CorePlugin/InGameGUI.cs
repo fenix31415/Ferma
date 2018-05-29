@@ -91,9 +91,8 @@ namespace Ferma
             picwid = bound.X;
             pichei = bound.Y;
             Vector3 BottomRight = MainCamera.AreaBottomRight(z);
-            float dist = MainCamera.PicToCoord(Ops.DistFromScreen, z);
-            dist = 0;
-            Vector2 shift = new Vector2(-picwid/2 - dist, -pichei/2 - dist);// -picwid / 2 - dist, -pichei / 2 + dist);
+            float dist = Ops.DistFromScreen;
+            Vector2 shift = new Vector2(-picwid/2 - dist, -pichei/2);
             this.Money.GameObj.Transform.MoveTo(BottomRight.Xy + shift);
         }
         public void UpdateMoney()
