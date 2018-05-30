@@ -225,5 +225,10 @@
             <param name="worldPos"></param>
             <returns></returns>
         </member>
+        <member name="P:Ferma.ShopMenuControl.squaresInPage">
+            <summary>
+            [shop/seed][window][page]
+            </summary>
+        </member>
     </members>
 </doc>

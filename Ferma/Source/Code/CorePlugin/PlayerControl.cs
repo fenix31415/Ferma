@@ -38,9 +38,10 @@ namespace Ferma
         public MapControl MapControl { get; set; }
         public CharacterControl Character { get; set; }
         public Inventory Inv { get; private set; }
-
         public int Money { get; set; }
-        public Queue<Command> QUE { get; set; }
+
+        private int countBads;
+        private Queue<Command> QUE;
         private ArmPlayer currentArm;
         private bool doIt;
 
@@ -58,15 +59,9 @@ namespace Ferma
         {
             this.QUE.Clear();
         }
-        public void tryLand(Point2 tilePos)
+        public void tryDig(Point2 tilePos)
         {
-            bool worked = false;
-            if (this.currentArm != ArmPlayer.seeds || (this.currentArm == ArmPlayer.seeds && this.CurrSeed != -1 && this.Money >= Ops.getCostSeed(this.CurrSeed)))
-            {
-                worked = this.MapControl.Update(tilePos.X, tilePos.Y, this.currentArm, this.CurrSeed);
-                if (worked && this.currentArm == ArmPlayer.seeds)
-                    this.Money -= Ops.getCostSeed(this.CurrSeed);
-            }
+
         }
         public void updateQUE()
         {
@@ -94,7 +89,7 @@ namespace Ferma
                 bool worked = false;
                 if (this.currentArm != ArmPlayer.seeds || (this.currentArm == ArmPlayer.seeds && this.CurrSeed != -1 && this.Money >= Ops.getCostSeed(this.CurrSeed)))
                 {
-                    worked = this.MapControl.Update(tilePos.X, tilePos.Y, this.currentArm, this.CurrSeed);
+                    worked = this.MapControl.Update(tilePos.X, tilePos.Y, this.currentArm, this.CurrSeed, lvl);
                     if (worked && this.currentArm == ArmPlayer.seeds)
                         this.Money -= Ops.getCostSeed(this.CurrSeed);
                 }
@@ -132,10 +127,37 @@ namespace Ferma
         public string Save()
         {
             string s = "";
-            s+=this.exp+"\n";
+            s += this.countBads + "\n";
+            s +=this.exp+"\n";
             s += this.Money + "\n";
             s += this.Inv.save();
             return s;
+        }
+        public void Load(string path)
+        {
+            using (Stream s = FileOp.Open(path, FileAccessMode.Read))
+            using (StreamReader sr = new StreamReader(s))
+            {
+                int secPassed;
+                DateTime last = DateTime.Parse(sr.ReadLine());
+                DateTime today = DateTime.Parse(Ops.Today());
+                secPassed = (today - last).Seconds;
+                countBads = int.Parse(sr.ReadLine());
+                exp = ulong.Parse(sr.ReadLine());
+                lvl = Ops.getLvl(exp);
+                Money = int.Parse(sr.ReadLine());
+                LoadInv(sr.ReadLine());
+                List<float> agrs = sr.ReadLine().Split().Select(x => float.Parse(x)).ToList();
+                Transform Pos = Character.GameObj.Transform;
+                Pos.MoveTo(new Vector3(agrs[0], agrs[1], agrs[2]));
+                Character.Target = Pos.Pos.Xy;
+                Character.TargetCell = Pos.Pos.Xy;
+                //ulong curr = exp;
+                //ulong oldall = Ops.getMinExp(Player.lvl) - 1;
+                //ulong all = Ops.getMinExp(Player.lvl + 1) - 1;
+                //GameGUI.Exp.updateExp(curr - oldall, all - oldall);
+                MapControl.addTime(secPassed);
+            }
         }
         public void LoadInv(string s)
         {
@@ -150,8 +172,9 @@ namespace Ferma
             if (this.Inv.Items[ind] > 0)
             {
                 int cou = 1;
-                if (DualityApp.Keyboard.KeyPressed(Ops.KeyFastSell))
+                if (DualityApp.Keyboard[Ops.KeyFastSell])
                     cou = Math.Min(this.Inv.Items[ind], Ops.FastSellCount);
+                //Log.Game.WriteError(DualityApp.Keyboard[Key.A]+"");
                 this.Money += cou * Ops.getCostProduct(ind);
                 this.Inv.Items[ind] -= cou;
             }

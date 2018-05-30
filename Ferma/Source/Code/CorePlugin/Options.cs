@@ -35,7 +35,10 @@ namespace Ferma
         public static bool isInet = false;
         public static float RPlayer = 5;
 
-        public const int countInv = 28;
+        public const int countInvSeeds = 20;
+        public const int countInvTrees = 8;
+        public const int countInvOther = 8;
+        public const int countInv = countInvTrees + countInvSeeds + countInvOther;
         public const int FastSellCount = 5;
 
         public const int MapWidth = 32;
@@ -45,9 +48,9 @@ namespace Ferma
 
         public static Point2 WeatherAreaTL = new Point2(0, 0);
         public static Point2 WeatherAreaBR = new Point2(10, 10);
-        public const int WeatherMaxDur = 20;
-        public const int WeatherMaxDurNo = 40;
-        public const int WeatherMinDur = 10;
+        public const int WeatherMaxDur = 200;
+        public const int WeatherMaxDurNo = 400;
+        public const int WeatherMinDur = 100;
 
         public const float CamDist = 350.0f;
         public const float DistFromCursor = 50;
@@ -91,15 +94,19 @@ namespace Ferma
         public const Key KeyMainMenu = Key.BackSpace;
         public const Key KeyMarket = Key.N;
         public const Key KeySeedsShop = Key.M;
-        public const Key KeyFastSell = Key.ShiftLeft;
+        public const Key KeyFastSell = Key.ControlLeft;
 
         private static int[] CostSeed;
         private static int[] CostProduct;
         private static string[] PlantsNames;
 
+        public static int getMaxBed(int lvl)
+        {
+            return lvl * 2;
+        }
         public static bool isTreeTile(int tile)
         {
-            return tile % TileSetWidth <= 5 && tile / TileSetWidth <= 15 && tile % TileSetWidth >= 3;
+            return tile % TileSetWidth <= 5 && tile / TileSetWidth <= 2*countInvTrees-1 && tile % TileSetWidth >= 3;
         }
         public static int TileToId(int tile)
         {
@@ -113,15 +120,16 @@ namespace Ferma
         public static int IdToTile(int id)
         {
             if (id < TileSetWidth) return id * TileSetWidth;
-            if (id <= 25)
-                return TileSetWidth * ((id - 20) * 2 + 1) + 3;
+            if (id <= countInv-1)
+                return TileSetWidth * ((id - TileSetWidth) * 2 + 1) + 3;
             Log.Game.WriteError("W "+id);
             return -1;
         }
         public static int getLvlAvailable(int id)
         {
-            if (id == 0 || id == 1) return 0;
-            return 10;
+            if (id < countInvSeeds) return id / 2;
+            if (id < countInvTrees + countInvSeeds) return (id - countInvSeeds + 1) * 5;
+            return 0;
         }
         public static bool isAvailable(int id, int lvl)
         {
@@ -142,11 +150,13 @@ namespace Ferma
         }
         public static ulong getExpSeed(int lvl,int ind)
         {
-            return 5;
+            if (ind < countInvSeeds) return (ulong)ind / 2 + 5;
+            if (ind < countInvTrees) return (ulong)(ind - countInvSeeds + 1) * 5 + 20;
+            return 0;
         }
         public static ulong getExpPut(int lvl, int ind)
         {
-            return 10;
+            return getExpSeed(lvl, ind) * 2;
         }
         public static string getNamePlant(int id)
         {
@@ -325,11 +335,15 @@ namespace Ferma
         } 
         public static int getTimeState(int id)
         {
-            return 10;
+            return 10 + id * 5;
         }
         public static int getProductCount(int id)
         {
-            return 2;
+            if (id <= 5) return 1;
+            if (id <= 10) return 2;
+            if (id < countInvSeeds) return 3;
+            if (id < countInvTrees) return (id - countInvSeeds) + 1;
+            return 0;
         }
         public static int getCostSeed(int ind)
         {
@@ -376,7 +390,7 @@ namespace Ferma
         public static string Today()
         {
             if(!isInet)
-                return "08.11.1999";
+                return DateTime.Today.ToString();
             bool net = false;
             try
             {

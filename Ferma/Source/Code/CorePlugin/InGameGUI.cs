@@ -12,12 +12,116 @@ using System.Threading.Tasks;
 
 namespace Ferma
 {
+    public class InGameButton : Button
+    {
+        public override void DoAction()
+        {
+            base.DoAction();
+            GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().SmalMenuPressed(index);
+        }
+    }
+    public class SmallMenuControl:Component
+    {
+        private GameObject Menu => this.GameObj;
+        private CameraController MainCamera => this.GameObj.ParentScene.FindGameObject("MainCamera").GetComponent<CameraController>();
+
+        public void ShortInit()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            Transform MenuPos = Menu.Transform;
+            float dist = Ops.DistFromScreen;
+            float picwid = Ops.GUIArmPlayerWid * 3;
+            float pichei = Ops.GUIArmPlayerWid;
+            Vector3 BottomLeft = MainCamera.AreaBottomLeft(z);
+            Vector2 shift = new Vector2(picwid + dist, -pichei / 2 - dist);
+            MenuPos.MoveTo(BottomLeft.Xy + shift);
+        }
+        public void Init()
+        {
+            float wid = Ops.GUIArmPlayerWid;
+            //init n buttons
+            var items = Menu.Children.ToList();
+
+            GameObject i = Menu.ChildByName("Shop");
+            int ii = 2;
+            i.GetComponent<InGameButton>().Bounds = new Rect(-wid / 2, -wid / 2, wid, wid);
+            i.Transform.MoveTo(new Vector3(ii * wid - (Ops.ArmCountItems - 1) * wid / 2, 0, 0));
+            i.GetComponent<SpriteRenderer>().Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
+            i.GetComponent<InGameButton>().HoverTint = new ColorRgba(255, 180, 0);
+            i = Menu.ChildByName("Inv");
+            ii = 1;
+            i.GetComponent<InGameButton>().Bounds = new Rect(-wid / 2, -wid / 2, wid, wid);
+            i.Transform.MoveTo(new Vector3(ii * wid - (Ops.ArmCountItems - 1) * wid / 2, 0, 0));
+            i.GetComponent<SpriteRenderer>().Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
+            i.GetComponent<InGameButton>().HoverTint = new ColorRgba(255, 180, 0);
+            i = Menu.ChildByName("Menu");
+            ii = 0;
+            i.GetComponent<InGameButton>().Bounds = new Rect(-wid / 2, -wid / 2, wid, wid);
+            i.Transform.MoveTo(new Vector3(ii * wid - (Ops.ArmCountItems - 1) * wid / 2, 0, 0));
+            i.GetComponent<SpriteRenderer>().Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
+            i.GetComponent<InGameButton>().HoverTint = new ColorRgba(255, 180, 0);
+
+            //init pos
+            Menu.Transform.MoveTo(new Vector3(0, 0, 500));
+        }
+
+    }
     public class ArmButton : Button
     {
         public override void DoAction()
         {
             base.DoAction();
             this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().ChangeArm(index);
+        }
+    }
+    public class MoneyControl:Component
+    {
+        private CameraController MainCamera => this.GameObj.ParentScene.FindGameObject("MainCamera").GetComponent<CameraController>();
+        private Vector2 startpos;
+
+        public void ShortInit()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            float picwid;
+            float pichei;
+            var bound = GameObj.GetComponent<TextRenderer>().Text.Size * GameObj.Transform.Scale;
+            picwid = bound.X;
+            pichei = bound.Y;
+            Vector3 BottomRight = MainCamera.AreaBottomRight(z);
+            float dist = Ops.DistFromScreen;
+            Vector2 shift = new Vector2(-picwid / 2 - dist, -pichei / 2);
+            Vector2 shift1 = new Vector2(-picwid, 0);
+            GameObj.ChildByName("coin").Transform.MoveTo(shift1);
+            startpos = BottomRight.Xy;
+            GameObj.Transform.MoveTo(startpos + shift);
+        }
+        public void Init()
+        {
+            GameObj.GetComponent<TextRenderer>().Text.SourceText = ""+this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money;
+            GameObj.GetComponent<TextRenderer>().ColorTint = new ColorRgba(250, 255, 0, 255);
+            var bound = GameObj.GetComponent<TextRenderer>().Text.Size * GameObj.Transform.Scale;
+            float picwid = bound.X;
+            float pichei = bound.Y;
+            GameObj.ChildByName("coin").GetComponent<AnimSpriteRenderer>().Rect = new Rect(-pichei/2,-pichei/2,pichei,pichei);
+            GameObj.Transform.MoveTo(new Vector3(0, 0, 500));
+            GameObj.ChildByName("coin").Transform.MoveTo(new Vector3(0, 0, 500));
+        }
+        public void UpDate()
+        {
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            float picwid;
+            Vector3 BottomRight = MainCamera.AreaBottomRight(z);
+            float scale = GameObj.Transform.Scale;
+            GameObj.GetComponent<TextRenderer>().Text.SourceText = "" + this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money;
+            float pichei;
+            var bound = GameObj.GetComponent<TextRenderer>().Text.Size * scale;
+            picwid = bound.X;
+            pichei = bound.Y;
+            float dist = Ops.DistFromScreen;
+            Vector2 shift = new Vector2(-picwid / 2 - dist, -pichei / 2);
+            Vector2 shift1 = new Vector2(-picwid/2/scale - pichei, 0);
+            GameObj.ChildByName("coin").Transform.MoveTo(shift1);
+            GameObj.Transform.MoveTo(startpos + shift);
         }
     }
     public class ArmControl : Component
@@ -46,7 +150,7 @@ namespace Ferma
             AnimSpriteRenderer asr = seeds.GetComponent<AnimSpriteRenderer>();
             asr.Rect = new Rect(-wid / 2, -wid / 2, wid, wid);
             asr.AnimPaused = true;
-            asr.AnimFirstFrame = 26;
+            asr.AnimFirstFrame = Ops.countInv;
             //init n buttons
             var items = Arm.Children.Where(x => x.Name != "choosen");
             foreach (var i in items)
@@ -80,49 +184,54 @@ namespace Ferma
 
         public ArmControl Arm { get; set; }
         public ProgressBarRenderer Exp { get; set; }
-        public TextRenderer Money { get; set; }
-        
-        public void ShortInitMoney()
-        {
-            float z = Ops.DistFromGUI - Ops.CamDist;
-            float picwid;
-            float pichei;
-            var bound = Money.GameObj.GetComponent<TextRenderer>().Text.Size * this.Money.GameObj.Transform.Scale;
-            picwid = bound.X;
-            pichei = bound.Y;
-            Vector3 BottomRight = MainCamera.AreaBottomRight(z);
-            float dist = Ops.DistFromScreen;
-            Vector2 shift = new Vector2(-picwid/2 - dist, -pichei/2);
-            this.Money.GameObj.Transform.MoveTo(BottomRight.Xy + shift);
-        }
-        public void UpdateMoney()
-        {
-            Money.Text.SourceText = "$ " + this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money+"";
-        }
+        public MoneyControl Money { get; set; }
+        public AnimSpriteRenderer Weather { get; set; }
+        public SmallMenuControl Menu { get; set; }
+
         public void ShortInit()
         {
             Arm.ShortInit();
-            ShortInitMoney();
+            Money.ShortInit();
+            Menu.ShortInit();
+            //money
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            Transform ArmPos = Weather.GameObj.Transform;
+            float dist = Ops.DistFromScreen;
+            float picwid = Ops.GUIArmPlayerWid;
+            float pichei = Ops.GUIArmPlayerWid;
+            Vector3 TopRight = MainCamera.AreaTopRight(z);
+            Vector2 shift = new Vector2(-picwid / 2 - dist, pichei * 1.5f + dist);
+            ArmPos.MoveTo(TopRight.Xy + shift);
         }
         public void Init()
         {
             Arm.Init();
-            //Money
-            this.Money.Text.SourceText = "$ " + this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Money;
-            Money.ColorTint = new ColorRgba(250, 255, 0, 255);
-            this.Money.GameObj.Transform.MoveTo(new Vector3(0,0,500));
-            //exp
-            PlayerControl Pl = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player;
-            ulong curr = Pl.exp;
-            ulong oldall = Ops.getMinExp(Pl.lvl) - 1;
-            ulong all = Ops.getMinExp(Pl.lvl + 1) - 1;
-            Exp.updateExp(curr - oldall, all - oldall);
-            Exp.GameObj.Transform.MoveTo(new Vector3(DualityApp.TargetResolution.X / 2,10,0));
+            Money.Init();
+            Exp.Init();
+            Menu.Init();
+            //weather
+            float wid = Ops.GUIArmPlayerWid;
+            float z = Ops.DistFromGUI - Ops.CamDist;
+            Weather.Rect = new Rect(-wid/2,-wid/2,wid,wid);
+            Vector2 shift = new Vector2(MainCamera.PicToCoord(DualityApp.TargetResolution.X/2,z)-Ops.DistFromScreen, Ops.DistFromScreen);
+            Weather.GameObj.Transform.MoveTo(shift);
         }
         public void UpDate()
         {
             this.GameObj.Transform.MoveTo(new Vector3(MainCamera.GameObj.Transform.Pos.Xy, Ops.DistFromGUI - Ops.CamDist));
-            UpdateMoney();
+            Money.UpDate();
+            //weather
+            WeatherTypes w = GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().weather.Type;
+            if (w == WeatherTypes.none)
+                Weather.GameObj.Active = false;
+            else
+            {
+                Weather.GameObj.Active = true;
+                if (w == WeatherTypes.rain)
+                    Weather.AnimFirstFrame = 0;
+                else
+                    Weather.AnimFirstFrame = 4;
+            }
         }
     }
     public class MouseRenderer : Component, ICmpRenderer
@@ -168,6 +277,7 @@ namespace Ferma
         //public ulong allExp { get; set; }
         //public ulong currExp { get; set; }
         private int lvl;
+        [DontSerialize] private CanvasBuffer buffer = null;
         public void setcurrlvl(int lvl)
         {
             this.lvl = lvl;
@@ -181,7 +291,15 @@ namespace Ferma
             this.currExp = currexp;
             this.allExp = allexp;
         }
-        [DontSerialize] private CanvasBuffer buffer = null;
+        public void Init()
+        {
+            PlayerControl Pl = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player;
+            ulong curr = Pl.exp;
+            ulong oldall = Ops.getMinExp(Pl.lvl) - 1;
+            ulong all = Ops.getMinExp(Pl.lvl + 1) - 1;
+            updateExp(curr - oldall, all - oldall);
+            GameObj.Transform.MoveTo(new Vector3(DualityApp.TargetResolution.X / 2, 10, 0));
+        }
 
         float ICmpRenderer.BoundRadius
         {

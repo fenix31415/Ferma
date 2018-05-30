@@ -48,8 +48,680 @@
     <_size dataType="Int">1</_size>
   </renderConfig>
   <tileInput dataType="Struct" type="Duality.RawList`1[[Duality.Plugins.Tilemaps.TileInput]]" id="2716248726">
-    <count dataType="Int">0</count>
-    <data dataType="Array" type="Duality.Plugins.Tilemaps.TileInput[]" id="3244550529" length="8" />
+    <count dataType="Int">383</count>
+    <data dataType="Array" type="Duality.Plugins.Tilemaps.TileInput[]" id="3244550529" length="568">
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">1</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput" />
+      <item dataType="Struct" type="Duality.Plugins.Tilemaps.TileInput">
+        <Collision dataType="Struct" type="Duality.Plugins.Tilemaps.TileCollisionShapes" />
+        <DepthOffset dataType="Int">0</DepthOffset>
+        <IsVertical dataType="Bool">true</IsVertical>
+      </item>
+    </data>
   </tileInput>
   <tileSize dataType="Struct" type="Duality.Vector2">
     <X dataType="Float">32</X>

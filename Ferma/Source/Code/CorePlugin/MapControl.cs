@@ -177,7 +177,7 @@ namespace Ferma
             UpLayer.SetTile(x, y, DownClickedTile);
         }
 
-        public bool Update(int x, int y, ArmPlayer arm, int TypeArm)
+        public bool Update(int x, int y, ArmPlayer arm, int TypeArm, int lvl)
         {
             Tile BaseClickedTile = BaseLayer.Tiles[x, y];
             Tile TopClickedTile = TopLayer.Tiles[x, y];

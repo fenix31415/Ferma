@@ -38,7 +38,7 @@ namespace Ferma
         public InGameGUI GameGUI { get; set; }
         public CameraController MainCameraControl { get; set; }
         public bool isIgnoreMouse { get; set; }
-        public GameStates State { get; private set; }
+        public GameStates State { get; private set; } = GameStates.menu;
 
         [DontSerialize]
         private EventHandler<MouseButtonEventArgs> buttonUp;
@@ -75,32 +75,11 @@ namespace Ferma
         }
         public void Load()
         {
-            int secPassed;
             this.Player.MapControl.LoadMap(Ops.MapPath);
-
-            using (Stream s = FileOp.Open(Ops.PlayerPath, FileAccessMode.Read))
-            using (StreamReader sr = new StreamReader(s))
-            {
-                DateTime last = DateTime.Parse(sr.ReadLine());
-                DateTime today = DateTime.Parse(Ops.Today());
-                secPassed = (today - last).Seconds;
-                Player.exp = ulong.Parse(sr.ReadLine());
-                Player.lvl = Ops.getLvl(Player.exp);
-                Player.Money = int.Parse(sr.ReadLine());
-                Player.LoadInv(sr.ReadLine());
-                List<float> agrs = sr.ReadLine().Split().Select(x => float.Parse(x)).ToList();
-                Transform Pos = Player.Character.GameObj.Transform;
-                Pos.MoveTo(new Vector3(agrs[0], agrs[1], agrs[2]));
-                Player.Character.Target = Pos.Pos.Xy;
-                Player.Character.TargetCell = Pos.Pos.Xy;
-                ulong curr = Player.exp;
-                ulong oldall = Ops.getMinExp(Player.lvl) - 1;
-                ulong all = Ops.getMinExp(Player.lvl + 1) - 1;
-                GameGUI.Exp.updateExp(curr - oldall, all - oldall);
-            }
+            Player.Load(Ops.PlayerPath);
+            
             this.Player.MapControl.loadTime(Ops.MapTimePath);
 
-            this.Player.MapControl.addTime(secPassed);
         }
         public void ChangeArm(int index)
         {
@@ -117,6 +96,29 @@ namespace Ferma
             GameGUI.ShortInit();
             MainCameraControl.Active = true;
             weather.timer.Start();
+            State = GameStates.game;
+        }
+        public void SmalMenuPressed(int ind)
+        {
+            if (ind == 0)
+                ShowSeedsMenu();
+            if (ind == 1)
+                ShowShopMenu();
+            if (ind == 2)
+            {
+                if(State == GameStates.game)
+                    showMainMenu();
+                if (State == GameStates.market)
+                {
+                    isIgnoreMouse = true;
+                    UNshowShopMenu();
+                }
+                if (State == GameStates.seedsshop)
+                {
+                    isIgnoreMouse = true;
+                    UNshowSeedsMenu();
+                }
+            }
         }
 
         private void TryChangeWeather()
@@ -143,7 +145,7 @@ namespace Ferma
         private void UpDateWeather()
         {
             Random rand = new Random();
-            long pass = weather.timer.ElapsedMilliseconds / 1000;
+            long pass = weather.timer.ElapsedMilliseconds / 100;
             if(pass > weather.duration)
             {
                 TryChangeWeather();
@@ -201,8 +203,11 @@ namespace Ferma
             GameGUI.Arm.GameObj.Active = false;
             ShopMenu.GameObj.Active = true;
             GameGUI.Exp.GameObj.Active = false;
-            ShopMenu.ShowShopMenu(Player.lvl);
+            GameGUI.Menu.GameObj.ChildByName("Shop").Active = false;
+            GameGUI.Menu.GameObj.ChildByName("Inv").Active = false;
+            ShopMenu.ShowShopMenu(0,Player.lvl);
             ShopMenu.UpDateSeedsText();
+            ShopMenu.OtherWin.GameObj.Active = true;
         }
         private void ShowShopMenu()
         {
@@ -210,8 +215,11 @@ namespace Ferma
             GameGUI.Arm.GameObj.Active = false;
             ShopMenu.GameObj.Active = true;
             GameGUI.Exp.GameObj.Active = false;
-            ShopMenu.ShowShopMenu(Player.lvl);
+            GameGUI.Menu.GameObj.ChildByName("Shop").Active = false;
+            GameGUI.Menu.GameObj.ChildByName("Inv").Active = false;
+            ShopMenu.ShowShopMenu(1,Player.lvl);
             ShopMenu.UpDateShopText();
+            ShopMenu.OtherWin.GameObj.Active = false;
         }
         private void UNshowSeedsMenu()
         {
@@ -219,6 +227,8 @@ namespace Ferma
             this.State = GameStates.game;
             GameGUI.Exp.GameObj.Active = true;
             ShopMenu.GameObj.Active = false;
+            GameGUI.Menu.GameObj.ChildByName("Shop").Active = true;
+            GameGUI.Menu.GameObj.ChildByName("Inv").Active = true;
         }
         private void UNshowShopMenu()
         {
@@ -226,6 +236,8 @@ namespace Ferma
             this.State = GameStates.game;
             GameGUI.Exp.GameObj.Active = true;
             ShopMenu.GameObj.Active = false;
+            GameGUI.Menu.GameObj.ChildByName("Shop").Active = true;
+            GameGUI.Menu.GameObj.ChildByName("Inv").Active = true;
         }
         private void showMainMenu()
         {
@@ -254,7 +266,7 @@ namespace Ferma
         }
         private void debug()
         {
-            //Log.Game.Write(Ops.getCostSeed(0) + "");
+            ShopMenu.changeWindow(0,1);
         }
 
         void ICmpUpdatable.OnUpdate()
@@ -293,7 +305,7 @@ namespace Ferma
                 updateField();
                 ShopMenu.UpdateShopMenuPos();
                 Player.updateChar();
-                this.GameGUI.UpdateMoney();
+                this.GameGUI.Money.UpDate();
                 if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
                     UNshowShopMenu();
@@ -305,7 +317,7 @@ namespace Ferma
                 UpDateWeather();
                 ShopMenu.UpdateShopMenuPos();
                 Player.updateChar();
-                this.GameGUI.UpdateMoney();
+                this.GameGUI.Money.UpDate();
                 if (DualityApp.Keyboard.KeyHit(Key.Escape))
                 {
                     UNshowSeedsMenu();
@@ -328,7 +340,6 @@ namespace Ferma
             //Load();
             if(Player != null)
                 Player.init();
-            this.State = GameStates.game;
             if(ShopMenu != null)
                 ShopMenu.initShopMenu(Player.lvl);
             if (GameGUI != null)

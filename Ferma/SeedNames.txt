@@ -19,8 +19,11 @@ Strawberry++
 Cabbage++
 Watermelon
 Apple
+Plum
 Pear
 Orange
 Mango
-Plum
+Lemon
+Cherry
 Pomegranate
+Tree plase
