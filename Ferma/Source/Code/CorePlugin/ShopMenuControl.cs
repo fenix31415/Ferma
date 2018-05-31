@@ -173,7 +173,7 @@ namespace Ferma
             sr.Rect = new Rect(-bwid / 2, -bwid / 2, bwid, bwid);
             sr.GameObj.GetComponent<Button>().Bounds = sr.Rect;
             sr.GameObj.GetComponent<Button>().HoverTint = new ColorRgba(240, 170, 75);
-            Vector2 bshift = new Vector2(MainCameraControl.PicToCoord(250,z), MainCameraControl.PicToCoord(50,z));
+            Vector2 bshift = new Vector2(MainCameraControl.PicToCoord(310,z), MainCameraControl.PicToCoord(50,z));
             rightButton.GameObj.Transform.MoveTo(bshift);
 
             sr = leftButton.GameObj.GetComponent<SpriteRenderer>();
@@ -187,7 +187,7 @@ namespace Ferma
             sr.Rect = new Rect(-bwid / 2, -bwid / 2, bwid, bwid);
             sr.GameObj.GetComponent<Button>().Bounds = sr.Rect;
             sr.GameObj.GetComponent<Button>().HoverTint = new ColorRgba(240, 170, 75);
-            bshift = new Vector2(MainCameraControl.PicToCoord(180, z), -MainCameraControl.PicToCoord(190, z));
+            bshift = new Vector2(MainCameraControl.PicToCoord(200, z), -MainCameraControl.PicToCoord(190, z));
             SeedWin.GameObj.Transform.MoveTo(bshift);
 
             sr = TreeWin.GameObj.GetComponent<SpriteRenderer>();
@@ -284,7 +284,7 @@ namespace Ferma
                 else
                     s.Active = false;
                 AnimSpriteRenderer asr = s.GetComponent<AnimSpriteRenderer>();
-                if (Ops.getLvlAvailable(i) <= lvl)
+                if (Ops.getLvlAvailable(i, this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.countTreePlases+1) <= lvl)
                     asr.AnimFirstFrame = 0;
                 else
                     asr.AnimFirstFrame = 1;
@@ -354,7 +354,7 @@ namespace Ferma
                     s.Active = true;
                     int id = i + currPage * Ops.InvHei * Ops.InvWid + startInd[type][currWindow];
                     AnimSpriteRenderer asr = s.GetComponent<AnimSpriteRenderer>();
-                    if (Ops.isAvailable(id, lvl))
+                    if (Ops.isAvailable(id, lvl, this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.countTreePlases+1))
                         asr.AnimFirstFrame = 0;
                     else
                         asr.AnimFirstFrame = 1;

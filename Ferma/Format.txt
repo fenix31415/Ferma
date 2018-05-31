@@ -1,5 +1,6 @@
 Player
 	time
+	bads tree
 	exp
 	money
 	Inv

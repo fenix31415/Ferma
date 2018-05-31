@@ -35,7 +35,7 @@ namespace Ferma
 
         public string saveMap()
         {
-            return saveLayer(BaseLayer) + "\n" + saveLayer(TopLayer) + "\n" + saveLayer(UpperLayer);
+            return saveLayer(BaseLayer) + "\n" + saveLayer(TopLayer) + "\n" + saveLayer(UpperLayer) + "\n" + saveLayer(DownLayer) + "\n" + saveLayer(UpLayer);
         }
         public void LoadMap(string path)
         {
@@ -45,6 +45,8 @@ namespace Ferma
                 loadLayer("BaseLayer", sr.ReadLine());
                 loadLayer("TopLayer", sr.ReadLine());
                 loadLayer("UpperLayer", sr.ReadLine());
+                loadLayer("TreesDown", sr.ReadLine());
+                loadLayer("TreesUp", sr.ReadLine());
             }
         }
         public string saveTime()
@@ -134,7 +136,7 @@ namespace Ferma
         }
         private void loadLayer(string nameLayer, string s)
         {
-            Tilemap map = this.GameObj.ParentScene.FindGameObject(nameLayer).GetComponent<Tilemap>();
+            Tilemap map = this.GameObj.ParentScene.FindGameObject("Map").ChildByName(nameLayer).GetComponent<Tilemap>();
             var ar = s.Split().Select(x => int.Parse(x)).ToList();
             for (int y = 0; y < map.Size.Y; y++)
             {
@@ -176,26 +178,32 @@ namespace Ferma
             DownClickedTile.BaseIndex = Ops.IdToTile(id)-20;
             UpLayer.SetTile(x, y, DownClickedTile);
         }
+        private void SetTreePlase(int x, int y)
+        {
+            Tile TopClickedTile = TopLayer.Tiles[x, y];
+            TopClickedTile.BaseIndex = Ops.IdToTile(Ops.countInvSeeds + Ops.countInvTrees);
+            TopLayer.SetTile(x, y, TopClickedTile);
+        }
 
-        public bool Update(int x, int y, ArmPlayer arm, int TypeArm, int lvl)
+        public int Update(int x, int y, ArmPlayer arm, int TypeArm, bool canDig, bool canSetTreePlase)
         {
             Tile BaseClickedTile = BaseLayer.Tiles[x, y];
             Tile TopClickedTile = TopLayer.Tiles[x, y];
             Tile UpperClickedTile = UpperLayer.Tiles[x, y];
             if (arm == ArmPlayer.showel)
             {
-                if (BaseClickedTile.BaseIndex == Ops.IdGrass && TopClickedTile.BaseIndex == Ops.IdVoid && UpperClickedTile.BaseIndex == Ops.IdVoid)
+                if (canDig && BaseClickedTile.BaseIndex == Ops.IdGrass && TopClickedTile.BaseIndex == Ops.IdVoid && UpperClickedTile.BaseIndex == Ops.IdVoid)
                 {
                     BaseClickedTile.BaseIndex = Ops.IdBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
-                    return true;
+                    return 1;
                 }
                 else
                 if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
                     BaseClickedTile.BaseIndex = Ops.IdGrass;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
-                    return true;
+                    return 2;
                 }
             }
             if (arm == ArmPlayer.arm)
@@ -207,7 +215,7 @@ namespace Ferma
                     TopClickedTile.BaseIndex = Ops.IdDied;
                     TopLayer.SetTile(x, y, TopClickedTile);
                     mapTime[x][y] = -1;
-                    return true;
+                    return 1;
                 }
                 else{
                     Tile DownClickedTile = DownLayer.Tiles[x, y];
@@ -227,7 +235,7 @@ namespace Ferma
                         another.BaseIndex = tile - 2 + Ops.TileSetWidth;
                         DownLayer.SetTile(x, y+1, another);
                         this.mapTime[x][y+1] = 2 * Ops.getTimeState(Ops.TileToId(tile));
-                        return true;
+                        return 1;
                     } else if (Ops.isTreeTile(id1) && id1 % Ops.TileSetWidth == 5)
                     {
                         tile = id1;
@@ -240,7 +248,7 @@ namespace Ferma
                         another.BaseIndex = tile - 2 - Ops.TileSetWidth;
                         UpLayer.SetTile(x, y - 1, another);
                         //this.mapTime[x][y - 1] = 2 * Ops.getTimeState(Ops.TileToId(tile));
-                        return true;
+                        return 1;
                     }
                     
 
@@ -255,7 +263,7 @@ namespace Ferma
 
                     BaseClickedTile.BaseIndex = Ops.IdBadBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
-                    return true;
+                    return 1;
                 }
             }
             if (arm == ArmPlayer.water)
@@ -264,24 +272,37 @@ namespace Ferma
                 {
                     BaseClickedTile.BaseIndex = Ops.IdBed;
                     BaseLayer.SetTile(x, y, BaseClickedTile);
-                    return true;
+                    return 1;
                 }
             }
             if (arm == ArmPlayer.seeds)
             {
                 if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
-                    if(TypeArm <= 20)
+                    if(TypeArm <= Ops.countInvSeeds)
                         LandSeed(x,y,TypeArm);
-                    return TypeArm <= 20;
+                    int ans = 0;
+                    if (TypeArm < Ops.countInvSeeds)
+                        ans = 1;
+                    return ans;
                 }
                 if (TopClickedTile.BaseIndex == Ops.IdTreePlase)
                 {
+                    if (!Ops.isTree(TypeArm))
+                        return 0;
                     LandTree(x, y, TypeArm);
-                    return true;
+                    return 1;
+                }
+                if (BaseClickedTile.BaseIndex == Ops.IdGrass)
+                {
+                    if (canSetTreePlase)
+                    {
+                        SetTreePlase(x, y);
+                        return 2;
+                    }
                 }
             }
-            return false;
+            return 0;
         }
 
         void ICmpInitializable.OnInit(InitContext context)

@@ -44,7 +44,7 @@ namespace Ferma
         private EventHandler<MouseButtonEventArgs> buttonUp;
         private Stopwatch timerField;
         private int passedMill = 0;
-        public Weather weather { get; set; } = new Weather(0);
+        public Weather weather { get; set; } = new Weather(WeatherTypes.none, Ops.WeatherMaxDurNo);
 
         public void ChoosedSeed(int ind)
         {
@@ -80,6 +80,10 @@ namespace Ferma
             
             this.Player.MapControl.loadTime(Ops.MapTimePath);
 
+            ulong curr = Player.exp;
+            ulong oldall = Ops.getMinExp(Player.lvl) - 1;
+            ulong all = Ops.getMinExp(Player.lvl + 1) - 1;
+            GameGUI.Exp.updateExp(curr - oldall, all - oldall);
         }
         public void ChangeArm(int index)
         {
@@ -133,7 +137,7 @@ namespace Ferma
                     ChangeWeather(WeatherTypes.rain, rand.Next(Ops.WeatherMinDur, Ops.WeatherMaxDur));
             }
             else
-                ChangeWeather(WeatherTypes.none,rand.Next(Ops.WeatherMinDur, Ops.WeatherMaxDur));
+                ChangeWeather(WeatherTypes.none,rand.Next(Ops.WeatherMinDur, Ops.WeatherMaxDurNo));
         }
         private void ChangeWeather(WeatherTypes type, int duration)
         {
@@ -241,6 +245,7 @@ namespace Ferma
         }
         private void showMainMenu()
         {
+            Save();
             this.GameObj.ParentScene.FindGameObject("MainMenu", false).Active = true;
             MainCameraControl.GameObj.Transform.MoveTo(new Vector3(0, 0, -Ops.CamDist));
             this.GameObj.ParentScene.FindGameObject("GUI", false).Active = false;
@@ -266,7 +271,7 @@ namespace Ferma
         }
         private void debug()
         {
-            ShopMenu.changeWindow(0,1);
+            Log.Game.WriteError(Ops.getLvlAvailable(28,0)+"");
         }
 
         void ICmpUpdatable.OnUpdate()
@@ -337,7 +342,7 @@ namespace Ferma
             buttonUp = new EventHandler<MouseButtonEventArgs>(Button_Up);
             DualityApp.Mouse.ButtonUp += buttonUp;
             this.timerField = new Stopwatch();
-            //Load();
+            Load();
             if(Player != null)
                 Player.init();
             if(ShopMenu != null)

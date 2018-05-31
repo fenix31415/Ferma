@@ -433,7 +433,7 @@
                                               <tileData dataType="Struct" type="Duality.Plugins.Tilemaps.TilemapData" id="1309947742" custom="true">
                                                 <body>
                                                   <version dataType="Int">3</version>
-                                                  <data dataType="Array" type="System.Byte[]" id="3749230352">H4sIAAAAAAAEAO3UQQ7BQBTG8WnDDRB2lgg3wNIaS4mdOgPOUM6gzlDOUM7AHbiBxf9F0qQhqURe483mt5i85Ptm2mk65yrutTzwYQ8RHGDmFRHpWIUaxHCEU5H7tQjfhg4kcIZLkfv1CT+AIVzhBnMNOfMypsMEpnCHh1MQ8EsWdAhgCSX2yp/H5STkwhN9B7Ii0ho2UGevkTUQpAa2EEGsr1+YyrmDLnu9rAH5kuVPlQdJ3l1fXz/DeI8sFVnyMtIQ4i/DG9m3mUZFMutn/QzjpzwBBrWt8YgRAAA=</data>
+                                                  <data dataType="Array" type="System.Byte[]" id="3749230352">H4sIAAAAAAAEAO3FMREAIAwAsccDAqoL/0LABFuGXKbaz1klSZIkSZKkf11jZaJviBEAAA==</data>
                                                 </body>
                                               </tileData>
                                               <tileset dataType="Struct" type="Duality.ContentRef`1[[Duality.Plugins.Tilemaps.Tileset]]">
@@ -852,7 +852,7 @@
                       <tileData dataType="Struct" type="Duality.Plugins.Tilemaps.TilemapData" id="3596323927" custom="true">
                         <body>
                           <version dataType="Int">3</version>
-                          <data dataType="Array" type="System.Byte[]" id="3113818638">H4sIAAAAAAAEAO3RwQnAIBBE0bEHC0gxpgj7b0QL2EtACMg7LO+6n3mS9H2zJacZFe8/6NOnT58+fRXlL0eZl/fZDwAA4AsL9xG32IgRAAA=</data>
+                          <data dataType="Array" type="System.Byte[]" id="3113818638">H4sIAAAAAAAEAO3PMQ0AIBRDweIBAZhBBP6N8FcmVkhuaG7tG0l6bbYEAABcWAdPXNIHAADwDxsMFH2siBEAAA==</data>
                         </body>
                       </tileData>
                       <tileset dataType="Struct" type="Duality.ContentRef`1[[Duality.Plugins.Tilemaps.Tileset]]">
@@ -1062,8 +1062,9 @@
                           </item>
                           <item dataType="Struct" type="Ferma.PlayerControl" id="4210882358">
                             <_x003C_Character_x003E_k__BackingField dataType="ObjectRef">198471205</_x003C_Character_x003E_k__BackingField>
+                            <_x003C_countTreePlases_x003E_k__BackingField dataType="Int">0</_x003C_countTreePlases_x003E_k__BackingField>
                             <_x003C_CurrSeed_x003E_k__BackingField dataType="Int">-1</_x003C_CurrSeed_x003E_k__BackingField>
-                            <_x003C_exp_x003E_k__BackingField dataType="ULong">10000000</_x003C_exp_x003E_k__BackingField>
+                            <_x003C_exp_x003E_k__BackingField dataType="ULong">0</_x003C_exp_x003E_k__BackingField>
                             <_x003C_Inv_x003E_k__BackingField dataType="Struct" type="Ferma.Inventory" id="951576282">
                               <items dataType="Struct" type="System.Collections.Generic.List`1[[System.Int32]]" id="2479744256">
                                 <_items dataType="Array" type="System.Int32[]" id="1742559900">0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</_items>
@@ -1072,7 +1073,7 @@
                             </_x003C_Inv_x003E_k__BackingField>
                             <_x003C_lvl_x003E_k__BackingField dataType="Int">0</_x003C_lvl_x003E_k__BackingField>
                             <_x003C_MapControl_x003E_k__BackingField dataType="ObjectRef">763323756</_x003C_MapControl_x003E_k__BackingField>
-                            <_x003C_Money_x003E_k__BackingField dataType="Int">100000000</_x003C_Money_x003E_k__BackingField>
+                            <_x003C_Money_x003E_k__BackingField dataType="Int">0</_x003C_Money_x003E_k__BackingField>
                             <active dataType="Bool">true</active>
                             <countBads dataType="Int">0</countBads>
                             <currentArm dataType="Enum" type="Ferma.ArmPlayer" name="arrow" value="0" />
@@ -1309,7 +1310,7 @@
                                                             <lineAlign dataType="Enum" type="Duality.Alignment" name="Left" value="1" />
                                                             <maxHeight dataType="Int">0</maxHeight>
                                                             <maxWidth dataType="Int">0</maxWidth>
-                                                            <sourceText dataType="String">100000000</sourceText>
+                                                            <sourceText dataType="String">10</sourceText>
                                                             <wrapMode dataType="Enum" type="Duality.Drawing.FormattedText+WrapMode" name="Word" value="1" />
                                                           </text>
                                                           <visibilityGroup dataType="Enum" type="Duality.Drawing.VisibilityFlag" name="Group0" value="1" />
@@ -1388,7 +1389,7 @@
                                                           </_x003C_CurrFont_x003E_k__BackingField>
                                                           <active dataType="Bool">true</active>
                                                           <allExp dataType="ULong">232</allExp>
-                                                          <currExp dataType="ULong">10000001</currExp>
+                                                          <currExp dataType="ULong">1</currExp>
                                                           <gameobj dataType="ObjectRef">3343208015</gameobj>
                                                           <lvl dataType="Int">0</lvl>
                                                         </item>
@@ -6692,12 +6693,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">54.288002</X>
+                                                                    <X dataType="Float">45.24</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">54.288002</X>
+                                                                    <X dataType="Float">45.24</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>
@@ -6801,12 +6802,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">78.416</X>
+                                                                    <X dataType="Float">69.3680038</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">78.416</X>
+                                                                    <X dataType="Float">69.3680038</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>
@@ -6910,12 +6911,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">102.544</X>
+                                                                    <X dataType="Float">93.496</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">102.544</X>
+                                                                    <X dataType="Float">93.496</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>

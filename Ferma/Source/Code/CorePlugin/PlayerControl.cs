@@ -41,6 +41,7 @@ namespace Ferma
         public int Money { get; set; }
 
         private int countBads;
+        public int countTreePlases { get; set; }
         private Queue<Command> QUE;
         private ArmPlayer currentArm;
         private bool doIt;
@@ -58,10 +59,6 @@ namespace Ferma
         public void ClearQue()
         {
             this.QUE.Clear();
-        }
-        public void tryDig(Point2 tilePos)
-        {
-
         }
         public void updateQUE()
         {
@@ -86,15 +83,15 @@ namespace Ferma
                 TilemapRenderer tilemapRenderer = TilemapRendererInScene;
                 Vector2 localPos = this.Character.TargetCell;
                 Point2 tilePos = tilemapRenderer.GetTileAtLocalPos(localPos, TilePickMode.Reject);
-                bool worked = false;
+                int worked = 0;
                 if (this.currentArm != ArmPlayer.seeds || (this.currentArm == ArmPlayer.seeds && this.CurrSeed != -1 && this.Money >= Ops.getCostSeed(this.CurrSeed)))
                 {
-                    worked = this.MapControl.Update(tilePos.X, tilePos.Y, this.currentArm, this.CurrSeed, lvl);
-                    if (worked && this.currentArm == ArmPlayer.seeds)
+                    worked = this.MapControl.Update(tilePos.X, tilePos.Y, this.currentArm, this.CurrSeed, canDig(), canSetTreePlase());
+                    if (worked >0 && this.currentArm == ArmPlayer.seeds)
                         this.Money -= Ops.getCostSeed(this.CurrSeed);
                 }
 
-                if (worked)
+                if (worked > 0)
                 {
                     if (this.currentArm == ArmPlayer.arm)
                     {
@@ -103,12 +100,21 @@ namespace Ferma
                     else
                     if (this.currentArm == ArmPlayer.seeds)
                     {
+                        if (worked == 2)
+                            ++countTreePlases;
                         addExp(Ops.getExpSeed(lvl, this.CurrSeed));
                     }
                     else
                     if (this.currentArm != ArmPlayer.arrow)
                     {
                         addExp(Ops.getExpWork(lvl));
+                    }
+                    if (this.currentArm == ArmPlayer.showel)
+                    {
+                        if (worked == 1)
+                            ++countBads;
+                        if (worked == 2)
+                            --countBads;
                     }
                 }
                 this.Character.IsGoed = false;
@@ -127,7 +133,7 @@ namespace Ferma
         public string Save()
         {
             string s = "";
-            s += this.countBads + "\n";
+            s += this.countBads + " "+countTreePlases+"\n";
             s +=this.exp+"\n";
             s += this.Money + "\n";
             s += this.Inv.save();
@@ -142,7 +148,9 @@ namespace Ferma
                 DateTime last = DateTime.Parse(sr.ReadLine());
                 DateTime today = DateTime.Parse(Ops.Today());
                 secPassed = (today - last).Seconds;
-                countBads = int.Parse(sr.ReadLine());
+                var inp = sr.ReadLine().Split().Select(x => int.Parse(x)).ToList();
+                countBads = inp[0];
+                countTreePlases = inp[1];
                 exp = ulong.Parse(sr.ReadLine());
                 lvl = Ops.getLvl(exp);
                 Money = int.Parse(sr.ReadLine());
@@ -152,10 +160,6 @@ namespace Ferma
                 Pos.MoveTo(new Vector3(agrs[0], agrs[1], agrs[2]));
                 Character.Target = Pos.Pos.Xy;
                 Character.TargetCell = Pos.Pos.Xy;
-                //ulong curr = exp;
-                //ulong oldall = Ops.getMinExp(Player.lvl) - 1;
-                //ulong all = Ops.getMinExp(Player.lvl + 1) - 1;
-                //GameGUI.Exp.updateExp(curr - oldall, all - oldall);
                 MapControl.addTime(secPassed);
             }
         }
@@ -205,6 +209,14 @@ namespace Ferma
         private void onNewLvl()
         {
 
+        }
+        private bool canDig()
+        {
+            return countBads < Ops.getMaxBad(lvl);
+        }
+        private bool canSetTreePlase()
+        {
+            return countTreePlases < Ops.getMaxTreePlase(lvl);
         }
     }
 }

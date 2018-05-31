@@ -100,13 +100,21 @@ namespace Ferma
         private static int[] CostProduct;
         private static string[] PlantsNames;
 
-        public static int getMaxBed(int lvl)
+        public static int getMaxTreePlase(int lvl)
         {
-            return lvl * 2;
+            return lvl / 5;
+        }
+        public static int getMaxBad(int lvl)
+        {
+            return lvl * 2+2;
         }
         public static bool isTreeTile(int tile)
         {
             return tile % TileSetWidth <= 5 && tile / TileSetWidth <= 2*countInvTrees-1 && tile % TileSetWidth >= 3;
+        }
+        public static bool isTree(int id)
+        {
+            return id >= countInvSeeds && id < countInvSeeds + countInvTrees;
         }
         public static int TileToId(int tile)
         {
@@ -119,21 +127,26 @@ namespace Ferma
         }
         public static int IdToTile(int id)
         {
-            if (id < TileSetWidth) return id * TileSetWidth;
-            if (id <= countInv-1)
-                return TileSetWidth * ((id - TileSetWidth) * 2 + 1) + 3;
+            if (id < countInvSeeds) return id * TileSetWidth;
+            if (id < countInvSeeds + countInvTrees)
+                return TileSetWidth * ((id - countInvSeeds) * 2 + 1) + 3;
+            if (id < countInvSeeds + countInvTrees + countInvOther)
+                return IdTreePlase;
             Log.Game.WriteError("W "+id);
             return -1;
         }
-        public static int getLvlAvailable(int id)
+        public static int getLvlAvailable(int id, int countTreePlases = 0)
         {
-            if (id < countInvSeeds) return id / 2;
-            if (id < countInvTrees + countInvSeeds) return (id - countInvSeeds + 1) * 5;
+            if (id < countInvSeeds) return id + 1;
+            if (id < countInvTrees + countInvSeeds) return (id - countInvSeeds + 1) * 4;
+            if (id == countInvTrees + countInvSeeds) return countTreePlases * 5;
             return 0;
         }
-        public static bool isAvailable(int id, int lvl)
+        public static bool isAvailable(int id, int lvl, int countTreePlases = 0)
         {
-            return lvl >= getLvlAvailable(id);
+            if(id != countInvTrees + countInvSeeds)
+                return lvl >= getLvlAvailable(id);
+            return lvl >= getLvlAvailable(id, countTreePlases);
         }
         public static float getTextScale(TextRenderer t,Vector2 v)
         {
