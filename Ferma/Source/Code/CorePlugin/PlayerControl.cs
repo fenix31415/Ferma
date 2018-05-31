@@ -160,11 +160,12 @@ namespace Ferma
                 Pos.MoveTo(new Vector3(agrs[0], agrs[1], agrs[2]));
                 Character.Target = Pos.Pos.Xy;
                 Character.TargetCell = Pos.Pos.Xy;
-                MapControl.addTime(secPassed);
+                //MapControl.addTime(secPassed);
             }
         }
         public void LoadInv(string s)
         {
+            Inv = new Inventory();
             this.Inv.load(s);
         }
         public void ChangeSeed(int ind)

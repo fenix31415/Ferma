@@ -35,8 +35,8 @@ namespace Ferma
         }
         public void load(string s)
         {
-            List<int> args = s.Split().Select(x => int.Parse(x)).ToList();
-            this.Items = new List<int>();
+            //List<int> args = s.Split().Select(x => int.Parse(x)).ToList();
+            this.Items = s.Split().Select(x => int.Parse(x)).ToList();
         }
         public Inventory()
         {

@@ -290,6 +290,7 @@ namespace Ferma
         {
             this.currExp = currexp;
             this.allExp = allexp;
+            setcurrlvl(Ops.getLvl(currexp));
         }
         public void Init()
         {

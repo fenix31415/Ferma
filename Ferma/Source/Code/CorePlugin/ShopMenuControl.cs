@@ -302,8 +302,9 @@ namespace Ferma
         public void UpdateChoose(int type)
         {
             int ind = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.CurrSeed;
+            int i = ind - currPage * Ops.InvHei * Ops.InvWid + startInd[type][currWindow];
             GameObject choose = this.GameObj.ChildByName("choose");
-            if (ind == -1 || this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().State != GameStates.seedsshop)
+            if (ind < 0 || this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().State != GameStates.seedsshop)
             {
                 choose.Active = false;
                 return;
@@ -364,7 +365,12 @@ namespace Ferma
                     float newhei = MainCameraControl.PicToCoord(wid, z);
                     float newwid = newhei;
                     TextRenderer text = s.ChildByName("text").GetComponent<TextRenderer>();
-                    text.Text.SourceText = "$ " + Ops.getCostSeed(i);
+                    string txt = "";
+                    if(type == 0)
+                        txt = "$ " + Ops.getCostSeed(id);
+                    if (type == 1)
+                        txt = "$ " + Ops.getCostProduct(id);
+                    text.Text.SourceText = txt;
                     if (type == 0)
                     {
                         s.ChildByName("count").Active = false;
@@ -373,12 +379,13 @@ namespace Ferma
                         s.ChildByName("count").Active = true;
 
                         text = s.ChildByName("count").GetComponent<TextRenderer>();
-                        text.Text.SourceText = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Inv.Items[i] + "";
+                        text.Text.SourceText = this.GameObj.ParentScene.FindGameObject("Game").GetComponent<Game>().Player.Inv.Items[id] + "";
                     }
                 }
                 else
                     s.Active = false;
             }
+            UpdateChoose(type);
         }
     }
 }

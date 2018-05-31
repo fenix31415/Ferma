@@ -47,7 +47,7 @@ namespace Ferma
         public const int TileSetHeight = 20;
 
         public static Point2 WeatherAreaTL = new Point2(0, 0);
-        public static Point2 WeatherAreaBR = new Point2(10, 10);
+        public static Point2 WeatherAreaBR = new Point2(MapWidth-1, MapHeigth-1);
         public const int WeatherMaxDur = 200;
         public const int WeatherMaxDurNo = 400;
         public const int WeatherMinDur = 100;

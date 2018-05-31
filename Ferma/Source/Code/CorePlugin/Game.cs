@@ -97,10 +97,16 @@ namespace Ferma
             this.GameObj.ParentScene.FindGameObject("MainMenu").Active = false;
             GameGUI.GameObj.ChildByName("Exp").Active = true;
             Player.GameObj.Active = true;
+            GameGUI.GameObj.Active = true;
             GameGUI.ShortInit();
             MainCameraControl.Active = true;
             weather.timer.Start();
             State = GameStates.game;
+            GameObj.ChildByName("MainCharacter").Active = true;
+            GameObj.ChildByName("MainCharacter").GetComponent<CharacterControl>().Active = true;
+            GameGUI.GameObj.Parent.Active = true;
+            Player.Character.Target = Player.Character.GameObj.Transform.Pos.Xy;
+            Player.Character.TargetCell = Player.Character.GameObj.Transform.Pos.Xy;
         }
         public void SmalMenuPressed(int ind)
         {
@@ -248,7 +254,7 @@ namespace Ferma
             Save();
             this.GameObj.ParentScene.FindGameObject("MainMenu", false).Active = true;
             MainCameraControl.GameObj.Transform.MoveTo(new Vector3(0, 0, -Ops.CamDist));
-            this.GameObj.ParentScene.FindGameObject("GUI", false).Active = false;
+            this.GameObj.ParentScene.FindGameObject("GUI", false).ChildByName("InGame").Active = false;
             Player.Character.Active = false;
             Player.MapControl.GameObj.Active = false;
             Player.GameObj.Active = false;
@@ -271,7 +277,7 @@ namespace Ferma
         }
         private void debug()
         {
-            Log.Game.WriteError(Ops.getLvlAvailable(28,0)+"");
+            Log.Game.WriteError(Ops.getCostProduct(28)+" "+Ops.getCostSeed(28));
         }
 
         void ICmpUpdatable.OnUpdate()
@@ -332,6 +338,7 @@ namespace Ferma
             {
                 debug();
             }
+            isIgnoreMouse = false;
         }
         void ICmpInitializable.OnInit(InitContext context)
         {
@@ -342,7 +349,6 @@ namespace Ferma
             buttonUp = new EventHandler<MouseButtonEventArgs>(Button_Up);
             DualityApp.Mouse.ButtonUp += buttonUp;
             this.timerField = new Stopwatch();
-            Load();
             if(Player != null)
                 Player.init();
             if(ShopMenu != null)
@@ -352,6 +358,7 @@ namespace Ferma
                 GameGUI.Init();
             }
             this.weather = new Weather();
+            Load();
         }
         void ICmpInitializable.OnShutdown(ShutdownContext context)
         {

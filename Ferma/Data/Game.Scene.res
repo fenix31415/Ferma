@@ -93,13 +93,13 @@
                     <ignoreParent dataType="Bool">true</ignoreParent>
                     <parentTransform />
                     <pos dataType="Struct" type="Duality.Vector3">
-                      <X dataType="Float">-227.4702</X>
-                      <Y dataType="Float">-101.2239</Y>
+                      <X dataType="Float">-10.691864</X>
+                      <Y dataType="Float">53.98747</Y>
                       <Z dataType="Float">0</Z>
                     </pos>
                     <posAbs dataType="Struct" type="Duality.Vector3">
-                      <X dataType="Float">-227.4702</X>
-                      <Y dataType="Float">-101.2239</Y>
+                      <X dataType="Float">-10.691864</X>
+                      <Y dataType="Float">53.98747</Y>
                       <Z dataType="Float">0</Z>
                     </posAbs>
                     <scale dataType="Float">1.23579371</scale>
@@ -283,10 +283,13 @@
                   </item>
                   <item dataType="Struct" type="Ferma.CharacterControl" id="198471205">
                     <_x003C_Target_x003E_k__BackingField dataType="Struct" type="Duality.Vector2">
-                      <X dataType="Float">-227.4702</X>
-                      <Y dataType="Float">-101.2239</Y>
+                      <X dataType="Float">-10.691864</X>
+                      <Y dataType="Float">53.98747</Y>
                     </_x003C_Target_x003E_k__BackingField>
-                    <_x003C_TargetCell_x003E_k__BackingField dataType="Struct" type="Duality.Vector2" />
+                    <_x003C_TargetCell_x003E_k__BackingField dataType="Struct" type="Duality.Vector2">
+                      <X dataType="Float">-10.691864</X>
+                      <Y dataType="Float">53.98747</Y>
+                    </_x003C_TargetCell_x003E_k__BackingField>
                     <_x003C_TargetMovement_x003E_k__BackingField dataType="Struct" type="Duality.Vector2" />
                     <acceleration dataType="Float">0.2</acceleration>
                     <active dataType="Bool">true</active>
@@ -852,7 +855,7 @@
                       <tileData dataType="Struct" type="Duality.Plugins.Tilemaps.TilemapData" id="3596323927" custom="true">
                         <body>
                           <version dataType="Int">3</version>
-                          <data dataType="Array" type="System.Byte[]" id="3113818638">H4sIAAAAAAAEAO3PMQ0AIBRDweIBAZhBBP6N8FcmVkhuaG7tG0l6bbYEAABcWAdPXNIHAADwDxsMFH2siBEAAA==</data>
+                          <data dataType="Array" type="System.Byte[]" id="3113818638">H4sIAAAAAAAEAO3PMREAIBADweABAW8GEfg3AiaYp9gis22uksy7NRIAAN6wfzihDwAAAO0comS6CIgRAAA=</data>
                         </body>
                       </tileData>
                       <tileset dataType="Struct" type="Duality.ContentRef`1[[Duality.Plugins.Tilemaps.Tileset]]">
@@ -1062,7 +1065,7 @@
                           </item>
                           <item dataType="Struct" type="Ferma.PlayerControl" id="4210882358">
                             <_x003C_Character_x003E_k__BackingField dataType="ObjectRef">198471205</_x003C_Character_x003E_k__BackingField>
-                            <_x003C_countTreePlases_x003E_k__BackingField dataType="Int">0</_x003C_countTreePlases_x003E_k__BackingField>
+                            <_x003C_countTreePlases_x003E_k__BackingField dataType="Int">3</_x003C_countTreePlases_x003E_k__BackingField>
                             <_x003C_CurrSeed_x003E_k__BackingField dataType="Int">-1</_x003C_CurrSeed_x003E_k__BackingField>
                             <_x003C_exp_x003E_k__BackingField dataType="ULong">0</_x003C_exp_x003E_k__BackingField>
                             <_x003C_Inv_x003E_k__BackingField dataType="Struct" type="Ferma.Inventory" id="951576282">
@@ -1073,9 +1076,9 @@
                             </_x003C_Inv_x003E_k__BackingField>
                             <_x003C_lvl_x003E_k__BackingField dataType="Int">0</_x003C_lvl_x003E_k__BackingField>
                             <_x003C_MapControl_x003E_k__BackingField dataType="ObjectRef">763323756</_x003C_MapControl_x003E_k__BackingField>
-                            <_x003C_Money_x003E_k__BackingField dataType="Int">0</_x003C_Money_x003E_k__BackingField>
+                            <_x003C_Money_x003E_k__BackingField dataType="Int">249</_x003C_Money_x003E_k__BackingField>
                             <active dataType="Bool">true</active>
-                            <countBads dataType="Int">0</countBads>
+                            <countBads dataType="Int">32</countBads>
                             <currentArm dataType="Enum" type="Ferma.ArmPlayer" name="arrow" value="0" />
                             <doIt dataType="Bool">false</doIt>
                             <gameobj dataType="ObjectRef">1170134997</gameobj>
@@ -1310,7 +1313,7 @@
                                                             <lineAlign dataType="Enum" type="Duality.Alignment" name="Left" value="1" />
                                                             <maxHeight dataType="Int">0</maxHeight>
                                                             <maxWidth dataType="Int">0</maxWidth>
-                                                            <sourceText dataType="String">10</sourceText>
+                                                            <sourceText dataType="String">249</sourceText>
                                                             <wrapMode dataType="Enum" type="Duality.Drawing.FormattedText+WrapMode" name="Word" value="1" />
                                                           </text>
                                                           <visibilityGroup dataType="Enum" type="Duality.Drawing.VisibilityFlag" name="Group0" value="1" />
@@ -1369,12 +1372,12 @@
                                                           <ignoreParent dataType="Bool">true</ignoreParent>
                                                           <parentTransform dataType="ObjectRef">2288071164</parentTransform>
                                                           <pos dataType="Struct" type="Duality.Vector3">
-                                                            <X dataType="Float">436</X>
+                                                            <X dataType="Float">509.5</X>
                                                             <Y dataType="Float">10</Y>
                                                             <Z dataType="Float">0</Z>
                                                           </pos>
                                                           <posAbs dataType="Struct" type="Duality.Vector3">
-                                                            <X dataType="Float">436</X>
+                                                            <X dataType="Float">509.5</X>
                                                             <Y dataType="Float">10</Y>
                                                             <Z dataType="Float">0</Z>
                                                           </posAbs>
@@ -1388,10 +1391,10 @@
                                                             <contentPath dataType="String">Data\MenuRes\1562.Font.res</contentPath>
                                                           </_x003C_CurrFont_x003E_k__BackingField>
                                                           <active dataType="Bool">true</active>
-                                                          <allExp dataType="ULong">232</allExp>
-                                                          <currExp dataType="ULong">1</currExp>
+                                                          <allExp dataType="ULong">52641</allExp>
+                                                          <currExp dataType="ULong">27881</currExp>
                                                           <gameobj dataType="ObjectRef">3343208015</gameobj>
-                                                          <lvl dataType="Int">0</lvl>
+                                                          <lvl dataType="Int">12</lvl>
                                                         </item>
                                                       </_items>
                                                       <_size dataType="Int">2</_size>
@@ -1438,12 +1441,12 @@
                                                           <ignoreParent dataType="Bool">false</ignoreParent>
                                                           <parentTransform dataType="ObjectRef">2288071164</parentTransform>
                                                           <pos dataType="Struct" type="Duality.Vector3">
-                                                            <X dataType="Float">130.9976</X>
+                                                            <X dataType="Float">153.1652</X>
                                                             <Y dataType="Float">0.5</Y>
                                                             <Z dataType="Float">0</Z>
                                                           </pos>
                                                           <posAbs dataType="Struct" type="Duality.Vector3">
-                                                            <X dataType="Float">130.9976</X>
+                                                            <X dataType="Float">153.1652</X>
                                                             <Y dataType="Float">0.5</Y>
                                                             <Z dataType="Float">0</Z>
                                                           </posAbs>
@@ -1986,12 +1989,12 @@
                                                                     <velAbs dataType="Struct" type="Duality.Vector3" />
                                                                   </parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">51.2720032</X>
+                                                                    <X dataType="Float">69.3680038</X>
                                                                     <Y dataType="Float">15.0800009</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">51.2720032</X>
+                                                                    <X dataType="Float">69.3680038</X>
                                                                     <Y dataType="Float">15.0800009</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>
@@ -2095,12 +2098,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">75.4</X>
+                                                                    <X dataType="Float">93.496</X>
                                                                     <Y dataType="Float">15.0800009</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">75.4</X>
+                                                                    <X dataType="Float">93.496</X>
                                                                     <Y dataType="Float">15.0800009</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>
@@ -6693,12 +6696,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">45.24</X>
+                                                                    <X dataType="Float">60.3200035</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">45.24</X>
+                                                                    <X dataType="Float">60.3200035</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>
@@ -6802,12 +6805,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">69.3680038</X>
+                                                                    <X dataType="Float">84.4480057</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">69.3680038</X>
+                                                                    <X dataType="Float">84.4480057</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>
@@ -6911,12 +6914,12 @@
                                                                   <ignoreParent dataType="Bool">false</ignoreParent>
                                                                   <parentTransform dataType="ObjectRef">1692721571</parentTransform>
                                                                   <pos dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">93.496</X>
+                                                                    <X dataType="Float">108.576004</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">0</Z>
                                                                   </pos>
                                                                   <posAbs dataType="Struct" type="Duality.Vector3">
-                                                                    <X dataType="Float">93.496</X>
+                                                                    <X dataType="Float">108.576004</X>
                                                                     <Y dataType="Float">-57.304</Y>
                                                                     <Z dataType="Float">-250</Z>
                                                                   </posAbs>

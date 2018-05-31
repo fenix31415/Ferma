@@ -16,13 +16,12 @@ using Duality.Plugins.Tilemaps;
 
 namespace Ferma
 {
-    public class MapControl : Component, ICmpInitializable
+    public class MapControl : Component
     {
         private static int wid = Ops.MapWidth;
         private static int hei = Ops.MapHeigth;
         private List<List<int>> mapTime = new List<List<int>>();
         
-
         public TilemapRenderer TilemapRendererInScene => this.GameObj.ParentScene.FindComponent<TilemapRenderer>();
         public Tilemap BaseLayer { get; set; }
         public Tilemap TopLayer { get; set; }
@@ -70,6 +69,15 @@ namespace Ferma
                 int h = Ops.MapHeigth;
                 int w = Ops.MapWidth;
                 List<int> args = sr.ReadLine().Split().Where(x => x != "").Select(x => int.Parse(x)).ToList();
+                mapTime = new List<List<int>>();
+                for (int x = 0; x < w; x++)
+                {
+                    mapTime.Add(new List<int>());
+                    for (int y = 0; y < h; y++)
+                    {
+                        mapTime[x].Add(-1);
+                    }
+                }
                 for (int y = 0; y < h; y++)
                 {
                     for (int x = 0; x < w; x++)
@@ -77,12 +85,15 @@ namespace Ferma
                         this.setTime(x, y, args[y * w + x]);
                     }
                 }
-
             }
         }
         public void setTime(int x, int y, int time)
         {
             this.mapTime[x][y] = time;
+        }
+        public int getTime(int x, int y)
+        {
+            return mapTime[x][y];
         }
         public void addTime(int tim)
         {
@@ -279,7 +290,7 @@ namespace Ferma
             {
                 if (BaseClickedTile.BaseIndex == Ops.IdBed && TopClickedTile.BaseIndex == Ops.IdVoid)
                 {
-                    if(TypeArm <= Ops.countInvSeeds)
+                    if(TypeArm < Ops.countInvSeeds)
                         LandSeed(x,y,TypeArm);
                     int ans = 0;
                     if (TypeArm < Ops.countInvSeeds)
@@ -295,7 +306,7 @@ namespace Ferma
                 }
                 if (BaseClickedTile.BaseIndex == Ops.IdGrass)
                 {
-                    if (canSetTreePlase)
+                    if (TypeArm == Ops.countInvSeeds + Ops.countInvTrees && canSetTreePlase)
                     {
                         SetTreePlase(x, y);
                         return 2;
@@ -304,21 +315,5 @@ namespace Ferma
             }
             return 0;
         }
-
-        void ICmpInitializable.OnInit(InitContext context)
-        {
-            if (context != InitContext.Activate) return;
-            this.mapTime = new List<List<int>>();
-            for (int i = 0; i < wid; i++)
-            {
-                this.mapTime.Add(new List<int>());
-                for (int j = 0; j < hei; j++)
-                {
-                    mapTime[i].Add(-1);
-                }
-            }
-        }
-
-        void ICmpInitializable.OnShutdown(ShutdownContext context) { }
     }
 }
